@@ -86,4 +86,9 @@ public class SendFrameData: MonoBehaviour
 
         return frameData;
     }
+
+    void OnApplicationQuit()
+    {
+        networkSocket.closeSocket();
+    }
 }
