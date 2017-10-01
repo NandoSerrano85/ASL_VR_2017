@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 
@@ -39,7 +40,7 @@ public class NetworkSocket
         }
         catch(Exception e)
         {
-            Debug.Log("Socket Error: " + e);
+            Debug.WriteLine("Socket Error: " + e);
         }
     }
 

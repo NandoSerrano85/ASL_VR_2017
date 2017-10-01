@@ -11,7 +11,7 @@ public class SendHandData: MonoBehaviour
    {
      leapProvider = FindObjectOfType<LeapServiceProvider>();
      networkSocket = new NetworkSocket();
-   }
+    }
 
    void Update()
    {
@@ -25,7 +25,7 @@ public class SendHandData: MonoBehaviour
        }
        else
        {
-          networkSocket.writeSocket("Right hand is @ " + hand.PalmPosition)
+          networkSocket.writeSocket("Right hand is @ " + hand.PalmPosition);
        }
 
        networkSocket.writeSocket("---Next Frame---");
