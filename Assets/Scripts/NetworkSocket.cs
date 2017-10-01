@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
+using System.Text;
 
 public class NetworkSocket
 {
@@ -13,17 +14,19 @@ public class NetworkSocket
     TcpClient tcpSocket;
     NetworkStream netStream;
 
-    StreamWriter socketWriter;
-    StreamReader socketReader;
+    void Update()
+    {
+        string receivedData = readSocket();
+
+        if(receivedData != "")
+        {
+            Console.WriteLine(receivedData);
+        }
+    }
 
     void Awake()
     {
         setUpSocket();
-    }
-
-    void OnApplicationQuit()
-    {
-        closeSocket();
     }
 
     public void setUpSocket()
@@ -33,8 +36,6 @@ public class NetworkSocket
             tcpSocket = new TcpClient(host, port);
 
             netStream = tcpSocket.GetStream();
-            socketReader = new StreamReader(netStream);
-            socketWriter = new StreamWriter(netStream);
 
             socketReady = true;
         }
@@ -44,13 +45,16 @@ public class NetworkSocket
         }
     }
 
-    public void writeSocket(string data)
+    public void writeSocket(string jsonString)
     {
         if (!socketReady)
             return;
 
-        socketWriter.Write(data);
-        socketWriter.Flush();
+        using (StreamWriter socketWriter = new StreamWriter(tcpSocket.GetStream(), Encoding.Default))
+        {
+            socketWriter.Write(jsonString);
+            socketWriter.Flush();
+        }
     }
 
     public string readSocket()
@@ -58,8 +62,11 @@ public class NetworkSocket
         if (!socketReady)
             return "";
 
-        if (netStream.DataAvailable)
-            return socketReader.ReadToEnd();
+        using (StreamReader socketReader = new StreamReader(tcpSocket.GetStream(), Encoding.Default))
+        {
+            if (netStream.DataAvailable)
+                return socketReader.ReadToEnd();
+        }
 
         return "";
     }
@@ -69,8 +76,6 @@ public class NetworkSocket
         if (!socketReady)
             return;
 
-        socketWriter.Close();
-        socketReader.Close();
         tcpSocket.Close();
 
         socketReady = false;
