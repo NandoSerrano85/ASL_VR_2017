@@ -1,44 +1,19 @@
 ﻿using System;
 using System.IO;
 using System.Net.Sockets;
-using UnityEngine;
 
-public class NetworkSocket : MonoBehaviour
+public class NetworkSocket
 {
     public string host = "localhost";
     public int port = 50000;
 
     internal bool socketReady = false;
-    internal string inputBuffer = "";
 
     TcpClient tcpSocket;
     NetworkStream netStream;
 
     StreamWriter socketWriter;
     StreamReader socketReader;
-
-	void Update ()
-    {
-        string receivedData = readSocket(); 
-        string keyStroke = Input.inputString;
-
-        if(keyStroke != "")
-        {
-            inputBuffer += keyStroke;
-
-            if(keyStroke == "\n" || keyStroke == "\r")
-            {
-                Debug.Log("Sending: " + inputBuffer);
-                writeSocket(inputBuffer);
-                inputBuffer = "";
-            }
-        }
-
-        if(receivedData != "")
-        {
-            Debug.Log(receivedData);
-        }
-	}
 
     void Awake()
     {
@@ -66,15 +41,14 @@ public class NetworkSocket : MonoBehaviour
         {
             Debug.Log("Socket Error: " + e);
         }
-    } 
+    }
 
-    public void writeSocket(string line)
+    public void writeSocket(string data)
     {
         if (!socketReady)
             return;
 
-        line = line + "\r\n";
-        socketWriter.Write(line);
+        socketWriter.Write(data);
         socketWriter.Flush();
     }
 
@@ -84,7 +58,7 @@ public class NetworkSocket : MonoBehaviour
             return "";
 
         if (netStream.DataAvailable)
-            return socketReader.ReadLine();
+            return socketReader.ReadToEnd();
 
         return "";
     }

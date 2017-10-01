@@ -12,9 +12,7 @@ def createServerSocket(protocol_type, socket_type, hostname, port, numberOfConne
 def processClientInput(clientSocket):
     while True:
         data = clientSocket.recv(BUFFER_SIZE).decode().rstrip('\r\n')
-
-        if data:
-                clientSocket.send(("You just said: " + data + "\n").encode())
+        clientSocket.send(("Data recevied: " + data + "\n").encode())
 
 def main():
     host = ''
@@ -26,7 +24,6 @@ def main():
     while True:
         clientSocket, address = serverSocket.accept()
         print("Client connected")
-        clientSocket.send("Hello!\n".encode())
         processClientInput(clientSocket)
 
 if __name__ == '__main__':
