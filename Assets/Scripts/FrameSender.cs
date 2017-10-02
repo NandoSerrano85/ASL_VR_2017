@@ -13,7 +13,7 @@ public class FrameSender: MonoBehaviour
     void Start()
     {
         leapProvider = GetComponent<LeapServiceProvider>();
-        networkSocket = new NetworkSocket();
+        networkSocket = FindObjectOfType<NetworkSocket>();
         currentFrameID = leapProvider.CurrentFrame.Id;
     }
 

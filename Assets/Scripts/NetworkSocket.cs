@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using UnityEngine;
 
-public class NetworkSocket
+public class NetworkSocket : MonoBehaviour
 {
     public string host = "localhost";
     public int port = 50000;
@@ -41,7 +41,7 @@ public class NetworkSocket
         }
         catch(Exception e)
         {
-            Debug.WriteLine("Socket Error: " + e);
+            Debug.Log("Socket Error: " + e);
         }
     }
 
