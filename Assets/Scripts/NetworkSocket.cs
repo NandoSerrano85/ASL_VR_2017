@@ -4,7 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
 
-public class NetworkSocket : MonoBehaviour
+public class NetworkSocket
 {
     public string host = "localhost";
     public int port = 50000;
@@ -14,20 +14,8 @@ public class NetworkSocket : MonoBehaviour
     TcpClient tcpSocket;
     NetworkStream netStream;
 
-    void Update()
-    {
-        string receivedData = readSocket();
-
-        if(receivedData != "")
-        {
-            Console.WriteLine(receivedData);
-        }
-    }
-
-    void Awake()
-    {
-        setUpSocket();
-    }
+    StreamWriter socketWriter;
+    StreamReader socketReader;
 
     public void setUpSocket()
     {
@@ -36,25 +24,24 @@ public class NetworkSocket : MonoBehaviour
             tcpSocket = new TcpClient(host, port);
 
             netStream = tcpSocket.GetStream();
+            socketReader = new StreamReader(netStream, Encoding.Default);
+            socketWriter = new StreamWriter(netStream, Encoding.Default);
 
             socketReady = true;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.Log("Socket Error: " + e);
         }
     }
 
-    public void writeSocket(string jsonString)
+    public void writeSocket(string data)
     {
         if (!socketReady)
             return;
 
-        using (StreamWriter socketWriter = new StreamWriter(tcpSocket.GetStream(), Encoding.Default))
-        {
-            socketWriter.Write(jsonString);
-            socketWriter.Flush();
-        }
+        socketWriter.Write(data);
+        socketWriter.Flush();
     }
 
     public string readSocket()
@@ -62,11 +49,8 @@ public class NetworkSocket : MonoBehaviour
         if (!socketReady)
             return "";
 
-        using (StreamReader socketReader = new StreamReader(tcpSocket.GetStream(), Encoding.Default))
-        {
-            if (netStream.DataAvailable)
-                return socketReader.ReadToEnd();
-        }
+        if (netStream.DataAvailable)
+            return socketReader.ReadToEnd();
 
         return "";
     }
@@ -76,6 +60,8 @@ public class NetworkSocket : MonoBehaviour
         if (!socketReady)
             return;
 
+        socketWriter.Close();
+        socketReader.Close();
         tcpSocket.Close();
 
         socketReady = false;

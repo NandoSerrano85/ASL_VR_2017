@@ -115,6 +115,9 @@
     <Reference Include="LeapCSharp.NET3.5">
       <HintPath>Assets/LeapMotion/Core/Plugins/LeapCSharp.NET3.5.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets/Plugins/Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="ASL_VR_2017.csproj">
@@ -191,6 +194,7 @@
     <None Include="Assets\OVR\Resources\Unlit Transparent Color.shader" />
     <None Include="Assets\OVR\Shaders\OVRColorRampAlpha.shader" />
     <None Include="Assets\OVR\Shaders\Unlit Crosshair.shader" />
+    <None Include="Assets\Plugins\Newtonsoft.Json.XML" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
