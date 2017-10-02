@@ -14,8 +14,7 @@ public class FrameSender : MonoBehaviour
     void Start()
     {
         leapProvider = GetComponent<LeapServiceProvider>();
-        networkSocket = new NetworkSocket();
-        networkSocket.setUpSocket();
+        networkSocket = FindObjectOfType<NetworkSocket>();
         currentFrameID = leapProvider.CurrentFrame.Id;
     }
 
@@ -31,7 +30,7 @@ public class FrameSender : MonoBehaviour
         Dictionary<string, string> frameDictionary = getFrameData(currentFrame);
 
         string jsonString = JsonConvert.SerializeObject(frameDictionary, Formatting.Indented);
-        networkSocket.writeSocket(jsonString);
+        networkSocket.InputBuffer = jsonString;
     }
 
     private Dictionary<string, string> getFrameData(Frame currentFrame)
