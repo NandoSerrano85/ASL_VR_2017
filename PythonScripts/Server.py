@@ -12,7 +12,7 @@ def createServerSocket(protocol_type, socket_type, hostname, port, numberOfConne
 def processClientInput(clientSocket):
     while True:
         data = clientSocket.recv(BUFFER_SIZE).decode().rstrip('\r\n')
-        clientSocket.send(("You just said: " + data + "\n").encode())
+        print(data)
 
 def main():
     host = ''

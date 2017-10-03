@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class NetworkSocket : MonoBehaviour
 {
