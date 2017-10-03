@@ -11,7 +11,7 @@ def createServerSocket(protocol_type, socket_type, hostname, port, numberOfConne
 
 def processClientInput(clientSocket):
     while True:
-        data = clientSocket.recv(BUFFER_SIZE).decode().rstrip('\r\n')
+        data = clientSocket.recv(BUFFER_SIZE).decode()
         print(data)
 
 def main():

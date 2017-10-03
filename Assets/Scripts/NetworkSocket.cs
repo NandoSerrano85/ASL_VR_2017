@@ -3,7 +3,6 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using UnityEngine;
-using Newtonsoft.Json;
 
 public class NetworkSocket : MonoBehaviour
 {
@@ -12,42 +11,18 @@ public class NetworkSocket : MonoBehaviour
 
     internal bool socketReady = false;
 
-    private string inputBuffer;
-    public string InputBuffer { get {return inputBuffer; } internal set { inputBuffer = value; } }
-
     TcpClient tcpSocket;
     NetworkStream netStream;
 
     StreamWriter socketWriter;
     StreamReader socketReader;
 
-    void Update()
-    {
-        string receivedData = readSocket();
-
-        if (InputBuffer != "")
-        {
-            writeSocket(inputBuffer);
-            InputBuffer = "";
-        }
-
-        if (receivedData != "")
-        {
-            Debug.Log(receivedData);
-        }
-    }
-
     void Awake()
     {
         setUpSocket();
     }
 
-    void OnApplicationQuit()
-    {
-        closeSocket();
-    }
-
-    public void setUpSocket()
+    private void setUpSocket()
     {
         try
         {
@@ -65,13 +40,12 @@ public class NetworkSocket : MonoBehaviour
         }
     }
 
-    public void writeSocket(string line)
+    public void writeSocket(string jsonString)
     {
         if (!socketReady)
             return;
 
-        line = line + "\r\n";
-        socketWriter.Write(line);
+        socketWriter.Write(jsonString);
         socketWriter.Flush();
     }
 
@@ -81,7 +55,7 @@ public class NetworkSocket : MonoBehaviour
             return "";
 
         if (netStream.DataAvailable)
-            return socketReader.ReadLine();
+            Debug.Log(socketReader.ReadToEnd());
 
         return "";
     }
