@@ -3,6 +3,7 @@ using Leap;
 using Leap.Unity;
 using Newtonsoft.Json;
 using System.Threading;
+using System.Collections.Generic;
 
 public class FrameSender : MonoBehaviour
 {
@@ -15,9 +16,10 @@ public class FrameSender : MonoBehaviour
         leapProvider = GetComponent<LeapServiceProvider>();
         networkSocket = FindObjectOfType<NetworkSocket>();
         currentFrameID = leapProvider.CurrentFrame.Id;
+        InvokeRepeating("processFrame", 0.5f, 0.5f);
     }
 
-    void Update()
+    private void processFrame()
     {
         Frame currentFrame = leapProvider.CurrentFrame;
 
@@ -26,25 +28,33 @@ public class FrameSender : MonoBehaviour
 
         currentFrameID = currentFrame.Id;
 
-        string jsonString = JsonConvert.SerializeObject(currentFrame.Hands, Formatting.Indented,
+        List<Hand> hands = currentFrame.Hands;
+
+        Thread jsonFileThread = new Thread(() => writeJsonToFile(hands));
+        jsonFileThread.Start();
+
+        Thread socketThread = new Thread(() => sendJsonToSocket(hands));
+        socketThread.Start();
+    }
+
+    private void writeJsonToFile(List<Hand> hands)
+    {
+        using (System.IO.StreamWriter file =
+           new System.IO.StreamWriter(@"LeapMotionTrainingDataExample.txt", true))
+        {
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Serialize(file, hands);
+        }
+    }
+
+    private void sendJsonToSocket(List<Hand> hands)
+    {
+        string jsonString = JsonConvert.SerializeObject(hands, Formatting.Indented,
                                                         new JsonSerializerSettings()
                                                         {
                                                             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
                                                         });
-
-        Thread socketThread = new Thread(() => sendJsonToSocket(jsonString));
-        socketThread.Start();
-    }
-
-    private void sendJsonToSocket(string jsonString)
-    {
         networkSocket.writeSocket(jsonString);
-
-        using (System.IO.StreamWriter file =
-           new System.IO.StreamWriter(@"LeapMotionTrainingDataExample.txt", true))
-        {
-            file.WriteLine(jsonString);
-        }
     }
 
     void OnApplicationQuit()
