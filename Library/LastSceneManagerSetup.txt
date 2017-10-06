@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/LeapMotion/Core/Examples/Leap Hands Demo (VR - Infrared Viewer).unity
+- path: Assets/Scenes/Demo.unity
   isLoaded: 1
   isActive: 1
