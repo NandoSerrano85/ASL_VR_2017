@@ -12,10 +12,8 @@ public class UserInterfaceController : MonoBehaviour
     [SerializeField]
     private Animator recordViewAnimator;
 
-    [SerializeField]
-    private RecordingTimer recordingTimer;
-
-    public static readonly string [] animationTriggers = {"MenuSlideOutTrigger", "MenuSlideInTrigger"};
+    public static readonly string [] animationTriggers = {"MenuSlideOutTrigger", "MenuSlideInTrigger",
+                                                          "FadeOutTrigger", "FadeInTrigger"};
 
     private void Start()
     {
@@ -31,7 +29,7 @@ public class UserInterfaceController : MonoBehaviour
     {
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
         gestureViewAnimator.SetTrigger(animationTriggers[0]);
-        recordViewAnimator.SetTrigger(animationTriggers[1]);
+        recordViewAnimator.SetTrigger(animationTriggers[2]);
     }
 
     public void createGestureClick()
@@ -39,35 +37,16 @@ public class UserInterfaceController : MonoBehaviour
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
     }
 
-    public void resetRecordingClick()
-    {
-        buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
-        recordingTimer.setTimerOn(false);
-        recordingTimer.resetRecordingTimerText();
-    }
-
-    public void startRecordingClick()
-    {
-        buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
-        recordingTimer.setTimerOn(true);
-    }
-
-    public void pauseRecordingClick()
-    {
-        buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
-        recordingTimer.setTimerOn(false);
-    }
-
     public void returnToPreviousMenu(string methodName)
     {
-        resetRecordingClick();
         Invoke(methodName, 0.0f);
     }
 
-    private void fromRecordToGestureView()
+    private void gestureViewToRecordView()
     {
-        recordViewAnimator.SetTrigger(animationTriggers[0]);
+        buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
         gestureViewAnimator.SetTrigger(animationTriggers[1]);
+        recordViewAnimator.SetTrigger(animationTriggers[3]);
     }
 
     public void playButtonHighlightSound(Button button)

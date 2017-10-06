@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/Demo.unity
+- path: Assets/LeapMotionCoreAssets/LeapMotion/Scenes/RecordAndPlayback.unity
   isLoaded: 1
   isActive: 1
