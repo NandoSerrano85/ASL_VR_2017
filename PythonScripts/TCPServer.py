@@ -21,7 +21,7 @@ def processClientInput(clientSocket):
             clientSocket.close()
             break
 
-        print("Data Received: " + data + "\n")
+        print(data + "\n")
 
         clientSocket.send("This gesture is A\n".encode())
 

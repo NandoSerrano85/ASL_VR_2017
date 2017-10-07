@@ -17,10 +17,9 @@ public class FrameSender : MonoBehaviour
     {
         public long frameID;
         public long timeStamp;
-        public Dictionary<string, List<string>> hands;
-        public Dictionary<string, List<string>> pointables;
-        public Dictionary<string, List<string>> fingers;
-        public Dictionary<string, List<string>> bones;
+        public List<Dictionary<string, List<string>>> hands;
+        public List<Dictionary<string, List<string>>> pointables;
+        public List<Dictionary<string, List<string>>> fingers;
     }
 
     void Start()
@@ -77,89 +76,91 @@ public class FrameSender : MonoBehaviour
         frameData.frameID = frame.Id;
         frameData.timeStamp = frame.Timestamp;
 
-        frameData.hands = new Dictionary<string, List<string>>();
-        frameData.pointables = new Dictionary<string, List<string>>();
-        frameData.fingers = new Dictionary<string, List<string>>();
-        frameData.bones = new Dictionary<string, List<string>>();
+        frameData.hands = new List<Dictionary<string, List<string>>>();
+        frameData.pointables = new List<Dictionary<string, List<string>>>();
+        frameData.fingers = new List<Dictionary<string, List<string>>>();
 
         int count = 1;
 
         foreach (Hand hand in frame.Hands)
         {
-            string handName = "Hand " + count;
+            string handKey = "Hand " + count;
 
-            frameData.hands.Add(handName, new List<string>());
-            frameData.hands[handName].Add(hand.Id.ToString());
+            Dictionary<string, List<string>> handDict = new Dictionary<string, List<string>>();
+            handDict.Add(handKey, new List<string>());
+
+            handDict[handKey].Add(hand.Id.ToString());
 
             if (hand.IsLeft)
             {
-                frameData.hands[handName].Add("Left");
+                handDict[handKey].Add("Left");
             }
             else
             {
-                frameData.hands[handName].Add("Right");
+                handDict[handKey].Add("Right");
             }
 
-            frameData.hands[handName].Add(hand.Direction.ToString());
-            frameData.hands[handName].Add(hand.PalmNormal.ToString());
-            frameData.hands[handName].Add(hand.PalmPosition.ToString());
-            frameData.hands[handName].Add(hand.PalmVelocity.ToString());
-            frameData.hands[handName].Add(hand.StabilizedPalmPosition.ToString());
-            frameData.hands[handName].Add(hand.PinchStrength.ToString());
-            frameData.hands[handName].Add(hand.GrabStrength.ToString());
-            frameData.hands[handName].Add(hand.Confidence.ToString());
+            handDict[handKey].Add(hand.Direction.ToString());
+            handDict[handKey].Add(hand.PalmNormal.ToString());
+            handDict[handKey].Add(hand.PalmPosition.ToString());
+            handDict[handKey].Add(hand.PalmVelocity.ToString());
+            handDict[handKey].Add(hand.StabilizedPalmPosition.ToString());
+            handDict[handKey].Add(hand.PinchStrength.ToString());
+            handDict[handKey].Add(hand.GrabStrength.ToString());
+            handDict[handKey].Add(hand.Confidence.ToString());
 
-            count++;
+            frameData.hands.Add(handDict);
         }
 
         count = 1;
 
         foreach (Pointable point in frame.Pointables)
         {
-            string pointableName = "Pointable " + count;
+            string pointableKey = "Pointable " + count;
 
-            frameData.pointables.Add(pointableName, new List<string>());
-            frameData.pointables[pointableName].Add(point.Id.ToString());
-            frameData.pointables[pointableName].Add(point.Direction.ToString());
-            frameData.pointables[pointableName].Add(point.Hand.Id.ToString());
-            frameData.pointables[pointableName].Add(point.Length.ToString());
-            frameData.pointables[pointableName].Add(point.StabilizedTipPosition.ToString());
-            frameData.pointables[pointableName].Add(point.TipPosition.ToString());
-            frameData.pointables[pointableName].Add(point.TipVelocity.ToString());
-            frameData.pointables[pointableName].Add(point.IsTool.ToString());
+            Dictionary<string, List<string>> pointableDict = new Dictionary<string, List<string>>();
+            pointableDict.Add(pointableKey, new List<string>());
 
-            string fingerName = "Finger " + count;
+            pointableDict[pointableKey].Add(point.Id.ToString());
+            pointableDict[pointableKey].Add(point.Direction.ToString());
+            pointableDict[pointableKey].Add(point.Hand.Id.ToString());
+            pointableDict[pointableKey].Add(point.Length.ToString());
+            pointableDict[pointableKey].Add(point.StabilizedTipPosition.ToString());
+            pointableDict[pointableKey].Add(point.TipPosition.ToString());
+            pointableDict[pointableKey].Add(point.TipVelocity.ToString());
+            pointableDict[pointableKey].Add(point.IsTool.ToString());
+
+            frameData.pointables.Add(pointableDict);
 
             Finger finger = new Finger(point);
 
-            frameData.fingers.Add(fingerName, new List<string>());
-            frameData.fingers[fingerName].Add(finger.JointPosition(Finger.FingerJoint.JOINT_MCP).ToString());
-            frameData.fingers[fingerName].Add(finger.JointPosition(Finger.FingerJoint.JOINT_MCP).ToString());
-            frameData.fingers[fingerName].Add(finger.JointPosition(Finger.FingerJoint.JOINT_PIP).ToString());
-            frameData.fingers[fingerName].Add(finger.JointPosition(Finger.FingerJoint.JOINT_DIP).ToString());
-            frameData.fingers[fingerName].Add(finger.JointPosition(Finger.FingerJoint.JOINT_TIP).ToString());
+            string fingerKey = "Finger " + count;
 
-            int boneCount = 1;
+            Dictionary<string, List<string>> fingerDict = new Dictionary<string, List<string>>();
+            fingerDict.Add(fingerKey, new List<string>());
+
+            fingerDict[fingerKey].Add(finger.Type.ToString());
+            fingerDict[fingerKey].Add(finger.JointPosition(Finger.FingerJoint.JOINT_MCP).ToString());
+            fingerDict[fingerKey].Add(finger.JointPosition(Finger.FingerJoint.JOINT_MCP).ToString());
+            fingerDict[fingerKey].Add(finger.JointPosition(Finger.FingerJoint.JOINT_PIP).ToString());
+            fingerDict[fingerKey].Add(finger.JointPosition(Finger.FingerJoint.JOINT_DIP).ToString());
+            fingerDict[fingerKey].Add(finger.JointPosition(Finger.FingerJoint.JOINT_TIP).ToString());
 
             foreach (Bone.BoneType boneType in (Bone.BoneType[])Enum.GetValues(typeof(Bone.BoneType)))
             {
-                string boneName = "Bone " + boneCount + " " + fingerName;
-
-                frameData.bones.Add(boneName, new List<string>());
-
                 Bone bone = finger.Bone(boneType);
 
                 if (bone.IsValid)
                 {
-                   frameData.bones[boneName].Add(bone.Basis.xBasis.ToString());
-                   frameData.bones[boneName].Add(bone.Basis.yBasis.ToString());
-                   frameData.bones[boneName].Add(bone.Basis.zBasis.ToString());
+                    fingerDict[fingerKey].Add(boneType.ToString());
+                    fingerDict[fingerKey].Add(bone.Basis.xBasis.ToString());
+                    fingerDict[fingerKey].Add(bone.Basis.yBasis.ToString());
+                    fingerDict[fingerKey].Add(bone.Basis.zBasis.ToString());
                 }
-
-                boneCount++;
             }
 
-            frameData.fingers[fingerName].Add(finger.Type.ToString());
+            frameData.fingers.Add(fingerDict);
+
             count++;
        }
 
