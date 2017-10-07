@@ -27,6 +27,7 @@ public class FrameSender : MonoBehaviour
     {
         leapController = GetComponent<HandController>().GetLeapController();
         networkSocket = FindObjectOfType<NetworkSocket>();
+        networkSocket.connect();
         currentFrameID = leapController.Frame().Id;
         InvokeRepeating("processFrame", 0.5f, 0.5f);
     }
@@ -41,6 +42,7 @@ public class FrameSender : MonoBehaviour
         currentFrameID = frame.Id;
 
         Thread jsonThread = new Thread(() => processJson(frame));
+        jsonThread.IsBackground = true;
         jsonThread.Start();
     }
 
@@ -58,6 +60,12 @@ public class FrameSender : MonoBehaviour
     {
         FrameData frameData = getFrameData(frame);
         string jsonString = JsonConvert.SerializeObject(frameData, Formatting.Indented);
+
+        string receivedGesture = networkSocket.readSocket();
+
+        if (receivedGesture != "")
+            Debug.Log(receivedGesture);
+
         networkSocket.writeSocket(jsonString);
         writeJsonToFile(frameData);
     }
@@ -157,10 +165,5 @@ public class FrameSender : MonoBehaviour
 
 
         return frameData;
-    }
-
-    void OnApplicationQuit()
-    {
-        networkSocket.closeSocket();
     }
 }

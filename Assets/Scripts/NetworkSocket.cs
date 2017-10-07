@@ -6,43 +6,43 @@ using UnityEngine;
 
 public class NetworkSocket : MonoBehaviour
 {
-    public string host = "localhost";
-    public int port = 50000;
+    [SerializeField] private string host = "localhost";
+    [SerializeField] private int port = 50000;
+    [SerializeField] private bool autoConnect = false;
 
-    internal bool socketReady = false;
+    private bool connected;
 
-    TcpClient tcpSocket;
-    NetworkStream netStream;
+    private TcpClient tcpSocket;
+    private NetworkStream netStream;
 
-    StreamWriter socketWriter;
-    StreamReader socketReader;
+    private StreamWriter socketWriter;
+    private StreamReader socketReader;
 
-    void Awake()
+    void Start()
     {
-        setUpSocket();
+        if (autoConnect)
+            connect();
     }
 
-    private void setUpSocket()
+    public void connect()
     {
         try
         {
             tcpSocket = new TcpClient(host, port);
-
             netStream = tcpSocket.GetStream();
             socketReader = new StreamReader(netStream, Encoding.Default);
             socketWriter = new StreamWriter(netStream, Encoding.Default);
-
-            socketReady = true;
+            connected = tcpSocket.Connected;
         }
         catch (Exception e)
         {
-            Debug.Log("Socket Error: " + e);
+            Debug.Log("Couldn't make a connection to the server: " + e.Message);
         }
     }
 
     public void writeSocket(string jsonString)
     {
-        if (!socketReady)
+        if (!connected || socketWriter == null)
             return;
 
         socketWriter.Write(jsonString);
@@ -51,24 +51,37 @@ public class NetworkSocket : MonoBehaviour
 
     public string readSocket()
     {
-        if (!socketReady)
+        if (!connected || socketReader == null)
             return "";
 
         if (netStream.DataAvailable)
-            Debug.Log(socketReader.ReadToEnd());
+            return socketReader.ReadLine();
 
         return "";
     }
 
     public void closeSocket()
     {
-        if (!socketReady)
+        if (!connected)
             return;
 
-        socketWriter.Close();
-        socketReader.Close();
-        tcpSocket.Close();
+        try
+        {
+            socketWriter.Close();
+            socketReader.Close();
+            tcpSocket.Close();
 
-        socketReady = false;
+            connected = tcpSocket.Connected;
+        }
+        catch(SocketException e)
+        {
+            Debug.Log("The connection couldn't close properly: " + e.Message);
+        }
+    }
+
+    void OnDestroy()
+    {
+       writeSocket("quit");
+       closeSocket();
     }
 }
