@@ -21,7 +21,7 @@ def selectAllRows(conn):
         print(row)
 
 def main():
-    database = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'asl_data.db'))
+    database = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'Gesture_Data.db'))
     conn = createConnection(database)
     selectAllRows(conn)
 

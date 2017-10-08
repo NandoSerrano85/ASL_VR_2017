@@ -14,19 +14,16 @@ def createServerSocket(protocol_type, socket_type, hostname, port, numberOfConne
 
 def processClientInput(clientSocket):
     while True:
-        try:
-            data = clientSocket.recv(BUFFER_SIZE).decode()
+        data = clientSocket.recv(BUFFER_SIZE).decode()
 
-            if data == "quit":
-                clientSocket.shutdown(SHUT_RDWR)
-                clientSocket.close()
-                break
-
-            print(data + "\n")
-
-            clientSocket.send("This gesture is A\n".encode())
-        except KeyboardInterrupt:
+        if data == "quit":
+            clientSocket.shutdown(SHUT_RDWR)
+            clientSocket.close()
             break
+
+        print(data + "\n")
+
+        clientSocket.send("This gesture is A\n".encode())
 
 def main():
     serverSocket = createServerSocket(AF_INET, SOCK_STREAM, HOST, PORT, NUM_OF_CONNECTIONS)
