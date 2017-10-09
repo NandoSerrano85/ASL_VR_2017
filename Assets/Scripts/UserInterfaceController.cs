@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(HandController))]
 public class UserInterfaceController : MonoBehaviour
 {
     private AudioSource buttonAudioSource;
@@ -11,6 +12,9 @@ public class UserInterfaceController : MonoBehaviour
     private Animator gestureViewAnimator;
     [SerializeField]
     private Animator recordViewAnimator;
+
+    [SerializeField]
+    private HandController handController;
 
     public static readonly string [] animationTriggers = {"MenuSlideOutTrigger", "MenuSlideInTrigger",
                                                           "FadeOutTrigger", "FadeInTrigger"};
@@ -44,6 +48,12 @@ public class UserInterfaceController : MonoBehaviour
 
     private void gestureViewToRecordView()
     {
+        if(handController.GetLeapRecorder().state != RecorderState.Stopped)
+        {
+            handController.ResetRecording();
+            handController.StopRecording();         
+        }
+
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
         gestureViewAnimator.SetTrigger(animationTriggers[1]);
         recordViewAnimator.SetTrigger(animationTriggers[3]);

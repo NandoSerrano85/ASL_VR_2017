@@ -566,7 +566,7 @@ public class HandController : MonoBehaviour {
   */
   public string FinishAndSaveRecording() {
     string path = recorder_.SaveToNewFile();
-    recorder_.Play();
+    recorder_.Stop();
     return path;
   }
 

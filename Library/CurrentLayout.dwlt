@@ -43,7 +43,7 @@ MonoBehaviour:
     y: 0
     width: 1368
     height: 829
-  m_MinSize: {x: 950, y: 542}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
 MonoBehaviour:
@@ -89,7 +89,7 @@ MonoBehaviour:
   m_MinSize: {x: 713, y: 492}
   m_MaxSize: {x: 18008, y: 14042}
   vertical: 0
-  controlID: 104
+  controlID: 115
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -388,19 +388,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Scripts
+    - Assets/LeapMotionCoreAssets/LeapMotion/DemoResources/Scripts
   m_ViewMode: 1
   m_StartGridSize: 36
   m_LastFolders:
-  - Assets/Scripts
+  - Assets/LeapMotionCoreAssets/LeapMotion/DemoResources/Scripts
   m_LastFoldersGridSize: 36
   m_LastProjectPath: C:\Users\Averh\Documents\workspaces\Git\ASL_VR_2017
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 741}
-    m_SelectedIDs: 38260000
-    m_LastClickedID: 9784
-    m_ExpandedIDs: 0000000000260000d2280000da280000c0290000cc290000f2290000062a0000b02a0000582d0000922d0000a42d0000ffffff7f
+    scrollPos: {x: 0, y: 223}
+    m_SelectedIDs: b4290000
+    m_LastClickedID: 10676
+    m_ExpandedIDs: 0000000000260000d2280000da280000c0290000cc290000f2290000062a0000ae2a0000562d0000902d0000a22d000096300000ffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -428,7 +428,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000000260000d2280000da280000c0290000cc290000f2290000062a0000b02a0000582d0000922d0000a42d0000
+    m_ExpandedIDs: 0000000000260000d2280000da280000c0290000cc290000f2290000062a0000ae2a0000562d0000902d0000a22d000096300000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -455,22 +455,22 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: da23000000260000ea25000000000000d8260000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: JsonSender
-      m_OriginalName: JsonSender
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 1870
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 11}
     m_CreateAssetUtility:
@@ -661,9 +661,9 @@ MonoBehaviour:
     height: 268
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 4e070000
-    m_LastClickedID: 0
-    m_ExpandedIDs: e6fbffff00000000
+    m_SelectedIDs: 282f0000
+    m_LastClickedID: 12072
+    m_ExpandedIDs: e6fbffff00000000ce2e0000242f0000322f0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
