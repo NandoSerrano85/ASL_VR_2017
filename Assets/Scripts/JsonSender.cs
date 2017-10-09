@@ -18,6 +18,7 @@ public class JsonSender : MonoBehaviour
     [Serializable]
     private class FrameData
     {
+        public long frameID;
         public float pinchStrength;
         public float grabStrength;
         public float averageDistance;
@@ -44,11 +45,13 @@ public class JsonSender : MonoBehaviour
 
         currentFrameID = currentFrame.Id;
 
-         processFrames(currentFrame);
+        processFrames(currentFrame);
     }
 
     private void processFrames(Frame currentFrame)
     {
+        frameData.frameID = currentFrame.Id;
+
         foreach (Hand hand in currentFrame.Hands)
         {
             frameData.pinchStrength = hand.PinchStrength;

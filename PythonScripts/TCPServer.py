@@ -1,8 +1,9 @@
 from socket import socket, SOCK_STREAM, AF_INET, SOL_SOCKET, SO_REUSEADDR, SHUT_RDWR
+import json
 
 HOST = ''
 PORT = 50000
-NUM_OF_CONNECTIONS = 5
+NUM_OF_CONNECTIONS = 1
 BUFFER_SIZE = 4096
 
 def createServerSocket(protocol_type, socket_type, hostname, port, numberOfConnections):
@@ -21,9 +22,18 @@ def processClientInput(clientSocket):
             clientSocket.close()
             break
 
-        print(data + "\n")
+        features = createListFromJson(data)
+
+        print(features)
 
         clientSocket.send("This gesture is A\n".encode())
+
+def createListFromJson(jsonString):
+    json_acceptable_string = jsonString.replace("'", "\"")
+    dataDict = json.loads(json_acceptable_string)
+    features = [dataDict["frameID"], dataDict["pinchStrength"], dataDict["grabStrength"],
+                dataDict["averageDistance"], dataDict["averageSpread"], dataDict["averageTriSpread"]]
+    return features;
 
 def main():
     serverSocket = createServerSocket(AF_INET, SOCK_STREAM, HOST, PORT, NUM_OF_CONNECTIONS)
