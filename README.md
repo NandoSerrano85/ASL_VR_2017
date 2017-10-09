@@ -14,5 +14,5 @@ Oculus Rift
 ---
 ## Contributors
 *Cristina Villaroel*
-*Luis*
+*Luis Averhoff*
 *Fernando Serrano*
