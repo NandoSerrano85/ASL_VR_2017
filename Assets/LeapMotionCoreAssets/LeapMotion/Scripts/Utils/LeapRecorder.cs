@@ -140,7 +140,7 @@ public class LeapRecorder {
   /** Saves the recorded frames to a file, overwriting an existing file. 
       The filename is automatically chosen and is stored in Unity's persistant data path. */
   public string SaveToNewFile() {
-    string path = Application.persistentDataPath + "/Recording_" +
+    string path = Application.dataPath + "/Recordings/Recording_" +
                   System.DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".bytes";
     return SaveToNewFile(path);
   }

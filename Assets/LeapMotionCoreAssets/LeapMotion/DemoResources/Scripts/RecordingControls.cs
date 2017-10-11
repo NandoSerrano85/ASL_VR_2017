@@ -2,7 +2,8 @@
 using UnityEngine.UI;
 
 [RequireComponent(typeof(HandController))]
-public class RecordingControls : MonoBehaviour {
+public class RecordingControls : MonoBehaviour
+{
   [Multiline]
   public string header;
   public Text controlsText;
@@ -15,8 +16,13 @@ public class RecordingControls : MonoBehaviour {
   public KeyCode stopPlaybackKey = KeyCode.S;
 
   private HandController _controller;
+  private string savedPath;
 
-  void Start() {
+  public string SavedPath { get { return savedPath; } set { savedPath = value; } }
+
+  void Start()
+  {
+    SavedPath = "";
     _controller = GetComponent<HandController>();
   }
 
@@ -61,7 +67,7 @@ public class RecordingControls : MonoBehaviour {
   private void allowEndRecording() {
     if (controlsText != null) controlsText.text += endRecordingKey + " - End Recording\n";
     if (Input.GetKeyDown(endRecordingKey)) {
-      string savedPath = _controller.FinishAndSaveRecording();
+      SavedPath = _controller.FinishAndSaveRecording();
       recordingText.text = "Recording saved to:\n" + savedPath;
     }
   }

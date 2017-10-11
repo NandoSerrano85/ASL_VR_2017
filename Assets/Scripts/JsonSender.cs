@@ -34,6 +34,7 @@ public class JsonSender : MonoBehaviour
         networkSocket.connect();
         totalFramesProcessed = 0;
         frameData = new FrameData();
+        resetFrameData();
     }
 
     void Update()
@@ -44,8 +45,9 @@ public class JsonSender : MonoBehaviour
             return;
 
         currentFrameID = currentFrame.Id;
-
-        processFrames(currentFrame);
+        
+        if(currentFrame.Hands.Count > 0) // There is at least one hand in the scene.
+            processFrames(currentFrame);
     }
 
     private void processFrames(Frame currentFrame)
@@ -126,5 +128,16 @@ public class JsonSender : MonoBehaviour
 
         networkSocket.writeSocket(jsonString);
         writeJsonToFile(frameData);
+        resetFrameData();
+    }
+
+    private void resetFrameData()
+    {
+        frameData.frameID = -1;
+        frameData.pinchStrength = 0.0f;
+        frameData.grabStrength = 0.0f;
+        frameData.averageDistance = 0.0f;
+        frameData.averageSpread = 0.0f;
+        frameData.averageTriSpread = 0.0f;
     }
 }
