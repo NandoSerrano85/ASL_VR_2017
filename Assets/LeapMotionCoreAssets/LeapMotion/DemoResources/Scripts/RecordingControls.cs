@@ -70,7 +70,7 @@ public class RecordingControls : MonoBehaviour
     if (controlsText != null) controlsText.text += endRecordingKey + " - End Recording\n";
     if (Input.GetKeyDown(endRecordingKey)) {
       SavedPath = _controller.FinishAndSaveRecording();
-      recordingText.text = "Recording saved to:\n" + savedPath;
+      recordingText.text = "Recording saved to:\n" + SavedPath;
     }
   }
 

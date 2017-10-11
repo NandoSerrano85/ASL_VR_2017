@@ -15,13 +15,13 @@ public class UserInterfaceController : MonoBehaviour
     [SerializeField]
     private HandController handController;
 
-    [SerializeField]
-    private RecordingList recordingList;
+    private RecordingControls recordingControls;
 
     public static readonly string [] animationTriggers = {"MenuSlideOutTrigger", "MenuSlideInTrigger",
                                                           "FadeOutTrigger", "FadeInTrigger"};
     private void Start()
     {
+        recordingControls = handController.GetComponent<RecordingControls>();
         buttonAudioSource = GetComponent<AudioSource>();
     }
 
@@ -58,7 +58,7 @@ public class UserInterfaceController : MonoBehaviour
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
         gestureViewAnimator.SetTrigger(animationTriggers[1]);
         recordViewAnimator.SetTrigger(animationTriggers[3]);
-        recordingList.RecordingControls.RecordingText = "";
+        recordingControls.RecordingText = "";
         handController.enableRecordPlayback = false;
     }
 

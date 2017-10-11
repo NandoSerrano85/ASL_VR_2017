@@ -13,12 +13,7 @@ public class RecordingList : MonoBehaviour
     [SerializeField]
     private HandController handController;
 
-    [SerializeField]
-    private Text recordingPathFile;
-
     private RecordingControls recordingControls;
-
-    public RecordingControls RecordingControls { get { return recordingControls; } }
 
     private List<string> recordingList;
 
