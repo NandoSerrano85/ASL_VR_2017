@@ -7,7 +7,8 @@ public class RecordingControls : MonoBehaviour
   [Multiline]
   public string header;
   public Text controlsText;
-  public Text recordingText;
+  [SerializeField]
+  private Text recordingText;
 
   public KeyCode beginRecordingKey = KeyCode.R;
   public KeyCode endRecordingKey = KeyCode.R;
@@ -19,6 +20,7 @@ public class RecordingControls : MonoBehaviour
   private string savedPath;
 
   public string SavedPath { get { return savedPath; } set { savedPath = value; } }
+  public string RecordingText { get { return recordingText.text;} set { recordingText.text = value; } }
 
   void Start()
   {
@@ -53,7 +55,7 @@ public class RecordingControls : MonoBehaviour
     if (Input.GetKeyDown(beginRecordingKey)) {
       _controller.ResetRecording();
       _controller.Record();
-      recordingText.text = "";
+       RecordingText = "";
     }
   }
 

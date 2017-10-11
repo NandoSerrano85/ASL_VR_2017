@@ -16,7 +16,7 @@ public class UserInterfaceController : MonoBehaviour
     private HandController handController;
 
     [SerializeField]
-    private Text recordingPathFile;
+    private RecordingList recordingList;
 
     public static readonly string [] animationTriggers = {"MenuSlideOutTrigger", "MenuSlideInTrigger",
                                                           "FadeOutTrigger", "FadeInTrigger"};
@@ -58,7 +58,7 @@ public class UserInterfaceController : MonoBehaviour
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
         gestureViewAnimator.SetTrigger(animationTriggers[1]);
         recordViewAnimator.SetTrigger(animationTriggers[3]);
-        recordingPathFile.text = "";
+        recordingList.RecordingControls.RecordingText = "";
         handController.enableRecordPlayback = false;
     }
 
