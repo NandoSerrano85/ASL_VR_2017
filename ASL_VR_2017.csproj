@@ -213,6 +213,7 @@
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRTrackerBounds.cs" />
     <Compile Include="Assets\Scripts\JsonSender.cs" />
     <Compile Include="Assets\Scripts\NetworkSocket.cs" />
+    <Compile Include="Assets\Scripts\RecordingList.cs" />
     <Compile Include="Assets\Scripts\UserInterfaceController.cs" />
   </ItemGroup>
   <ItemGroup>
