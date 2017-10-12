@@ -45,8 +45,9 @@ public class JsonSender : MonoBehaviour
             return;
 
         currentFrameID = currentFrame.Id;
-        
-        if(currentFrame.Hands.Count > 0) // There is at least one hand in the scene.
+
+        // There is at least one hand in the scene and we haven't finished processing n frames.
+        if (currentFrame.Hands.Count > 0 && totalFramesProcessed != totalFramesToProcess)
             processFrames(currentFrame);
     }
 
@@ -85,8 +86,6 @@ public class JsonSender : MonoBehaviour
             Thread jsonThread = new Thread(() => processJson(frameData));
             jsonThread.IsBackground = true;
             jsonThread.Start();
-
-            totalFramesProcessed = 0;
         }
         else
             totalFramesProcessed++;
@@ -129,6 +128,7 @@ public class JsonSender : MonoBehaviour
         networkSocket.writeSocket(jsonString);
         writeJsonToFile(frameData);
         resetFrameData();
+        totalFramesProcessed = 0;
     }
 
     private void resetFrameData()
