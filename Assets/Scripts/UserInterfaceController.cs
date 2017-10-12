@@ -38,8 +38,9 @@ public class UserInterfaceController : MonoBehaviour
     public void importGestureClick()
     {
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
+
         var paths = StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, true);
-    
+
         foreach (string path in paths)
         {
             string file = Path.GetFileName(path);
