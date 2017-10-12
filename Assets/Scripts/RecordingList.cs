@@ -28,17 +28,20 @@ public class RecordingList : MonoBehaviour
     {
         if (recordingControls.SavedPath != "")
         {
-            addRecordingToList(Path.GetFileName(recordingControls.SavedPath));
+            string file = Path.GetFileName(recordingControls.SavedPath);
+            addRecordingToList(Path.GetFileName(file));
             recordingControls.SavedPath = "";
         }
     }
 
-    private void addRecordingToList(string recordingFile)
+    public void addRecordingToList(string recordingFile)
     {
         recordingList.Add(recordingFile);
         recordingFilesDropDown.ClearOptions();
         recordingFilesDropDown.AddOptions(recordingList);
         recordingFilesDropDown.RefreshShownValue();
+        string relativePath = "Assets/Resources/Recordings/" + recordingFile;
+        AssetDatabase.ImportAsset(relativePath);
     }
 
     public void recordingListDropDown_IndexChanged(int index)
@@ -51,7 +54,7 @@ public class RecordingList : MonoBehaviour
 
     private void populateRecordingDropDownList()
     {
-        var filePaths = Directory.GetFiles(Application.dataPath + "/Resources/Recordings").Where(name => !name.EndsWith(".meta"));
+        var filePaths = Directory.GetFiles(Application.dataPath + "/Resources/Recordings/").Where(name => !name.EndsWith(".meta"));
 
         foreach (string file in filePaths)
         {

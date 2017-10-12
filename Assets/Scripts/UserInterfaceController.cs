@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using SFB;
+using System.IO;
+using UnityEditor;
 
 public class UserInterfaceController : MonoBehaviour
 {
@@ -17,17 +20,32 @@ public class UserInterfaceController : MonoBehaviour
 
     private RecordingControls recordingControls;
 
+    [SerializeField]
+    private RecordingList recordingList;
+
     public static readonly string [] animationTriggers = {"MenuSlideOutTrigger", "MenuSlideInTrigger",
                                                           "FadeOutTrigger", "FadeInTrigger"};
+
+    private ExtensionFilter[] extensions;
+
     private void Start()
     {
         recordingControls = handController.GetComponent<RecordingControls>();
         buttonAudioSource = GetComponent<AudioSource>();
+        extensions = new ExtensionFilter[] {new ExtensionFilter("Byte Files", "bytes")};
     }
 
     public void importGestureClick()
     {
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
+        var paths = StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, true);
+    
+        foreach (string path in paths)
+        {
+            string file = Path.GetFileName(path);
+            FileUtil.CopyFileOrDirectory(path, Application.dataPath + "/Resources/Recordings/" + file);
+            recordingList.addRecordingToList(file);
+        }
     }
 
     public void recordGestureClick()
