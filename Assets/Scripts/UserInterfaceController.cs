@@ -47,6 +47,7 @@ public class UserInterfaceController : MonoBehaviour
     {
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
         userInterfaceViewAnimator.SetTrigger(animationTriggers[0]);
+        recordingControls.enabled = true;
     }
 
     public void createGestureClick()
@@ -70,6 +71,7 @@ public class UserInterfaceController : MonoBehaviour
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
         userInterfaceViewAnimator.SetTrigger(animationTriggers[1]);
         recordingControls.RecordingText = "";
+        recordingControls.enabled = false;
     }
 
     public void playButtonHighlightSound(Button button)
