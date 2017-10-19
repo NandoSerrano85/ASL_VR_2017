@@ -21,6 +21,7 @@ limitations under the License.
 
 using UnityEngine;
 using System.Collections; // required for Coroutines
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Fades the screen from black after a new scene is loaded.

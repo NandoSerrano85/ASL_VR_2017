@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.VR;
-using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using Leap;
 
@@ -267,8 +267,7 @@ public class LeapCameraAlignment : MonoBehaviour {
       return;
     }
 
-    if (VRDevice.isPresent &&
-        VRSettings.loadedDevice == VRDeviceType.Oculus) {
+    if (VRDevice.isPresent && VRSettings.supportedDevices.ToList().Exists(o => VRSettings.loadedDeviceName.Contains(o))) {
       eyeAlignment = new UserEyeAlignment() {
         use = true,
         ipd = OVRPlugin.ipd,

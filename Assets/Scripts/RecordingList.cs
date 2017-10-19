@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,52 +13,63 @@ public class RecordingList : MonoBehaviour
 
     private RecordingControls recordingControls;
 
-    private List<string> recordingList;
-
+    private List<string> recordingFilePaths;
+    private List<string> recordingFileNames;
+  
     private void Start()
     {
         recordingControls = handController.GetComponent<RecordingControls>();
-        recordingList = new List<string>();
+        recordingFilePaths = new List<string>();
+        recordingFileNames = new List<string>();
+
         populateRecordingDropDownList();
+
+        if (recordingFilesDropDown.options.Count == 1)
+            loadRecordingFile(recordingFilePaths[0]);
     }
 
     private void Update()
     {
         if (recordingControls.SavedPath != "")
         {
-            string file = Path.GetFileName(recordingControls.SavedPath);
-            addRecordingToList(Path.GetFileName(file));
+            addRecordingToList(recordingControls.SavedPath);
             recordingControls.SavedPath = "";
         }
     }
 
     public void addRecordingToList(string recordingFile)
     {
-        recordingList.Add(recordingFile);
+        recordingFileNames.Add(Path.GetFileName(recordingFile));
+        recordingFilePaths.Add(recordingFile);
         recordingFilesDropDown.ClearOptions();
-        recordingFilesDropDown.AddOptions(recordingList);
+        recordingFilesDropDown.AddOptions(recordingFileNames);
         recordingFilesDropDown.RefreshShownValue();
-        string relativePath = "Assets/Resources/Recordings/" + recordingFile;
-        AssetDatabase.ImportAsset(relativePath);
+
+        if (recordingFilesDropDown.options.Count == 1)
+            loadRecordingFile(recordingFilePaths[0]);
     }
 
     public void recordingListDropDown_IndexChanged(int index)
     {
-        string file = "Assets/Resources/Recordings/" + recordingList[index];
-        handController.recordingAsset = (TextAsset)AssetDatabase.LoadAssetAtPath(file, typeof(TextAsset));
-        AssetDatabase.ImportAsset(file);
-        handController.enableRecordPlayback = true;
+        loadRecordingFile(recordingFilePaths[index]);
     }
 
     private void populateRecordingDropDownList()
     {
-        var filePaths = Directory.GetFiles(Application.dataPath + "/Resources/Recordings/").Where(name => !name.EndsWith(".meta"));
+        var filePaths = Directory.GetFiles(Application.persistentDataPath + "/Recordings/");
 
         foreach (string file in filePaths)
         {
-            recordingList.Add(Path.GetFileName(file));
+            recordingFileNames.Add(Path.GetFileName(file));
+            recordingFilePaths.Add(file);
         }
 
-        recordingFilesDropDown.AddOptions(recordingList);
+        recordingFilesDropDown.AddOptions(recordingFileNames);
+    }
+
+    private void loadRecordingFile(string recordingFilePath)
+    {
+        byte[] recordingFileBytes = File.ReadAllBytes(recordingFilePath);
+        handController.GetLeapRecorder().Load(recordingFileBytes);
     }
 }

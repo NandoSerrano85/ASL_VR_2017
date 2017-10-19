@@ -5,7 +5,6 @@
 \******************************************************************************/
 
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using Leap;
 
@@ -39,7 +38,8 @@ public class TriggerDrawing : MonoBehaviour {
     current_line_.materials = line_model.materials;
     current_line_.shadowCastingMode = line_model.shadowCastingMode;
     current_line_.receiveShadows = line_model.receiveShadows;
-    current_line_.SetWidth(lineWidth, lineWidth);
+    current_line_.startWidth = lineWidth;
+    current_line_.endWidth = lineWidth;
 
     current_line_length_ = 0;
     lines_.Add(current_line_);
@@ -51,7 +51,7 @@ public class TriggerDrawing : MonoBehaviour {
     if (Vector3.Distance(draw_position, last_draw_position_) < minDistanceForNewPoint)
       return;
     current_line_length_++;
-    current_line_.SetVertexCount(current_line_length_);
+    current_line_.positionCount = current_line_length_;
     current_line_.SetPosition(current_line_length_ - 1, draw_position);
     last_draw_position_ = draw_position;
   }

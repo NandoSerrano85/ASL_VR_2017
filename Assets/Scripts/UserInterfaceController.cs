@@ -1,19 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using SFB;
-using System.IO;
-using UnityEditor;
 
 public class UserInterfaceController : MonoBehaviour
 {
     private AudioSource buttonAudioSource;
+
     [SerializeField]
     private AudioClip[] buttonSoundClips;
 
     [SerializeField]
-    private Animator gestureViewAnimator;
-    [SerializeField]
-    private Animator recordViewAnimator;
+    private Animator userInterfaceViewAnimator;
 
     [SerializeField]
     private HandController handController;
@@ -23,8 +20,7 @@ public class UserInterfaceController : MonoBehaviour
     [SerializeField]
     private RecordingList recordingList;
 
-    public static readonly string [] animationTriggers = {"MenuSlideOutTrigger", "MenuSlideInTrigger",
-                                                          "FadeOutTrigger", "FadeInTrigger"};
+    public static readonly string[] animationTriggers = { "SlideOutAndFadeInTrigger", "SlideInFadeOutTrigger" };
 
     private ExtensionFilter[] extensions;
 
@@ -43,17 +39,14 @@ public class UserInterfaceController : MonoBehaviour
 
         foreach (string path in paths)
         {
-            string file = Path.GetFileName(path);
-            FileUtil.CopyFileOrDirectory(path, Application.dataPath + "/Resources/Recordings/" + file);
-            recordingList.addRecordingToList(file);
+            recordingList.addRecordingToList(path);
         }
     }
 
     public void recordGestureClick()
     {
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
-        gestureViewAnimator.SetTrigger(animationTriggers[0]);
-        recordViewAnimator.SetTrigger(animationTriggers[2]);
+        userInterfaceViewAnimator.SetTrigger(animationTriggers[0]);
     }
 
     public void createGestureClick()
@@ -75,10 +68,8 @@ public class UserInterfaceController : MonoBehaviour
         }
 
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
-        gestureViewAnimator.SetTrigger(animationTriggers[1]);
-        recordViewAnimator.SetTrigger(animationTriggers[3]);
+        userInterfaceViewAnimator.SetTrigger(animationTriggers[1]);
         recordingControls.RecordingText = "";
-        handController.enableRecordPlayback = false;
     }
 
     public void playButtonHighlightSound(Button button)

@@ -15,17 +15,6 @@ public class JsonSender : MonoBehaviour
 
     private FrameData frameData;
 
-    [Serializable]
-    private class FrameData
-    {
-        public long frameID;
-        public float pinchStrength;
-        public float grabStrength;
-        public float averageDistance;
-        public float averageSpread;
-        public float averageTriSpread;
-    }
-
     void Start()
     {
         leapController = GetComponent<HandController>().GetLeapController();
@@ -34,7 +23,7 @@ public class JsonSender : MonoBehaviour
         networkSocket.connect();
         totalFramesProcessed = 0;
         frameData = new FrameData();
-        resetFrameData();
+        frameData.resetFrameData();
     }
 
     void Update()
@@ -53,35 +42,35 @@ public class JsonSender : MonoBehaviour
 
     private void processFrames(Frame currentFrame)
     {
-        frameData.frameID = currentFrame.Id;
+        frameData.FrameID = currentFrame.Id;
 
         foreach (Hand hand in currentFrame.Hands)
         {
-            frameData.pinchStrength = hand.PinchStrength;
-            frameData.grabStrength = hand.GrabStrength;
+            frameData.PinchStrength = hand.PinchStrength;
+            frameData.GrabStrength = hand.GrabStrength;
         }
 
         Frame previousFrame = leapController.Frame(1);
 
         for (int i = 0; i < currentFrame.Fingers.Count; i++)
         {
-            frameData.averageDistance += (float)Math.Sqrt((currentFrame.Fingers[i].TipPosition - previousFrame.Fingers[i].TipPosition).MagnitudeSquared);
+            frameData.AverageDistance += (float)Math.Sqrt((currentFrame.Fingers[i].TipPosition - previousFrame.Fingers[i].TipPosition).MagnitudeSquared);
         }
 
         for (int i = 0; i < currentFrame.Fingers.Count - 1; i++)
         {
-            frameData.averageSpread += (float)Math.Sqrt((currentFrame.Fingers[i + 1].TipPosition - currentFrame.Fingers[i].TipPosition).MagnitudeSquared);
+            frameData.AverageSpread += (float)Math.Sqrt((currentFrame.Fingers[i + 1].TipPosition - currentFrame.Fingers[i].TipPosition).MagnitudeSquared);
         }
         for (int i = 0; i < currentFrame.Fingers.Count - 1; i++)
         {
-            frameData.averageTriSpread += getTriSpread(currentFrame.Fingers[i], currentFrame.Fingers[i + 1]);
+            frameData.AverageTriSpread += getTriSpread(currentFrame.Fingers[i], currentFrame.Fingers[i + 1]);
         }
 
         if (totalFramesProcessed == totalFramesToProcess)
         {
-            frameData.averageDistance /= (totalFramesToProcess - 1);
-            frameData.averageSpread /= totalFramesToProcess;
-            frameData.averageTriSpread /= totalFramesToProcess;
+            frameData.AverageDistance /= (totalFramesToProcess - 1);
+            frameData.AverageSpread /= totalFramesToProcess;
+            frameData.AverageTriSpread /= totalFramesToProcess;
 
             Thread jsonThread = new Thread(() => processJson(frameData));
             jsonThread.IsBackground = true;
@@ -127,17 +116,7 @@ public class JsonSender : MonoBehaviour
 
         networkSocket.writeSocket(jsonString);
         writeJsonToFile(frameData);
-        resetFrameData();
+        frameData.resetFrameData();
         totalFramesProcessed = 0;
-    }
-
-    private void resetFrameData()
-    {
-        frameData.frameID = -1;
-        frameData.pinchStrength = 0.0f;
-        frameData.grabStrength = 0.0f;
-        frameData.averageDistance = 0.0f;
-        frameData.averageSpread = 0.0f;
-        frameData.averageTriSpread = 0.0f;
     }
 }
