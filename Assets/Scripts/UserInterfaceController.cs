@@ -35,6 +35,9 @@ public class UserInterfaceController : MonoBehaviour
     {
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
 
+        if (!handController.IsConnected())
+            return;
+
         var paths = StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, true);
 
         foreach (string path in paths)
@@ -46,6 +49,10 @@ public class UserInterfaceController : MonoBehaviour
     public void recordGestureClick()
     {
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
+
+        if (!handController.IsConnected())
+            return;
+
         userInterfaceViewAnimator.SetTrigger(animationTriggers[0]);
         recordingControls.enabled = true;
     }
@@ -53,6 +60,9 @@ public class UserInterfaceController : MonoBehaviour
     public void createGestureClick()
     {
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
+
+        if (!handController.IsConnected())
+            return;
     }
 
     public void returnToPreviousMenu(string methodName)

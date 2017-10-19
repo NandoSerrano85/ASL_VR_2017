@@ -5,7 +5,7 @@ public class BackgroundMaterialProperties : MonoBehaviour
     [SerializeField]
     private HandController handController;
 
-    private Material backgroundMaterial; 
+    private Material backgroundMaterial;
 
 	// Use this for initialization
 	void Start ()
@@ -16,7 +16,8 @@ public class BackgroundMaterialProperties : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (handController.GetLeapRecorder().state == RecorderState.Playing)
+        if (handController.GetLeapRecorder().state == RecorderState.Playing ||
+            handController.GetLeapRecorder().state == RecorderState.Paused)
         {
             backgroundMaterial.SetFloat("_ColorSpaceGamma", 0.0f);
             backgroundMaterial.renderQueue = 1000;
