@@ -26,6 +26,8 @@ public class RecordingList : MonoBehaviour
 
         if (recordingFilesDropDown.options.Count == 1)
             loadRecordingFile(recordingFilePaths[0]);
+
+        recordingControls.enabled = false;
     }
 
     private void Update()
