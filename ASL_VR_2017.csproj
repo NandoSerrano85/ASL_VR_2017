@@ -223,10 +223,10 @@
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRSceneSampleController.cs" />
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRScreenFade.cs" />
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRTrackerBounds.cs" />
+    <Compile Include="Assets\Scripts\AsyncSocketClient.cs" />
     <Compile Include="Assets\Scripts\BackgroundMaterialProperties.cs" />
     <Compile Include="Assets\Scripts\FrameData.cs" />
     <Compile Include="Assets\Scripts\JsonSender.cs" />
-    <Compile Include="Assets\Scripts\NetworkSocket.cs" />
     <Compile Include="Assets\Scripts\RecordingList.cs" />
     <Compile Include="Assets\Scripts\UserInterfaceController.cs" />
     <Compile Include="Assets\StandaloneFileBrowser\IStandaloneFileBrowser.cs" />

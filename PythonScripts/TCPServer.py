@@ -1,51 +1,42 @@
-from socket import socket, SOCK_STREAM, AF_INET, SOL_SOCKET, SO_REUSEADDR, SHUT_RDWR
+import socketserver
+import sys
 import json
 
 HOST = ''
 PORT = 50000
-NUM_OF_CONNECTIONS = 1
 BUFFER_SIZE = 4096
 
-def createServerSocket(protocol_type, socket_type, hostname, port, numberOfConnections):
-    serverSocket = socket(protocol_type, socket_type)
-    serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-    serverSocket.bind((hostname, port))
-    serverSocket.listen(numberOfConnections)
-    return serverSocket
+class SingleTCPHandler(socketserver.BaseRequestHandler):
+    def handle(self):
+        print("Have established connection with the client.")
+        data = self.request.recv(BUFFER_SIZE).decode()
+        print(createListFromJson(data))
+        self.request.send("This gesture is an A.\n".encode())
 
-def processClientInput(clientSocket):
-    while True:
-        data = clientSocket.recv(BUFFER_SIZE).decode()
+class SimpleServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+    daemon_threads = True
+    allow_reuse_address = True
 
-        if data == "quit":
-            clientSocket.shutdown(SHUT_RDWR)
-            clientSocket.close()
-            break
-
-        features = createListFromJson(data)
-
-        print(features)
-
-        clientSocket.send("This gesture is A\n".encode())
+    def __init__(self, server_address, RequestHandlerClass):
+        socketserver.TCPServer.__init__(self, server_address, RequestHandlerClass)
 
 def createListFromJson(jsonString):
     json_acceptable_string = jsonString.replace("'", "\"")
     dataDict = json.loads(json_acceptable_string)
-    features = [dataDict["frameID"], dataDict["pinchStrength"], dataDict["grabStrength"],
-                dataDict["averageDistance"], dataDict["averageSpread"], dataDict["averageTriSpread"]]
+    features = [dataDict["FrameID"], dataDict["PinchStrength"], dataDict["GrabStrength"],
+                dataDict["AverageDistance"], dataDict["AverageSpread"], dataDict["AverageTriSpread"]]
     return features;
 
-def main():
-    serverSocket = createServerSocket(AF_INET, SOCK_STREAM, HOST, PORT, NUM_OF_CONNECTIONS)
+if __name__ == "__main__":
+    server = SimpleServer((HOST, PORT), SingleTCPHandler)
 
-    print("\nListening to connections\n")
+    print("\nListening for connections...\n")
 
-    clientSocket, address = serverSocket.accept()
-    print("\nClient connected\n")
-
-    processClientInput(clientSocket)
-
-    print("\nThe session has been terminated.\n")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nShutting down server.\n")
+        sys.exit(0)
 
 if __name__ == '__main__':
     main()

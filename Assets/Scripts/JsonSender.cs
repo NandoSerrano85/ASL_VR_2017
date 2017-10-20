@@ -9,7 +9,6 @@ public class JsonSender : MonoBehaviour
 {
     private Controller leapController;
     [SerializeField] private int totalFramesToProcess = 250;
-    private NetworkSocket networkSocket;
     private int totalFramesProcessed;
     private long currentFrameID;
 
@@ -19,8 +18,6 @@ public class JsonSender : MonoBehaviour
     {
         leapController = GetComponent<HandController>().GetLeapController();
         currentFrameID = leapController.Frame().Id;
-        networkSocket = FindObjectOfType<NetworkSocket>();
-        networkSocket.connect();
         totalFramesProcessed = 0;
         frameData = new FrameData();
         frameData.resetFrameData();
@@ -66,18 +63,17 @@ public class JsonSender : MonoBehaviour
             frameData.AverageTriSpread += getTriSpread(currentFrame.Fingers[i], currentFrame.Fingers[i + 1]);
         }
 
+        totalFramesProcessed++;
+
         if (totalFramesProcessed == totalFramesToProcess)
         {
             frameData.AverageDistance /= (totalFramesToProcess - 1);
             frameData.AverageSpread /= totalFramesToProcess;
             frameData.AverageTriSpread /= totalFramesToProcess;
 
-            Thread jsonThread = new Thread(() => processJson(frameData));
-            jsonThread.IsBackground = true;
+            Thread jsonThread = new Thread(() => sendJsonToServer(frameData));
             jsonThread.Start();
         }
-        else
-            totalFramesProcessed++;
     }
 
     private float getTriSpread(Finger currentFinger, Finger nextFinger)
@@ -95,27 +91,13 @@ public class JsonSender : MonoBehaviour
         return 0.5f * Mathf.Sqrt(vector1.MagnitudeSquared) * Mathf.Sqrt(vector2.MagnitudeSquared) * (vector1.AngleTo(vector2) * (180.0f / Mathf.PI));
     }
 
-    private void writeJsonToFile(FrameData frameData)
-    {
-        using (System.IO.StreamWriter file =
-           new System.IO.StreamWriter(@"LeapMotionTrainingDataExample.txt", true))
-        {
-            JsonSerializer serializer = new JsonSerializer();
-            serializer.Serialize(file, frameData);
-        }
-    }
-
-    private void processJson(FrameData frameData)
+    private void sendJsonToServer(FrameData frameData)
     {
         string jsonString = JsonConvert.SerializeObject(frameData, Formatting.Indented);
 
-        string receivedGesture = networkSocket.readSocket();
+        AsyncSocketClient asyncSocketClient = new AsyncSocketClient();
+        asyncSocketClient.startClient(jsonString);
 
-        if (receivedGesture != "")
-            Debug.Log(receivedGesture);
-
-        networkSocket.writeSocket(jsonString);
-        writeJsonToFile(frameData);
         frameData.resetFrameData();
         totalFramesProcessed = 0;
     }
