@@ -9,7 +9,7 @@ Python 3.6
 - Scikit-learn
 
 ## Requirement Hardware
-Oculus Rift
+Leap Motion Device
 
 ---
 ## Contributors

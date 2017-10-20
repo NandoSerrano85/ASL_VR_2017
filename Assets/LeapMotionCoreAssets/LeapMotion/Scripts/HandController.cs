@@ -565,7 +565,7 @@ public class HandController : MonoBehaviour {
   * @return string The path to the saved recording.
   */
   public string FinishAndSaveRecording() {
-    string path = recorder_.SaveToNewFile();
+    string path = Application.persistentDataPath + "/Recordings/Recording_";
     recorder_.Stop();
     return path;
   }

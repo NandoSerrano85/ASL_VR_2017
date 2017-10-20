@@ -53,6 +53,7 @@ public class UserInterfaceController : MonoBehaviour
         if (!handController.IsConnected())
             return;
 
+        recordingList.populateRecordingDropDownList();
         userInterfaceViewAnimator.SetTrigger(animationTriggers[0]);
         recordingControls.enabled = true;
     }

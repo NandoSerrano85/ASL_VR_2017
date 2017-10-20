@@ -15,18 +15,15 @@ public class RecordingList : MonoBehaviour
 
     private List<string> recordingFilePaths;
     private List<string> recordingFileNames;
+
+    private static string recordingDirectory;
   
     private void Start()
     {
         recordingControls = handController.GetComponent<RecordingControls>();
+        recordingDirectory = Application.persistentDataPath + "/Recordings/";
         recordingFilePaths = new List<string>();
         recordingFileNames = new List<string>();
-
-        populateRecordingDropDownList();
-
-        if (recordingFilesDropDown.options.Count == 1)
-            loadRecordingFile(recordingFilePaths[0]);
-
         recordingControls.enabled = false;
     }
 
@@ -34,31 +31,41 @@ public class RecordingList : MonoBehaviour
     {
         if (recordingControls.SavedPath != "")
         {
-            addRecordingToList(recordingControls.SavedPath);
+            recordingControls.saveRecordingFile(recordingFileNames);
+            recordingControls.RecordingText = "Recording saved to:\n" + recordingControls.CurrentRecordingFilePath;
+            addRecordingToList(recordingControls.CurrentRecordingFilePath);
             recordingControls.SavedPath = "";
         }
+
+        if (recordingFileNames.Count != getFilesInRecordingDirectory().Length)
+            populateRecordingDropDownList();
     }
 
     public void addRecordingToList(string recordingFile)
     {
         recordingFileNames.Add(Path.GetFileName(recordingFile));
         recordingFilePaths.Add(recordingFile);
+
         recordingFilesDropDown.ClearOptions();
         recordingFilesDropDown.AddOptions(recordingFileNames);
         recordingFilesDropDown.RefreshShownValue();
 
         if (recordingFilesDropDown.options.Count == 1)
-            loadRecordingFile(recordingFilePaths[0]);
+            recordingControls.CurrentRecordingFilePath = recordingFilePaths[0];
     }
 
     public void recordingListDropDown_IndexChanged(int index)
     {
-        loadRecordingFile(recordingFilePaths[index]);
+        recordingControls.CurrentRecordingFilePath = recordingFilePaths[index];
+        recordingControls.FileLoaded = false;
     }
 
-    private void populateRecordingDropDownList()
+    public void populateRecordingDropDownList()
     {
-        var filePaths = Directory.GetFiles(Application.persistentDataPath + "/Recordings/");
+        var filePaths = getFilesInRecordingDirectory();
+
+        recordingFileNames.Clear();
+        recordingFilePaths.Clear();
 
         foreach (string file in filePaths)
         {
@@ -66,12 +73,19 @@ public class RecordingList : MonoBehaviour
             recordingFilePaths.Add(file);
         }
 
+        recordingFilesDropDown.ClearOptions();
         recordingFilesDropDown.AddOptions(recordingFileNames);
+        recordingFilesDropDown.RefreshShownValue();
+
+        if (recordingFilesDropDown.options.Count == 1)
+            recordingControls.CurrentRecordingFilePath = recordingFilePaths[0];
     }
 
-    private void loadRecordingFile(string recordingFilePath)
+    private string [] getFilesInRecordingDirectory()
     {
-        byte[] recordingFileBytes = File.ReadAllBytes(recordingFilePath);
-        handController.GetLeapRecorder().Load(recordingFileBytes);
+        if (!Directory.Exists(recordingDirectory))
+            Directory.CreateDirectory(recordingDirectory);
+
+        return Directory.GetFiles(recordingDirectory);
     }
 }
