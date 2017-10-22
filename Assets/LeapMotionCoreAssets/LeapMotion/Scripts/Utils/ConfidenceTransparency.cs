@@ -12,22 +12,25 @@ using Leap;
  * Updates the hand's opacity based it's confidence rating. 
  * Attach to a HandModel object assigned to the HandController in a scene.
  */
-public class ConfidenceTransparency : MonoBehaviour {
+public class ConfidenceTransparency : MonoBehaviour
+{
+    void Update()
+    {
+        Hand leap_hand = GetComponent<HandModel>().GetLeapHand();
+        float confidence = leap_hand.Confidence;
 
-  void Update() {
-    Hand leap_hand = GetComponent<HandModel>().GetLeapHand();
-    float confidence = leap_hand.Confidence;
-
-    if (leap_hand != null) {
-      Renderer[] renders = GetComponentsInChildren<Renderer>();
-      foreach (Renderer render in renders)
-        SetRendererAlpha(render, confidence);
+        if (leap_hand != null)
+        {
+            Renderer[] renders = GetComponentsInChildren<Renderer>();
+            foreach (Renderer render in renders)
+                SetRendererAlpha(render, confidence);
+        }
     }
-  }
 
-  protected void SetRendererAlpha(Renderer render, float alpha) {
-    Color new_color = render.material.color;
-    new_color.a = alpha;
-    render.material.color = new_color;
-  }
+    protected void SetRendererAlpha(Renderer render, float alpha)
+    {
+        Color new_color = render.material.color;
+        new_color.a = alpha;
+        render.material.color = new_color;
+    }
 }

@@ -16,16 +16,15 @@ public class BackgroundMaterialProperties : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (handController.GetLeapRecorder().state == RecorderState.Playing ||
-            handController.GetLeapRecorder().state == RecorderState.Paused)
+        if (handController.GetLeapRecorder().state == RecorderState.Playing && 
+            backgroundMaterial.GetFloat("_ColorSpaceGamma") != 0.0f)
         {
             backgroundMaterial.SetFloat("_ColorSpaceGamma", 0.0f);
-            backgroundMaterial.renderQueue = 1000;
         }
-        else
+        else if(handController.GetLeapRecorder().state == RecorderState.Stopped &&
+                backgroundMaterial.GetFloat("_ColorSpaceGamma") != 1.9f)
         {
             backgroundMaterial.SetFloat("_ColorSpaceGamma", 1.9f);
-            backgroundMaterial.renderQueue = 3000;
         }
     }
 }

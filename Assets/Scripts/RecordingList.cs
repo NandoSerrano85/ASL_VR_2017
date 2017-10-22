@@ -49,9 +49,6 @@ public class RecordingList : MonoBehaviour
         recordingFilesDropDown.ClearOptions();
         recordingFilesDropDown.AddOptions(recordingFileNames);
         recordingFilesDropDown.RefreshShownValue();
-
-        if (recordingFilesDropDown.options.Count == 1)
-            recordingControls.CurrentRecordingFilePath = recordingFilePaths[0];
     }
 
     public void recordingListDropDown_IndexChanged(int index)
@@ -77,7 +74,7 @@ public class RecordingList : MonoBehaviour
         recordingFilesDropDown.AddOptions(recordingFileNames);
         recordingFilesDropDown.RefreshShownValue();
 
-        if (recordingFilesDropDown.options.Count == 1)
+        if (recordingFilesDropDown.options.Count > 0)
             recordingControls.CurrentRecordingFilePath = recordingFilePaths[0];
     }
 
