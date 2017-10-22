@@ -127,10 +127,26 @@ public class RecordingControls : MonoBehaviour
         return true;
     }
 
-    public void saveRecordingFile(List<string> recordingFileNames)
+    private string getUniqueRecordingFileName(List<string> recordingFilePaths)
     {
-        int recordCounter = recordingFileNames.Count + 1;
-        CurrentRecordingFilePath = SavedPath + recordCounter + ".bytes";
+        int recordCounter = 1;
+        string newRecordingFilePath = SavedPath + recordCounter + ".bytes";
+
+        for (int i = 0; i < recordingFilePaths.Count; i++)
+        {
+            if (!recordingFilePaths.Contains(newRecordingFilePath))
+                break;
+
+            recordCounter++;
+            newRecordingFilePath = SavedPath + recordCounter + ".bytes";
+        }
+
+        return newRecordingFilePath;
+    }
+
+    public void saveRecordingFile(List<string> recordingFilePaths)
+    {
+        CurrentRecordingFilePath = getUniqueRecordingFileName(recordingFilePaths);
         _controller.GetLeapRecorder().SaveToNewFile(CurrentRecordingFilePath);
     }
 }

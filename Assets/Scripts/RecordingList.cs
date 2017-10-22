@@ -31,7 +31,7 @@ public class RecordingList : MonoBehaviour
     {
         if (recordingControls.SavedPath != "")
         {
-            recordingControls.saveRecordingFile(recordingFileNames);
+            recordingControls.saveRecordingFile(recordingFilePaths);
             recordingControls.RecordingText = "Recording saved to:\n" + recordingControls.CurrentRecordingFilePath;
             addRecordingToList(recordingControls.CurrentRecordingFilePath);
             recordingControls.SavedPath = "";
