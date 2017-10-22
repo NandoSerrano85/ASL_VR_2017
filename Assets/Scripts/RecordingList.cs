@@ -36,9 +36,6 @@ public class RecordingList : MonoBehaviour
             addRecordingToList(recordingControls.CurrentRecordingFilePath);
             recordingControls.SavedPath = "";
         }
-
-        if (recordingFileNames.Count != getFilesInRecordingDirectory().Length)
-            populateRecordingDropDownList();
     }
 
     public void addRecordingToList(string recordingFile)
@@ -53,13 +50,24 @@ public class RecordingList : MonoBehaviour
 
     public void recordingListDropDown_IndexChanged(int index)
     {
-        recordingControls.CurrentRecordingFilePath = recordingFilePaths[index];
+        string recordingFilePath = recordingFilePaths[index];
+
+        if (!File.Exists(recordingFilePath))
+        {
+            refreshDropDownList(recordingFilePath);
+            return;
+        }
+
+        recordingControls.CurrentRecordingFilePath = recordingFilePath;
         recordingControls.FileLoaded = false;
     }
 
     public void populateRecordingDropDownList()
     {
-        var filePaths = getFilesInRecordingDirectory();
+        if (!Directory.Exists(recordingDirectory))
+            Directory.CreateDirectory(recordingDirectory);
+
+        var filePaths = Directory.GetFiles(recordingDirectory);
 
         recordingFileNames.Clear();
         recordingFilePaths.Clear();
@@ -78,11 +86,15 @@ public class RecordingList : MonoBehaviour
             recordingControls.CurrentRecordingFilePath = recordingFilePaths[0];
     }
 
-    private string [] getFilesInRecordingDirectory()
+    private void refreshDropDownList(string recordingFilePath)
     {
-        if (!Directory.Exists(recordingDirectory))
-            Directory.CreateDirectory(recordingDirectory);
+        recordingFileNames.Remove(Path.GetFileName(recordingFilePath));
+        recordingFilePaths.Remove(recordingFilePath);
 
-        return Directory.GetFiles(recordingDirectory);
+        recordingFilesDropDown.ClearOptions();
+        recordingFilesDropDown.AddOptions(recordingFileNames);
+        recordingFilesDropDown.RefreshShownValue();
+
+        recordingControls.CurrentRecordingFilePath = recordingFilePaths[recordingFilesDropDown.value];
     }
 }
