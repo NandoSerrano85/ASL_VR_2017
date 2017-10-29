@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.2f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -225,10 +223,10 @@
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRSceneSampleController.cs" />
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRScreenFade.cs" />
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRTrackerBounds.cs" />
-    <Compile Include="Assets\Scripts\AsyncSocketClient.cs" />
     <Compile Include="Assets\Scripts\BackgroundMaterialProperties.cs" />
-    <Compile Include="Assets\Scripts\FrameData.cs" />
-    <Compile Include="Assets\Scripts\JsonSender.cs" />
+    <Compile Include="Assets\Scripts\Classifier.cs" />
+    <Compile Include="Assets\Scripts\FeatureVector.cs" />
+    <Compile Include="Assets\Scripts\FeatureVectorScorer.cs" />
     <Compile Include="Assets\Scripts\RecordingList.cs" />
     <Compile Include="Assets\Scripts\UserInterfaceController.cs" />
     <Compile Include="Assets\StandaloneFileBrowser\IStandaloneFileBrowser.cs" />
