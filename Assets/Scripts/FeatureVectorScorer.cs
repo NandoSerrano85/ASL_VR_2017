@@ -12,12 +12,9 @@ public static class FeatureVectorScorer
             euclideanDistance += Mathf.Pow(vectorA[i] - vectorB[i], 2);
         }
 
-        return 1 - (Mathf.Sqrt(euclideanDistance) / 100.0f);
+        return 1 / (1 + Mathf.Sqrt(euclideanDistance));
     }
 
-    /*
-     * Needs more work as it does not work correctly.
-     */ 
     public static float cosineSimilarity(List<float> vectorA, List<float> vectorB)
     {
         float dotProductResult = 0.0f;
@@ -31,9 +28,6 @@ public static class FeatureVectorScorer
             vectorBMag += Mathf.Pow(vectorB[i], 2);
         }
 
-        vectorAMag = Mathf.Sqrt(vectorAMag);
-        vectorBMag = Mathf.Sqrt(vectorBMag);
-
-        return dotProductResult / (vectorAMag * vectorBMag);
+        return dotProductResult / (Mathf.Sqrt(vectorAMag) * Mathf.Sqrt(vectorBMag));
     }
 }

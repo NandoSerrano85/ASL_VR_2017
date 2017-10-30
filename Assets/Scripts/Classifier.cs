@@ -32,7 +32,7 @@ public class Classifier : MonoBehaviour
         if(frame.Hands.Count > 0 && Input.GetKeyDown(KeyCode.Z))
         {
             FeatureVector featureVector = new FeatureVector();
-            List<Vector> featurePoints = featureVector.getFeaturePoints(frame);
+            List<Vector2> featurePoints = featureVector.getFeaturePoints(frame);
 
             featureVector1 = featureVector.createFeatureVector(featurePoints);
         }
@@ -40,7 +40,7 @@ public class Classifier : MonoBehaviour
         if(frame.Hands.Count > 0 && Input.GetKeyDown(KeyCode.X))
         {
             FeatureVector featureVector = new FeatureVector();
-            List<Vector> featurePoints = featureVector.getFeaturePoints(frame);
+            List<Vector2> featurePoints = featureVector.getFeaturePoints(frame);
 
             featureVector2 = featureVector.createFeatureVector(featurePoints);
         }

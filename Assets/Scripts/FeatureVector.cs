@@ -1,21 +1,23 @@
 ﻿using Leap;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class FeatureVector
 {
-    public readonly static int NUM_FEATURES = 8;
+    public readonly static int NUM_FEATURES = 5;
 
-    public List<Vector> getFeaturePoints(Frame frame)
+    public List<Vector2> getFeaturePoints(Frame frame)
     {
-        List<Vector> featurePoints = new List<Vector>();
+        List<Vector2> featurePoints = new List<Vector2>();
 
         foreach (Hand hand in frame.Hands)
         {
-            featurePoints.Add(hand.StabilizedPalmPosition);
+            featurePoints.Add(UnityVectorExtension.ToUnityScaled(hand.PalmPosition));
 
             foreach (Finger finger in hand.Fingers)
             {
-                featurePoints.Add(finger.StabilizedTipPosition);
+                featurePoints.Add(UnityVectorExtension.ToUnityScaled(finger.TipPosition));
             }
         }
 
@@ -30,20 +32,35 @@ public class FeatureVector
      * featurePoints[4] = Ring Finger Vector
      * featurePoints[5] = Pinky Finger Vector
      */
-    public List<float> createFeatureVector(List<Vector> featurePoints)
+    public List<float> createFeatureVector(List<Vector2> featurePoints)
     {
         List<float> featureVector = new List<float>();
 
-        for (int j = 0; j < NUM_FEATURES; j++)
+        for (int i = 0; i < NUM_FEATURES; i++)
         {
-            if (j < 5)
-                featureVector.Add(featurePoints[0].DistanceTo(featurePoints[j + 1]));
-            else
-            {
-                int offset = NUM_FEATURES - j;
-                featureVector.Add(featurePoints[offset + 1].DistanceTo(featurePoints[offset + 2]));
-            }
+           featureVector.Add(Vector2.Distance(featurePoints[0], featurePoints[i + 1]));
         }
-        return featureVector;
+
+        return normalizeFeatureVector(featureVector);
+    }
+
+    private List<float> normalizeFeatureVector(List<float> featureVector)
+    {
+        List<float> normalizedFeatureVector = new List<float>();
+
+        float minDistance = featureVector.Min();
+        float maxDistance = featureVector.Max() - minDistance;
+
+        foreach (float distance in featureVector)
+        {
+            normalizedFeatureVector.Add(normalizeDistance(distance, minDistance, maxDistance));
+        }
+
+        return normalizedFeatureVector;
+    }
+
+    private float normalizeDistance(float distance, float minDistance, float maxDistance)
+    {
+        return (distance - minDistance) / maxDistance;
     }
 }
