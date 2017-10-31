@@ -5,7 +5,7 @@
 3. Calculate the distance from the palm of the hand to each finger and then each adjacent fingers.
 4. Store the data in the database.
 
-#Testing Stage
+# Testing Stage
 ---
 1. Get a frame from the leap motion device to unity.
 2. Gather data points from the leap frame.
