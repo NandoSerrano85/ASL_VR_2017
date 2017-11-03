@@ -27,17 +27,11 @@ public class DataService
     }
 
     // Insert gesture in database
-    public FeatureVector CreateGesture()
+    public void InsertGesture(FeatureVector gesture)
     {
         using (SQLiteConnection connection = new SQLiteConnection(databaseName))
         {
-            var gesture = new FeatureVector()
-            {
-
-            };
-
             connection.Insert(gesture);
-            return gesture;
         }  
     }
 }
