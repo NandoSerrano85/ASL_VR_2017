@@ -7,7 +7,7 @@ public static class FeatureVectorScorer
     {
         float euclideanDistance = 0.0f;
 
-        for (int i = 0; i < FeatureVector.NUM_FEATURES; i++)
+        for (int i = 0; i < FeatureVectorProcessor.NUM_FEATURES; i++)
         {
             euclideanDistance += Mathf.Pow(vectorA[i] - vectorB[i], 2);
         }
@@ -21,7 +21,7 @@ public static class FeatureVectorScorer
         float vectorAMag = 0.0f;
         float vectorBMag = 0.0f;
 
-        for (int i = 0; i < FeatureVector.NUM_FEATURES; i++)
+        for (int i = 0; i < FeatureVectorProcessor.NUM_FEATURES; i++)
         {
             dotProductResult += (vectorA[i] * vectorB[i]);
             vectorAMag += Mathf.Pow(vectorA[i], 2);

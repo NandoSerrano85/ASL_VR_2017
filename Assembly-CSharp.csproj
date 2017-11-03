@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_2;UNITY_5_6;UNITY_5;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_2;UNITY_5_6;UNITY_5;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -173,20 +173,44 @@
      <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRSceneSampleController.cs" />
      <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRScreenFade.cs" />
      <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRTrackerBounds.cs" />
-     <Compile Include="Assets\Scripts\JsonSender.cs" />
-     <Compile Include="Assets\Scripts\NetworkSocket.cs" />
+     <Compile Include="Assets\Scripts\BackgroundMaterialProperties.cs" />
+     <Compile Include="Assets\Scripts\Classifier.cs" />
+     <Compile Include="Assets\Scripts\DataService.cs" />
+     <Compile Include="Assets\Scripts\FeatureVector.cs" />
+     <Compile Include="Assets\Scripts\FeatureVectorProcessor.cs" />
+     <Compile Include="Assets\Scripts\FeatureVectorScorer.cs" />
+     <Compile Include="Assets\Scripts\RecordingList.cs" />
      <Compile Include="Assets\Scripts\UserInterfaceController.cs" />
+     <Compile Include="Assets\StandaloneFileBrowser\IStandaloneFileBrowser.cs" />
+     <Compile Include="Assets\StandaloneFileBrowser\Sample\BasicSample.cs" />
+     <Compile Include="Assets\StandaloneFileBrowser\Sample\CanvasSampleOpenFileImage.cs" />
+     <Compile Include="Assets\StandaloneFileBrowser\Sample\CanvasSampleOpenFileText.cs" />
+     <Compile Include="Assets\StandaloneFileBrowser\Sample\CanvasSampleSaveFileImage.cs" />
+     <Compile Include="Assets\StandaloneFileBrowser\Sample\CanvasSampleSaveFileText.cs" />
+     <Compile Include="Assets\StandaloneFileBrowser\StandaloneFileBrowser.cs" />
+     <Compile Include="Assets\StandaloneFileBrowser\StandaloneFileBrowserEditor.cs" />
+     <Compile Include="Assets\StandaloneFileBrowser\StandaloneFileBrowserMac.cs" />
+     <Compile Include="Assets\StandaloneFileBrowser\StandaloneFileBrowserWindows.cs" />
      <None Include="Assets\LeapMotionCoreAssets\Plugins\donotdelete.txt" />
      <None Include="Assets\LeapMotionCoreAssets\LeapMotion\Materials\Sources\Shaders\Toony-Basic.shader" />
      <None Include="Assets\LeapMotionCoreAssets\LeapMotion\Resources\LeapCG.cginc" />
      <None Include="Assets\LeapMotionCoreAssets\Plugins\Android\assets\donotdelete.txt" />
      <None Include="Assets\LeapMotionCoreAssets\LeapMotion\README_BEFORE_UPDATING.txt" />
+     <None Include="Assets\Packages\Accord.3.8.0\lib\net46\Accord.xml" />
+     <None Include="Assets\Packages\Accord.3.8.0\lib\net462\Accord.xml" />
+     <None Include="Assets\Packages\Accord.3.8.0\lib\net35-unity micro v3.5\Accord.xml" />
      <None Include="Assets\LeapMotionCoreAssets\Plugins\x86_64\donotdelete.txt" />
+     <None Include="Assets\Packages\Accord.3.8.0\lib\net35-unity web v3.5\Accord.xml" />
+     <None Include="Assets\Plugins\WP8\README_Unity_4x.txt" />
+     <None Include="Assets\Plugins\WP8\README_Unity_5.txt" />
      <None Include="Assets\LeapMotionCoreAssets\LeapMotion\DemoResources\ScrollerText.txt" />
      <None Include="Assets\LeapMotionCoreAssets\LeapMotion\readme.txt" />
      <None Include="Assets\LeapMotionCoreAssets\OVR\Moonlight\Shaders\OVRColorRampAlpha.shader" />
+     <None Include="Assets\Packages\Accord.3.8.0\lib\net35-unity subset v3.5\Accord.xml" />
      <None Include="Assets\LeapMotionCoreAssets\LeapMotion\Resources\ImageHandHighlight.shader" />
+     <None Include="Assets\Packages\Accord.3.8.0\lib\net35\Accord.xml" />
      <None Include="Assets\LeapMotionCoreAssets\LeapMotion\Shaders\RimShading.shader" />
+     <None Include="Assets\Packages\Accord.3.8.0\lib\net35-unity full v3.5\Accord.xml" />
      <None Include="Assets\LeapMotionCoreAssets\LeapMotion\Dependencies.txt" />
      <None Include="Assets\LeapMotionCoreAssets\LeapMotion\Materials\Sources\Shaders\Toony-BasicOutline.shader" />
      <None Include="Assets\LeapMotionCoreAssets\OVR\Moonlight\Shaders\Unlit Crosshair.shader" />
@@ -197,8 +221,12 @@
      <None Include="Assets\LeapMotionCoreAssets\LeapMotion\Materials\Sources\Shaders\Toony-Lighted.shader" />
      <None Include="Assets\LeapMotionCoreAssets\LeapMotion\Resources\PassthroughBackground.shader" />
      <None Include="Assets\LeapMotionCoreAssets\LeapMotion\Widgets\Shaders\SelfIllumAlpha.shader" />
+     <None Include="Assets\Packages\Accord.3.8.0\lib\netstandard1.4\Accord.xml" />
      <None Include="Assets\LeapMotionCoreAssets\LeapMotion\Version.txt" />
      <None Include="Assets\LeapMotionCoreAssets\Plugins\x86\donotdelete.txt" />
+     <None Include="Assets\Packages\Accord.3.8.0\lib\net45\Accord.xml" />
+     <None Include="Assets\Packages\Accord.3.8.0\lib\netstandard2.0\Accord.xml" />
+     <None Include="Assets\Packages\Accord.3.8.0\lib\net40\Accord.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -223,8 +251,29 @@
  <Reference Include="LeapCSharp.NET3.5">
  <HintPath>C:/Users/crist/Desktop/ASL_VR_2017/Assets/LeapMotionCoreAssets/Plugins/LeapCSharp.NET3.5.dll</HintPath>
  </Reference>
- <Reference Include="Newtonsoft.Json">
- <HintPath>C:/Users/crist/Desktop/ASL_VR_2017/Assets/Plugins/Newtonsoft.Json.dll</HintPath>
+ <Reference Include="Accord">
+ <HintPath>C:/Users/crist/Desktop/ASL_VR_2017/Assets/Packages/Accord.3.8.0/lib/net35/Accord.dll</HintPath>
+ </Reference>
+ <Reference Include="Accord">
+ <HintPath>C:/Users/crist/Desktop/ASL_VR_2017/Assets/Packages/Accord.3.8.0/lib/net35-unity full v3.5/Accord.dll</HintPath>
+ </Reference>
+ <Reference Include="Accord">
+ <HintPath>C:/Users/crist/Desktop/ASL_VR_2017/Assets/Packages/Accord.3.8.0/lib/net35-unity micro v3.5/Accord.dll</HintPath>
+ </Reference>
+ <Reference Include="Accord">
+ <HintPath>C:/Users/crist/Desktop/ASL_VR_2017/Assets/Packages/Accord.3.8.0/lib/net35-unity subset v3.5/Accord.dll</HintPath>
+ </Reference>
+ <Reference Include="Accord">
+ <HintPath>C:/Users/crist/Desktop/ASL_VR_2017/Assets/Packages/Accord.3.8.0/lib/net35-unity web v3.5/Accord.dll</HintPath>
+ </Reference>
+ <Reference Include="SQLite4Unity3d">
+ <HintPath>C:/Users/crist/Desktop/ASL_VR_2017/Assets/Plugins/SQLite4Unity3d.dll</HintPath>
+ </Reference>
+ <Reference Include="Ookii.Dialogs">
+ <HintPath>C:/Users/crist/Desktop/ASL_VR_2017/Assets/StandaloneFileBrowser/Plugins/Ookii.Dialogs.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Windows.Forms">
+ <HintPath>C:/Users/crist/Desktop/ASL_VR_2017/Assets/StandaloneFileBrowser/Plugins/System.Windows.Forms.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
