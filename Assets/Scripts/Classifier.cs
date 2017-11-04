@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using Leap;
 using System.Collections.Generic;
+using System.Threading;
 
 [RequireComponent(typeof(HandController))]
 public class Classifier : MonoBehaviour
 {
     private Controller leapController;
     private long currentFrameID;
-    private List<float> featureVector1;
-    private List<float> featureVector2;
+    private string gesture;
 
     void Start()
     {
@@ -23,33 +23,28 @@ public class Classifier : MonoBehaviour
         if (currentFrameID == frame.Id)
             return;
 
-        currentFrameID = frame.Id;
+        currentFrameID = frame.Id; // save id
 
-        /*
-         * 
-         * This section is for testing purposes until a database is created.
-         */
-        if(frame.Hands.Count > 0 && Input.GetKeyDown(KeyCode.Z))
+        if (frame.Hands.Count > 0)
         {
-            FeatureVectorProcessor featureVector = new FeatureVectorProcessor();
-            List<Vector2> featurePoints = featureVector.getFeaturePoints(frame);
+            FeatureVectorProcessor featureVectorProcessor = new FeatureVectorProcessor();
+            List<Vector2> featurePoints = featureVectorProcessor.getFeaturePoints(frame);
 
-            featureVector1 = featureVector.createFeatureVector(featurePoints);
+            List<float> featureVector = featureVectorProcessor.createFeatureVector(featurePoints);
+
+            Thread gestureThread = new Thread(() => classifyGesture(featureVector));
+            gestureThread.Start();
         }
+    }
 
-        if(frame.Hands.Count > 0 && Input.GetKeyDown(KeyCode.X))
-        {
-            FeatureVectorProcessor featureVector = new FeatureVectorProcessor();
-            List<Vector2> featurePoints = featureVector.getFeaturePoints(frame);
+    // either get the entire DB or you go one by one.
+    // compare the current featureVector with the one in the database.
+    // call either euclidean or cosine.
+    // if the score is greater than the currents score, store the score and the feature vector from the DB.
+    // Repeat until you've gone through the entire DB.
+    // return gesture.
+    private void classifyGesture(List<float> featureVector)
+    {
 
-            featureVector2 = featureVector.createFeatureVector(featurePoints);
-        }
-
-        // There is at least one hand in the scene.
-        if (frame.Hands.Count > 0 && Input.GetKeyDown(KeyCode.C))
-        {
-            Debug.Log(FeatureVectorScorer.euclideanSimilarity(featureVector1, featureVector2));
-            Debug.Log(FeatureVectorScorer.cosineSimilarity(featureVector1, featureVector2));
-        }
     }
 }

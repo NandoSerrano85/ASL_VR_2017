@@ -21,7 +21,7 @@ public class FeatureVectorProcessor
             }
         }
 
-        return featurePoints;
+        return featurePoints; // return 6 points
     }
 
     /*
@@ -32,7 +32,7 @@ public class FeatureVectorProcessor
      * featurePoints[4] = Ring Finger Vector
      * featurePoints[5] = Pinky Finger Vector
      */
-    public List<float> createFeatureVector(List<Vector2> featurePoints)
+    public List<float> createFeatureVector(List<Vector2> featurePoints) // creates the distances between palm and fingers
     {
         List<float> featureVector = new List<float>();
 
@@ -44,7 +44,7 @@ public class FeatureVectorProcessor
         return normalizeFeatureVector(featureVector);
     }
 
-    private List<float> normalizeFeatureVector(List<float> featureVector)
+    private List<float> normalizeFeatureVector(List<float> featureVector) // this normalize the hand size
     {
         List<float> normalizedFeatureVector = new List<float>();
 

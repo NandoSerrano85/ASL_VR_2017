@@ -11,7 +11,7 @@ public static class FeatureVectorScorer
         {
             euclideanDistance += Mathf.Pow(vectorA[i] - vectorB[i], 2);
         }
-
+        // as number gets closer to 0 the gesture is completely different 
         return 1 / (1 + Mathf.Sqrt(euclideanDistance));
     }
 

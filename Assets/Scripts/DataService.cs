@@ -1,15 +1,13 @@
 ﻿using SQLite4Unity3d;
 using System.Collections.Generic;
-using System.Collections;
-using System.IO;
-using UnityEngine;
+using System.Linq;
 
 public class DataService
 {
-    SQLiteConnection connection;
-    string databaseName = "Assets/Database/Gesture_Data.db";
+    private string databaseName = "Assets/Database/Gesture_Data.db";
+
     // Creates connection to database
-    public void CreateDatabase()
+    public void CreatesFeatureTable()
     {
         using (SQLiteConnection connection = new SQLiteConnection(databaseName))
         {
@@ -18,11 +16,11 @@ public class DataService
     }
 
     // This returns the entire Database
-    public IEnumerable<FeatureVector> GetEntireDatabase()
+    public List<FeatureVector> GetEntireDatabase()
     {
         using (SQLiteConnection connection = new SQLiteConnection(databaseName))
         {
-            return connection.Table<FeatureVector>();
+            return connection.Table<FeatureVector>().ToList();
         }
     }
 
