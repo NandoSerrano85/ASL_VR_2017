@@ -6,17 +6,8 @@ public class DataService
 {
     private string databaseName = "Assets/Database/Gesture_Data.db";
 
-    // Creates connection to database
-    public void CreatesFeatureTable()
-    {
-        using (SQLiteConnection connection = new SQLiteConnection(databaseName))
-        {
-            connection.CreateTable<FeatureVector>();
-        }
-    }
-
-    // This returns the entire Database
-    public List<FeatureVector> GetEntireDatabase()
+    // This returns all the rows in the database.
+    public List<FeatureVector> getAllFeatureVectors()
     {
         using (SQLiteConnection connection = new SQLiteConnection(databaseName))
         {

@@ -1,4 +1,5 @@
 ﻿using SQLite4Unity3d;
+using System.Collections.Generic;
 
 public class FeatureVector
 {
@@ -10,6 +11,18 @@ public class FeatureVector
     public float PalmToRing { get; set; }
     public float PalmToPinky { get; set; }
     public string Gesture { get; set; }
+
+    public List<float> createDistanceVector()
+    {
+        return new List<float>()
+        {
+            PalmToThumb,
+            PalmToIndex,
+            PalmToMiddle,
+            PalmToRing,
+            PalmToPinky
+        };
+    }
 
     public override string ToString()
     {

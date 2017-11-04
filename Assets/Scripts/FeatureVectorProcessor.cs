@@ -32,31 +32,42 @@ public class FeatureVectorProcessor
      * featurePoints[4] = Ring Finger Vector
      * featurePoints[5] = Pinky Finger Vector
      */
-    public List<float> createFeatureVector(List<Vector2> featurePoints) // creates the distances between palm and fingers
+    public FeatureVector createFeatureVector(List<Vector2> featurePoints) // creates the distances between palm and fingers
     {
-        List<float> featureVector = new List<float>();
+        List<float> featureVectorList = new List<float>();
 
         for (int i = 0; i < NUM_FEATURES; i++)
         {
-           featureVector.Add(Vector2.Distance(featurePoints[0], featurePoints[i + 1]));
+           featureVectorList.Add(Vector2.Distance(featurePoints[0], featurePoints[i + 1]));
         }
 
-        return normalizeFeatureVector(featureVector);
+        featureVectorList = normalizeFeatureVector(featureVectorList);
+
+        FeatureVector featureVector = new FeatureVector()
+        {
+            PalmToThumb = featureVectorList[0],
+            PalmToIndex = featureVectorList[1],
+            PalmToMiddle = featureVectorList[2],
+            PalmToRing = featureVectorList[3],
+            PalmToPinky = featureVectorList[4]
+        };
+
+        return featureVector;
     }
 
-    private List<float> normalizeFeatureVector(List<float> featureVector) // this normalize the hand size
+    private List<float> normalizeFeatureVector(List<float> featureVectorList) // this normalize the hand size
     {
-        List<float> normalizedFeatureVector = new List<float>();
+        List<float> normalizedFeatureVectorList = new List<float>();
 
-        float minDistance = featureVector.Min();
-        float maxDistance = featureVector.Max() - minDistance;
+        float minDistance = featureVectorList.Min();
+        float maxDistance = featureVectorList.Max() - minDistance;
 
-        foreach (float distance in featureVector)
+        foreach (float distance in featureVectorList)
         {
-            normalizedFeatureVector.Add(normalizeDistance(distance, minDistance, maxDistance));
+            normalizedFeatureVectorList.Add(normalizeDistance(distance, minDistance, maxDistance));
         }
 
-        return normalizedFeatureVector;
+        return normalizedFeatureVectorList;
     }
 
     private float normalizeDistance(float distance, float minDistance, float maxDistance)
