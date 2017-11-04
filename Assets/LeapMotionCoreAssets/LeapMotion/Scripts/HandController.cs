@@ -266,10 +266,10 @@ public class HandController : MonoBehaviour
                     new_hand.InitHand();
                     new_hand.UpdateHand();
 
-                    if (GetLeapRecorder().state == RecorderState.Stopped || GetLeapRecorder().state == RecorderState.Recording)
-                        new_hand.gameObject.SetActive(false);
-                    else
-                        new_hand.gameObject.SetActive(true);
+                    //if (GetLeapRecorder().state == RecorderState.Stopped || GetLeapRecorder().state == RecorderState.Recording)
+                    //    new_hand.gameObject.SetActive(false);
+                    //else
+                    //    new_hand.gameObject.SetActive(true);
 
                     all_hands[leap_hand.Id] = new_hand;
                 }
@@ -285,10 +285,10 @@ public class HandController : MonoBehaviour
                     hand_model.transform.localScale = hand_scale * Vector3.one;
                     hand_model.UpdateHand();
 
-                    if (GetLeapRecorder().state == RecorderState.Stopped || GetLeapRecorder().state == RecorderState.Recording)
-                        hand_model.gameObject.SetActive(false);
-                    else
-                        hand_model.gameObject.SetActive(true);
+                    //if (GetLeapRecorder().state == RecorderState.Stopped || GetLeapRecorder().state == RecorderState.Recording)
+                    //    hand_model.gameObject.SetActive(false);
+                    //else
+                    //    hand_model.gameObject.SetActive(true);
                 }
             }
         }

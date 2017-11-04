@@ -1,56 +1,65 @@
 ﻿using UnityEngine;
 using Leap;
 using System.Collections.Generic;
-using System.Threading;
-using UnityEngine.UI;
 
-[RequireComponent(typeof(HandController))]
-public class Classifier : MonoBehaviour
+public class Classifier
 {
-    private Controller leapController;
-    private long currentFrameID;
-    private DataService dataService;
-    private string gesture;
-    private bool isClassifyingGesture;
-    [SerializeField] private Text gestureSignText;
+    //private Controller leapController;
+    //private long currentFrameID;
+    public string Gesture { get; set; }
+    //private bool isClassifyingGesture;
+    //[SerializeField] private Text gestureSignText;
 
-    void Start()
+    public Classifier()
     {
-        leapController = GetComponent<HandController>().GetLeapController();
-        currentFrameID = leapController.Frame().Id;
-        dataService = new DataService();
-        isClassifyingGesture = false;
-        gesture = "";
+        //leapController = GetComponent<HandController>().GetLeapController();
+        //currentFrameID = leapController.Frame().Id;
+        //isClassifyingGesture = false;
+        Gesture = "";
     }
 
-    void Update()
+    void classifyGesture(Frame frame)
     {
-        Frame frame = leapController.Frame();
+        //Frame frame = leapController.Frame();
 
-        if (currentFrameID == frame.Id)
-            return;
+        //if (currentFrameID == frame.Id)
+        //    return;
 
-        currentFrameID = frame.Id; // save id
+        //currentFrameID = frame.Id; // save id
 
-        if (frame.Hands.Count > 0 & !isClassifyingGesture)
+        FeatureVectorProcessor featureVectorProcessor = new FeatureVectorProcessor();
+        List<Vector2> featurePoints = featureVectorProcessor.getFeaturePoints(frame);
+
+        FeatureVector featureVector = featureVectorProcessor.createFeatureVector(featurePoints);
+
+        DataService dataService = new DataService();
+
+        List<FeatureVector> listVectors = dataService.getAllFeatureVectors();
+        float score = 0.0f;
+        float newScore = 0.0f;
+
+        foreach (FeatureVector vector in listVectors)
         {
-            FeatureVectorProcessor featureVectorProcessor = new FeatureVectorProcessor();
-            List<Vector2> featurePoints = featureVectorProcessor.getFeaturePoints(frame);
+            newScore = FeatureVectorScorer.euclideanSimilarity(featureVector.createDistanceVector(), vector.createDistanceVector());
 
-            FeatureVector featureVector = featureVectorProcessor.createFeatureVector(featurePoints);
-
-            Thread gestureThread = new Thread(() => classifyGesture(featureVector));
-            gestureThread.Start();
-
-            isClassifyingGesture = true;
+            if (newScore > score)
+            {
+                score = newScore;
+                Gesture = vector.Gesture;
+            }
         }
 
-        if(gesture != "")
-        {
-            gestureSignText.text = gesture;
-            isClassifyingGesture = false;
-            gesture = "";
-        }
+        //Thread gestureThread = new Thread(() => classifyGesture(featureVector));
+        //gestureThread.Start();
+
+        //isClassifyingGesture = true;
+
+        //if(gesture != "")
+        //{
+        //    gestureSignText.text = gesture;
+        //    isClassifyingGesture = false;
+        //    gesture = "";
+        //}
     }
 
     // either get the entire DB or you go one by one.
@@ -58,9 +67,4 @@ public class Classifier : MonoBehaviour
     // call either euclidean or cosine.
     // if the score is greater than the currents score, store the score and the feature vector from the DB.
     // Repeat until you've gone through the entire DB.
-    // return gesture.
-    private void classifyGesture(FeatureVector featureVector)
-    {
-        
-    }
 }

@@ -240,7 +240,7 @@
     <Compile Include="Assets\Scripts\FeatureVector.cs" />
     <Compile Include="Assets\Scripts\FeatureVectorProcessor.cs" />
     <Compile Include="Assets\Scripts\FeatureVectorScorer.cs" />
-    <Compile Include="Assets\Scripts\RecordingList.cs" />
+    <Compile Include="Assets\Scripts\FrameData.cs" />
     <Compile Include="Assets\Scripts\UserInterfaceController.cs" />
     <Compile Include="Assets\StandaloneFileBrowser\IStandaloneFileBrowser.cs" />
     <Compile Include="Assets\StandaloneFileBrowser\Sample\BasicSample.cs" />
