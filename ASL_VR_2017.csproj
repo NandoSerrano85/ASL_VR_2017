@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.6.2f1</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -79,19 +77,7 @@
       <HintPath>Assets/LeapMotionCoreAssets/Plugins/LeapCSharp.NET3.5.dll</HintPath>
     </Reference>
     <Reference Include="Accord">
-      <HintPath>Assets/Packages/Accord.3.8.0/lib/net35/Accord.dll</HintPath>
-    </Reference>
-    <Reference Include="Accord">
-      <HintPath>Assets/Packages/Accord.3.8.0/lib/net35-unity full v3.5/Accord.dll</HintPath>
-    </Reference>
-    <Reference Include="Accord">
-      <HintPath>Assets/Packages/Accord.3.8.0/lib/net35-unity micro v3.5/Accord.dll</HintPath>
-    </Reference>
-    <Reference Include="Accord">
       <HintPath>Assets/Packages/Accord.3.8.0/lib/net35-unity subset v3.5/Accord.dll</HintPath>
-    </Reference>
-    <Reference Include="Accord">
-      <HintPath>Assets/Packages/Accord.3.8.0/lib/net35-unity web v3.5/Accord.dll</HintPath>
     </Reference>
     <Reference Include="SQLite4Unity3d">
       <HintPath>Assets/Plugins/SQLite4Unity3d.dll</HintPath>
@@ -151,6 +137,7 @@
     <Compile Include="Assets\LeapMotionCoreAssets\LeapMotion\Scripts\Utils\FitHeightToScreen.cs" />
     <Compile Include="Assets\LeapMotionCoreAssets\LeapMotion\Scripts\Utils\GrabbableObject.cs" />
     <Compile Include="Assets\LeapMotionCoreAssets\LeapMotion\Scripts\Utils\GrabbingHand.cs" />
+    <Compile Include="Assets\LeapMotionCoreAssets\LeapMotion\Scripts\Utils\KeyEnableBehaviors.cs" />
     <Compile Include="Assets\LeapMotionCoreAssets\LeapMotion\Scripts\Utils\KeyEnableGameObjects.cs" />
     <Compile Include="Assets\LeapMotionCoreAssets\LeapMotion\Scripts\Utils\KeyEnableMonoBehaviors.cs" />
     <Compile Include="Assets\LeapMotionCoreAssets\LeapMotion\Scripts\Utils\LeapRecorder.cs" />
@@ -234,13 +221,12 @@
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRSceneSampleController.cs" />
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRScreenFade.cs" />
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRTrackerBounds.cs" />
-    <Compile Include="Assets\Scripts\BackgroundMaterialProperties.cs" />
     <Compile Include="Assets\Scripts\Classifier.cs" />
     <Compile Include="Assets\Scripts\DataService.cs" />
     <Compile Include="Assets\Scripts\FeatureVector.cs" />
     <Compile Include="Assets\Scripts\FeatureVectorProcessor.cs" />
     <Compile Include="Assets\Scripts\FeatureVectorScorer.cs" />
-    <Compile Include="Assets\Scripts\FrameData.cs" />
+    <Compile Include="Assets\Scripts\GestureSnapshot.cs" />
     <Compile Include="Assets\Scripts\UserInterfaceController.cs" />
     <Compile Include="Assets\StandaloneFileBrowser\IStandaloneFileBrowser.cs" />
     <Compile Include="Assets\StandaloneFileBrowser\Sample\BasicSample.cs" />
@@ -277,19 +263,7 @@
     <None Include="Assets\LeapMotionCoreAssets\Plugins\donotdelete.txt" />
     <None Include="Assets\LeapMotionCoreAssets\Plugins\x86\donotdelete.txt" />
     <None Include="Assets\LeapMotionCoreAssets\Plugins\x86_64\donotdelete.txt" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net35-unity full v3.5\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net35-unity micro v3.5\Accord.xml" />
     <None Include="Assets\Packages\Accord.3.8.0\lib\net35-unity subset v3.5\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net35-unity web v3.5\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net35\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net40\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net45\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net46\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net462\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\netstandard1.4\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\netstandard2.0\Accord.xml" />
-    <None Include="Assets\Plugins\WP8\README_Unity_4x.txt" />
-    <None Include="Assets\Plugins\WP8\README_Unity_5.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

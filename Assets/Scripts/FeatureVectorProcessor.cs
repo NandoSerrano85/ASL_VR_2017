@@ -5,8 +5,19 @@ using UnityEngine;
 
 public class FeatureVectorProcessor
 {
+    // The number of features in the feature vector.
     public readonly static int NUM_FEATURES = 5;
 
+    /*
+     * Creates a list of 6  X,Y coordinate points in the following order:
+     * 
+     * featurePoints[0] = Palm Position Vector
+     * featurePoints[1] = Thumb Tip Position Finger Vector
+     * featurePoints[2] = Index Tip Position Finger Vector
+     * featurePoints[3] = Middle Tip Position Finger Vector
+     * featurePoints[4] = Ring Tip Position Finger Vector
+     * featurePoints[5] = Pinky Tip Position Finger Vector
+     */
     public List<Vector2> getFeaturePoints(Frame frame)
     {
         List<Vector2> featurePoints = new List<Vector2>();
@@ -21,18 +32,13 @@ public class FeatureVectorProcessor
             }
         }
 
-        return featurePoints; // return 6 points
+        return featurePoints;
     }
 
     /*
-     * featurePoints[0] = Palm Vector
-     * featurePoints[1] = Thumb Finger Vector
-     * featurePoints[2] = Index Finger Vector
-     * featurePoints[3] = Middle Finger Vector
-     * featurePoints[4] = Ring Finger Vector
-     * featurePoints[5] = Pinky Finger Vector
+     * This function creates the distance between the palm of the hand and tip of each finger.
      */
-    public FeatureVector createFeatureVector(List<Vector2> featurePoints) // creates the distances between palm and fingers
+    public FeatureVector createFeatureVector(List<Vector2> featurePoints)
     {
         List<float> featureVectorList = new List<float>();
 
@@ -55,7 +61,13 @@ public class FeatureVectorProcessor
         return featureVector;
     }
 
-    private List<float> normalizeFeatureVector(List<float> featureVectorList) // this normalize the hand size
+    /*
+     * Each distance in the feature vector is normalize between [0, 1] so that it doesn't matter
+     * how big the hand is. The formula that was used to normalize the distance was
+     * 
+     * NormalizedDistance = distance - minimum distance / max distance
+     */
+    private List<float> normalizeFeatureVector(List<float> featureVectorList)
     {
         List<float> normalizedFeatureVectorList = new List<float>();
 

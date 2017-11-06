@@ -28,7 +28,7 @@ public class LeapRecorder {
   /** Whether to lop back to the beginning when the last recorded frame is played.*/
   public bool loop = true;
   /** The current play state. */
-  public RecorderState state = RecorderState.Recording;
+  public RecorderState state = RecorderState.Playing;
 
   protected List<byte[]> frames_;
   protected float frame_index_;
@@ -140,7 +140,7 @@ public class LeapRecorder {
   /** Saves the recorded frames to a file, overwriting an existing file. 
       The filename is automatically chosen and is stored in Unity's persistant data path. */
   public string SaveToNewFile() {
-        string path = Application.persistentDataPath + "/Recordings/Recording_" +
+    string path = Application.persistentDataPath + "/Recording_" +
                   System.DateTime.Now.ToString("yyyyMMdd_hhmmss") + ".bytes";
     return SaveToNewFile(path);
   }

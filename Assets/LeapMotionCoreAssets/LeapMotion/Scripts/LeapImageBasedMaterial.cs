@@ -17,7 +17,7 @@ public class LeapImageBasedMaterial : MonoBehaviour
 
   void OnEnable ()
   {
-    Material imageBasedMaterial = GetComponent<Renderer>().material;
+    Material imageBasedMaterial = GetComponent<Renderer> ().material;
         
     //Initialize gamma correction
     float gamma = 1f;

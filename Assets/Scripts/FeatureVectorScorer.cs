@@ -3,6 +3,11 @@ using UnityEngine;
 
 public static class FeatureVectorScorer
 {
+    /*
+     * Both of these functions return a number between [0, 1]. 0 represents that both gestures are completely, 
+     * 1 Represents that both gestures are completely similar and anything between represents intermediate 
+     * similarity.
+     */
     public static float euclideanSimilarity(List<float> distanceVector1, List<float> distanceVector2)
     {
         float euclideanDistance = 0.0f;
@@ -12,7 +17,6 @@ public static class FeatureVectorScorer
             euclideanDistance += Mathf.Pow(distanceVector1[i] - distanceVector2[i], 2);
         }
 
-        // as number gets closer to 0 the gesture is completely different 
         return 1 / (1 + Mathf.Sqrt(euclideanDistance));
     }
 

@@ -110,7 +110,7 @@
       <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
-      <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+      <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/2015/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="AssetStoreTools">
       <HintPath>Assets/LeapMotionCoreAssets/AssetStoreTools/Editor/AssetStoreTools.dll</HintPath>
@@ -122,19 +122,7 @@
       <HintPath>Assets/LeapMotionCoreAssets/Plugins/LeapCSharp.NET3.5.dll</HintPath>
     </Reference>
     <Reference Include="Accord">
-      <HintPath>Assets/Packages/Accord.3.8.0/lib/net35/Accord.dll</HintPath>
-    </Reference>
-    <Reference Include="Accord">
-      <HintPath>Assets/Packages/Accord.3.8.0/lib/net35-unity full v3.5/Accord.dll</HintPath>
-    </Reference>
-    <Reference Include="Accord">
-      <HintPath>Assets/Packages/Accord.3.8.0/lib/net35-unity micro v3.5/Accord.dll</HintPath>
-    </Reference>
-    <Reference Include="Accord">
       <HintPath>Assets/Packages/Accord.3.8.0/lib/net35-unity subset v3.5/Accord.dll</HintPath>
-    </Reference>
-    <Reference Include="Accord">
-      <HintPath>Assets/Packages/Accord.3.8.0/lib/net35-unity web v3.5/Accord.dll</HintPath>
     </Reference>
     <Reference Include="SQLite4Unity3d">
       <HintPath>Assets/Plugins/SQLite4Unity3d.dll</HintPath>
@@ -185,19 +173,7 @@
     <None Include="Assets\LeapMotionCoreAssets\Plugins\donotdelete.txt" />
     <None Include="Assets\LeapMotionCoreAssets\Plugins\x86\donotdelete.txt" />
     <None Include="Assets\LeapMotionCoreAssets\Plugins\x86_64\donotdelete.txt" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net35-unity full v3.5\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net35-unity micro v3.5\Accord.xml" />
     <None Include="Assets\Packages\Accord.3.8.0\lib\net35-unity subset v3.5\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net35-unity web v3.5\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net35\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net40\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net45\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net46\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\net462\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\netstandard1.4\Accord.xml" />
-    <None Include="Assets\Packages\Accord.3.8.0\lib\netstandard2.0\Accord.xml" />
-    <None Include="Assets\Plugins\WP8\README_Unity_4x.txt" />
-    <None Include="Assets\Plugins\WP8\README_Unity_5.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

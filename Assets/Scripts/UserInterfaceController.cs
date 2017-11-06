@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using SFB;
 
 public class UserInterfaceController : MonoBehaviour
 {
@@ -15,20 +14,14 @@ public class UserInterfaceController : MonoBehaviour
     [SerializeField]
     private HandController handController;
 
-    private RecordingControls recordingControls;
-
-    //[SerializeField]
-    //private RecordingGesture recordingGesture;
+    private GestureSnapshot snapshotControls;
 
     public static readonly string[] animationTriggers = { "SlideOutAndFadeInTrigger", "SlideInFadeOutTrigger" };
 
-    //private ExtensionFilter[] extensions;
-
     private void Start()
     {
-        recordingControls = handController.GetComponent<RecordingControls>();
+        snapshotControls = handController.GetComponent<GestureSnapshot>();
         buttonAudioSource = GetComponent<AudioSource>();
-        //extensions = new ExtensionFilter[] {new ExtensionFilter("Byte Files", "bytes")};
     }
 
     public void importGestureClick()
@@ -37,13 +30,6 @@ public class UserInterfaceController : MonoBehaviour
 
         if (!handController.IsConnected())
             return;
-
-        //var paths = StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, true);
-
-        //foreach (string path in paths)
-        //{
-        //    recordingGesture.addRecordingToList(path);
-        //}
     }
 
     public void recordGestureClick()
@@ -53,9 +39,8 @@ public class UserInterfaceController : MonoBehaviour
         if (!handController.IsConnected())
             return;
 
-        //recordingGesture.populateRecordingDropDownList();
         userInterfaceViewAnimator.SetTrigger(animationTriggers[0]);
-        recordingControls.enabled = true;
+        snapshotControls.enabled = true;
     }
 
     public void createGestureClick()
@@ -71,18 +56,14 @@ public class UserInterfaceController : MonoBehaviour
         Invoke(methodName, 0.0f);
     }
 
-    private void gestureViewToRecordView()
+    private void gestureViewToSnapshotView()
     {
-        //if(handController.GetLeapRecorder().state != RecorderState.Stopped)
-        //{
-        //    handController.ResetRecording();
-        //    handController.StopRecording();         
-        //}
-
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
         userInterfaceViewAnimator.SetTrigger(animationTriggers[1]);
-        recordingControls.GestureInputText = "";
-        recordingControls.enabled = false;
+        snapshotControls.GestureInputText = "";
+        snapshotControls.GestureInputInteractable = false;
+        snapshotControls.GestureSubmitButtonInteractable = false;
+        snapshotControls.enabled = false;
     }
 
     public void playButtonHighlightSound(Button button)
