@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(HandController))]
 public class GestureSnapshot : MonoBehaviour
 {
     [Multiline]
@@ -21,7 +20,8 @@ public class GestureSnapshot : MonoBehaviour
 
     public KeyCode takeSnapShotKey = KeyCode.S;
 
-    private HandController _controller;
+    [SerializeField]
+    private HandController handController;
 
     private FeatureVector featureVector;
 
@@ -29,18 +29,16 @@ public class GestureSnapshot : MonoBehaviour
     public bool GestureInputInteractable { get { return gestureInputField.interactable; } set { gestureInputField.interactable = value; } }
     public bool GestureSubmitButtonInteractable { get { return submitGestureButton.interactable; } set { submitGestureButton.interactable = value; } }
 
-    void Start()
+    private void Start()
     {
-        _controller = GetComponent<HandController>();
-
         if (controlsText != null) controlsText.text = header + "\n" + takeSnapShotKey + " - Take A Snapshot\n";
     }
 
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(takeSnapShotKey) && !GestureInputInteractable)
+        if (!GestureInputInteractable && Input.GetKeyDown(takeSnapShotKey))
         {
-            Frame frame = _controller.GetFrame();
+            Frame frame = handController.GetFrame();
 
             if (frame.Hands.Count > 0)
             {

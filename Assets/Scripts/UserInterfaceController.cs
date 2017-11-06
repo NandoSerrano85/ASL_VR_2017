@@ -14,14 +14,18 @@ public class UserInterfaceController : MonoBehaviour
     [SerializeField]
     private HandController handController;
 
+    [SerializeField]
     private GestureSnapshot snapshotControls;
+
+    [SerializeField]
+    private FreeMode freeMode;
 
     public static readonly string[] animationTriggers = { "SlideOutAndFadeInTrigger", "SlideInFadeOutTrigger" };
 
     private void Start()
     {
-        snapshotControls = handController.GetComponent<GestureSnapshot>();
         buttonAudioSource = GetComponent<AudioSource>();
+        freeMode.startFreeMode();
     }
 
     public void importGestureClick()
@@ -41,6 +45,8 @@ public class UserInterfaceController : MonoBehaviour
 
         userInterfaceViewAnimator.SetTrigger(animationTriggers[0]);
         snapshotControls.enabled = true;
+
+        freeMode.stopFreeMode();
     }
 
     public void createGestureClick()
@@ -56,14 +62,18 @@ public class UserInterfaceController : MonoBehaviour
         Invoke(methodName, 0.0f);
     }
 
-    private void gestureViewToSnapshotView()
+    private void snapShotViewToGestureView()
     {
         buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
         userInterfaceViewAnimator.SetTrigger(animationTriggers[1]);
+
         snapshotControls.GestureInputText = "";
         snapshotControls.GestureInputInteractable = false;
         snapshotControls.GestureSubmitButtonInteractable = false;
         snapshotControls.enabled = false;
+
+        freeMode.startFreeMode();
+        freeMode.GestureSign = "No Gesture Detected";
     }
 
     public void playButtonHighlightSound(Button button)
