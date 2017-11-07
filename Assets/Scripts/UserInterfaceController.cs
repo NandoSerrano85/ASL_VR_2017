@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 public class UserInterfaceController : MonoBehaviour
 {
     private AudioSource buttonAudioSource;
 
     [SerializeField]
-    private AudioClip[] buttonSoundClips;
+    private AudioClip buttonClickSound;
 
     [SerializeField]
     private Animator userInterfaceViewAnimator;
@@ -30,7 +29,7 @@ public class UserInterfaceController : MonoBehaviour
 
     public void importGestureClick()
     {
-        buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
+        buttonAudioSource.PlayOneShot(buttonClickSound);
 
         if (!handController.IsConnected())
             return;
@@ -38,7 +37,7 @@ public class UserInterfaceController : MonoBehaviour
 
     public void recordGestureClick()
     {
-        buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
+        buttonAudioSource.PlayOneShot(buttonClickSound);
 
         if (!handController.IsConnected())
             return;
@@ -51,7 +50,7 @@ public class UserInterfaceController : MonoBehaviour
 
     public void createGestureClick()
     {
-        buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
+        buttonAudioSource.PlayOneShot(buttonClickSound);
 
         if (!handController.IsConnected())
             return;
@@ -64,7 +63,7 @@ public class UserInterfaceController : MonoBehaviour
 
     private void snapShotViewToGestureView()
     {
-        buttonAudioSource.PlayOneShot(buttonSoundClips[0]);
+        buttonAudioSource.PlayOneShot(buttonClickSound);
         userInterfaceViewAnimator.SetTrigger(animationTriggers[1]);
 
         snapshotControls.GestureInputText = "";
@@ -74,11 +73,5 @@ public class UserInterfaceController : MonoBehaviour
 
         freeMode.startFreeMode();
         freeMode.GestureSign = "No Gesture Detected";
-    }
-
-    public void playButtonHighlightSound(Button button)
-    {
-        if (button.IsInteractable())
-            buttonAudioSource.PlayOneShot(buttonSoundClips[1]);
     }
 }
