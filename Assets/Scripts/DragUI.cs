@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DragPanel : MonoBehaviour, IDragHandler
+public class DragUI : MonoBehaviour, IDragHandler
 {
     private RectTransform dragObjectInternal;
 
