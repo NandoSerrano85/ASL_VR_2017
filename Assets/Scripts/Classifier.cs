@@ -7,6 +7,15 @@ public class Classifier : MonoBehaviour
     [SerializeField]
     private DataService dataService;
 
+    private List<FeatureVector> featureVectors;
+    private FeatureVectorProcessor featureVectorProcessor;
+
+    private void Start()
+    {
+        featureVectorProcessor = new FeatureVectorProcessor();
+        featureVectors = dataService.getAllFeatureVectors();
+    }
+
     /*
      * Retrieve all the feature vectors from the local database. Compare the current featureVector with
      * each feature vector that is in the database. Calculate the score for each one using either euclidean
@@ -14,12 +23,8 @@ public class Classifier : MonoBehaviour
      */
     public string classifyGesture(Frame frame)
     {
-        FeatureVectorProcessor featureVectorProcessor = new FeatureVectorProcessor();
         List<Vector2> featurePoints = featureVectorProcessor.getFeaturePoints(frame);
-
         FeatureVector featureVector = featureVectorProcessor.createFeatureVector(featurePoints);
-
-        List<FeatureVector> featureVectors = dataService.getAllFeatureVectors();
 
         string gesture = "";
         float score = 0.0f;
@@ -36,5 +41,10 @@ public class Classifier : MonoBehaviour
         }
 
         return gesture;
+    }
+
+    public void addFeatureVector(FeatureVector featureVector)
+    {
+        featureVectors.Add(featureVector);
     }
 }

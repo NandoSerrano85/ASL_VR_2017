@@ -32,6 +32,9 @@ public class GestureSnapshot : MonoBehaviour
     [SerializeField]
     private ErrorModalDialog errorModalDialog;
 
+    [SerializeField]
+    private Classifier classifier;
+
     private void Start()
     {
         if (controlsText != null) controlsText.text = header + "\n" + takeSnapShotKey + " - Take A Snapshot\n";
@@ -69,6 +72,7 @@ public class GestureSnapshot : MonoBehaviour
         {
             featureVector.Gesture = gestureName;
 
+            classifier.addFeatureVector(featureVector);
             dataService.InsertGesture(featureVector);
 
             GestureInputInteractable = false;

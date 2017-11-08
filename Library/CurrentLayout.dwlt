@@ -42,10 +42,10 @@ MonoBehaviour:
     y: 30
     width: 1368
     height: 779
-  m_MinSize: {x: 681, y: 342}
-  m_MaxSize: {x: 12006, y: 8042}
+  m_MinSize: {x: 683, y: 492}
+  m_MaxSize: {x: 14004, y: 14042}
   vertical: 0
-  controlID: 5215
+  controlID: 86
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -114,14 +114,14 @@ MonoBehaviour:
     y: 471
     width: 1091
     height: 308
-  m_MinSize: {x: 102, y: 121}
-  m_MaxSize: {x: 4002, y: 4021}
-  m_ActualView: {fileID: 18}
+  m_MinSize: {x: 232, y: 271}
+  m_MaxSize: {x: 10002, y: 10021}
+  m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}
   - {fileID: 18}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -165,7 +165,7 @@ MonoBehaviour:
     height: 30
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
-  m_LastLoadedLayoutName: Default
+  m_LastLoadedLayoutName: 
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -206,10 +206,10 @@ MonoBehaviour:
     y: 0
     width: 1091
     height: 779
-  m_MinSize: {x: 404, y: 342}
-  m_MaxSize: {x: 8004, y: 8042}
+  m_MinSize: {x: 406, y: 492}
+  m_MaxSize: {x: 10002, y: 14042}
   vertical: 1
-  controlID: 5216
+  controlID: 87
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -230,10 +230,10 @@ MonoBehaviour:
     y: 0
     width: 1091
     height: 471
-  m_MinSize: {x: 404, y: 221}
-  m_MaxSize: {x: 8004, y: 4021}
+  m_MinSize: {x: 406, y: 221}
+  m_MaxSize: {x: 8006, y: 4021}
   vertical: 0
-  controlID: 5173
+  controlID: 64
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -252,8 +252,8 @@ MonoBehaviour:
     y: 0
     width: 821
     height: 471
-  m_MinSize: {x: 204, y: 221}
-  m_MaxSize: {x: 4004, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 16}
@@ -324,19 +324,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/LeapMotionCoreAssets/OVR/Scripts/Util
+    - Assets/Scripts
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/LeapMotionCoreAssets/OVR/Scripts/Util
+  - Assets/Scripts
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Averh\Documents\workspaces\Git\ASL_VR_2017
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 722}
-    m_SelectedIDs: d4270000
-    m_LastClickedID: 10196
-    m_ExpandedIDs: 0000000030260000c4260000f22600000c27000052270000142900001c2900001c2a0000242a00002a2a0000522a0000662a00000c2b0000122b0000182b0000902b0000bc2d0000f82d00000a2e00000e2e0000383100003a3100003c3100003e31000040310000423100004431000036320000ffffff7f
+    scrollPos: {x: 0, y: 850}
+    m_SelectedIDs: 72260000
+    m_LastClickedID: 9842
+    m_ExpandedIDs: 0000000036260000cc260000fa260000142700005a2700001c290000242900002c2a0000342a00003a2a0000622a0000762a0000a22a00001e2b0000242b00002a2b0000a22b0000d22d00000e2e0000202e0000242e000086320000883200008a3200008c3200008e3200009032000092320000ffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -364,7 +364,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000030260000c4260000f22600000c27000052270000142900001c290000a02900001c2a0000242a00002a2a0000522a0000662a00000a2b00000c2b0000122b0000182b0000902b0000442c0000bc2d0000f82d00000a2e00000c2e00000e2e0000383100003a3100003c3100003e31000040310000423100004431000036320000ffffff7f
+    m_ExpandedIDs: 0000000036260000cc260000fa260000142700005a2700001c290000242900002c2a0000342a00003a2a0000622a0000762a0000a22a00001e2b0000242b00002a2b0000a22b0000d22d00000e2e0000202e0000242e000086320000883200008a3200008c3200008e3200009032000092320000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -389,8 +389,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: c63af9ff
-    m_LastClickedInstanceID: -443706
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
@@ -480,9 +480,9 @@ MonoBehaviour:
     height: 450
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: f8700000
-    m_LastClickedID: 28920
-    m_ExpandedIDs: 527df9ffb483f9ffec87f9ff009bf9ffd615faff121bfaffc227faff9663faff1478faff42a4faff9ca4faff4270fdff4c70fdff6470fdff2672fdff0e8ffdff584fffff3660ffff6ec8ffff00000000064700001e4700004047000052470000284900007a590000b4590000bc5900001c5b0000385b00008a5d0000c45d0000dc5d0000fe5d0000065e0000145f00006e5f00008a5f000054620000446300005863000074630000b8630000d4630000f0630000fa630000526c0000a46c0000ae6c0000c66c0000ce6c0000346e0000766f00007a70000098700000a8700000dc700000f8700000147100001e710000
+    m_SelectedIDs: 2a300000
+    m_LastClickedID: 12330
+    m_ExpandedIDs: e6fbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -564,7 +564,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.1837555, y: 0.0064846147, z: -0.0012122706, w: -0.9829502}
     speed: 2
-    m_Value: {x: -0.18375544, y: 0.0064846124, z: -0.0012122701, w: -0.98294985}
+    m_Value: {x: -0.18375549, y: 0.0064846147, z: -0.0012122706, w: -0.9829502}
   m_Size:
     m_Target: 865.735
     speed: 2
