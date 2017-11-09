@@ -221,8 +221,12 @@
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRSceneSampleController.cs" />
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRScreenFade.cs" />
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRTrackerBounds.cs" />
+    <Compile Include="Assets\Modal\BringToFront.cs" />
+    <Compile Include="Assets\Modal\ModalPanel.cs" />
     <Compile Include="Assets\Scripts\Classifier.cs" />
     <Compile Include="Assets\Scripts\DataService.cs" />
+    <Compile Include="Assets\Scripts\DragUI.cs" />
+    <Compile Include="Assets\Scripts\ErrorModalDialog.cs" />
     <Compile Include="Assets\Scripts\FeatureVector.cs" />
     <Compile Include="Assets\Scripts\FeatureVectorProcessor.cs" />
     <Compile Include="Assets\Scripts\FeatureVectorScorer.cs" />

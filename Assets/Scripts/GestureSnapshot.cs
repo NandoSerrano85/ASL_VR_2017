@@ -29,6 +29,12 @@ public class GestureSnapshot : MonoBehaviour
     public bool GestureInputInteractable { get { return gestureInputField.interactable; } set { gestureInputField.interactable = value; } }
     public bool GestureSubmitButtonInteractable { get { return submitGestureButton.interactable; } set { submitGestureButton.interactable = value; } }
 
+    [SerializeField]
+    private ErrorModalDialog errorModalDialog;
+
+    [SerializeField]
+    private Classifier classifier;
+
     private void Start()
     {
         if (controlsText != null) controlsText.text = header + "\n" + takeSnapShotKey + " - Take A Snapshot\n";
@@ -60,15 +66,23 @@ public class GestureSnapshot : MonoBehaviour
 
     public void sendGestureToDatabase()
     {
-        if(!string.IsNullOrEmpty(GestureInputText))
-        {
-            featureVector.Gesture = GestureInputText.Trim();
+        string gestureName = GestureInputText.Trim(); 
 
+        if(!string.IsNullOrEmpty(gestureName))
+        {
+            featureVector.Gesture = gestureName;
+
+            classifier.addFeatureVector(featureVector);
             dataService.InsertGesture(featureVector);
 
-            GestureInputText = "";
             GestureInputInteractable = false;
             GestureSubmitButtonInteractable = false;
         }
+        else
+        {
+            errorModalDialog.showErrorDialog();
+        }
+
+        GestureInputText = "";
     }
 }

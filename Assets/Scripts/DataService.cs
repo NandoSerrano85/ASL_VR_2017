@@ -15,7 +15,7 @@ public class DataService : MonoBehaviour
 
     private string databasePath;
 
-    private void Start()
+    private void Awake()
     {
         #if UNITY_EDITOR
             databasePath = string.Format(@"Assets/StreamingAssets/Database/{0}", databaseName);
