@@ -1,12 +1,15 @@
 ﻿using Leap;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(ModalDialog))]
 public class GestureSnapshot : MonoBehaviour
 {
     [Multiline]
-    public string header;
+    [SerializeField]
+    private string header;
+
+    [SerializeField]
     public Text controlsText;
 
     [SerializeField]
@@ -18,7 +21,8 @@ public class GestureSnapshot : MonoBehaviour
     [SerializeField]
     private Button submitGestureButton;
 
-    public KeyCode takeSnapShotKey = KeyCode.S;
+    [SerializeField]
+    private KeyCode takeSnapShotKey = KeyCode.S;
 
     [SerializeField]
     private HandController handController;
@@ -29,15 +33,12 @@ public class GestureSnapshot : MonoBehaviour
     public bool GestureInputInteractable { get { return gestureInputField.interactable; } set { gestureInputField.interactable = value; } }
     public bool GestureSubmitButtonInteractable { get { return submitGestureButton.interactable; } set { submitGestureButton.interactable = value; } }
 
-    [SerializeField]
-    private ErrorModalDialog errorModalDialog;
-
-    [SerializeField]
-    private Classifier classifier;
+    private ModalDialog errorModalDialog;
 
     private void Start()
     {
-        if (controlsText != null) controlsText.text = header + "\n" + takeSnapShotKey + " - Take A Snapshot\n";
+        errorModalDialog = GetComponent<ModalDialog>();
+        if (controlsText != null) controlsText.text = header + "\n" + takeSnapShotKey + " - Take a snapshot\n";
     }
 
     private void Update()
@@ -55,10 +56,9 @@ public class GestureSnapshot : MonoBehaviour
 
     private void takeSnapShot(Frame frame)
     {
-        FeatureVectorProcessor featureVectorProcessor = new FeatureVectorProcessor();
-        List<Vector2> featurePoints = featureVectorProcessor.getFeaturePoints(frame);
+        FeatureVectorPreProcessor featureVectorPreProcessor = new FeatureVectorPreProcessor();
 
-        featureVector = featureVectorProcessor.createFeatureVector(featurePoints);
+        featureVector = featureVectorPreProcessor.createFeatureVector(frame);
 
         GestureInputInteractable = true;
         GestureSubmitButtonInteractable = true;
@@ -71,8 +71,8 @@ public class GestureSnapshot : MonoBehaviour
         if(!string.IsNullOrEmpty(gestureName))
         {
             featureVector.Gesture = gestureName;
+            featureVector.GestureClassLabel = dataService.gestureToClassLabel(gestureName);
 
-            classifier.addFeatureVector(featureVector);
             dataService.InsertGesture(featureVector);
 
             GestureInputInteractable = false;

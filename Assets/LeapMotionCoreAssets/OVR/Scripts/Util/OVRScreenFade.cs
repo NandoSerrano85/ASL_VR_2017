@@ -55,16 +55,16 @@ public class OVRScreenFade : MonoBehaviour
 	/// </summary>
 	void OnEnable()
 	{
-		StartCoroutine(FadeIn());
-	}
+        SceneManager.sceneLoaded += OnLevelFinishedLoading;
+    }
 
 	/// <summary>
 	/// Starts a fade in when a new level is loaded
 	/// </summary>
-	void OnLevelWasLoaded(int level)
+	void OnDisable()
 	{
-		StartCoroutine(FadeIn());
-	}
+        SceneManager.sceneLoaded -= OnLevelFinishedLoading;
+    }
 
 	/// <summary>
 	/// Cleans up the fade material
@@ -76,6 +76,11 @@ public class OVRScreenFade : MonoBehaviour
 			Destroy(fadeMaterial);
 		}
 	}
+
+    void OnLevelFinishedLoading(Scene scene, LoadSceneMode mode)
+    {
+        StartCoroutine(FadeIn());
+    }
 
 	/// <summary>
 	/// Fades alpha from 1.0 to 0.0

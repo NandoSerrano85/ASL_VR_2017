@@ -79,14 +79,20 @@
     <Reference Include="Accord">
       <HintPath>Assets/Packages/Accord.3.8.0/lib/net35-unity subset v3.5/Accord.dll</HintPath>
     </Reference>
+    <Reference Include="Accord.MachineLearning">
+      <HintPath>Assets/Packages/Accord.MachineLearning.3.8.0/lib/net35-unity subset v3.5/Accord.MachineLearning.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math.Core">
+      <HintPath>Assets/Packages/Accord.Math.3.8.0/lib/net35-unity subset v3.5/Accord.Math.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math">
+      <HintPath>Assets/Packages/Accord.Math.3.8.0/lib/net35-unity subset v3.5/Accord.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Statistics">
+      <HintPath>Assets/Packages/Accord.Statistics.3.8.0/lib/net35-unity subset v3.5/Accord.Statistics.dll</HintPath>
+    </Reference>
     <Reference Include="SQLite4Unity3d">
       <HintPath>Assets/Plugins/SQLite4Unity3d.dll</HintPath>
-    </Reference>
-    <Reference Include="Ookii.Dialogs">
-      <HintPath>Assets/StandaloneFileBrowser/Plugins/Ookii.Dialogs.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Forms">
-      <HintPath>Assets/StandaloneFileBrowser/Plugins/System.Windows.Forms.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
@@ -223,26 +229,16 @@
     <Compile Include="Assets\LeapMotionCoreAssets\OVR\Scripts\Util\OVRTrackerBounds.cs" />
     <Compile Include="Assets\Modal\BringToFront.cs" />
     <Compile Include="Assets\Modal\ModalPanel.cs" />
-    <Compile Include="Assets\Scripts\Classifier.cs" />
     <Compile Include="Assets\Scripts\DataService.cs" />
     <Compile Include="Assets\Scripts\DragUI.cs" />
-    <Compile Include="Assets\Scripts\ErrorModalDialog.cs" />
     <Compile Include="Assets\Scripts\FeatureVector.cs" />
-    <Compile Include="Assets\Scripts\FeatureVectorProcessor.cs" />
-    <Compile Include="Assets\Scripts\FeatureVectorScorer.cs" />
+    <Compile Include="Assets\Scripts\FeatureVectorPreprocessor.cs" />
     <Compile Include="Assets\Scripts\FreeMode.cs" />
+    <Compile Include="Assets\Scripts\GestureClassifier.cs" />
     <Compile Include="Assets\Scripts\GestureSnapshot.cs" />
+    <Compile Include="Assets\Scripts\LoadingCircle.cs" />
+    <Compile Include="Assets\Scripts\ModalDialog.cs" />
     <Compile Include="Assets\Scripts\UserInterfaceController.cs" />
-    <Compile Include="Assets\StandaloneFileBrowser\IStandaloneFileBrowser.cs" />
-    <Compile Include="Assets\StandaloneFileBrowser\Sample\BasicSample.cs" />
-    <Compile Include="Assets\StandaloneFileBrowser\Sample\CanvasSampleOpenFileImage.cs" />
-    <Compile Include="Assets\StandaloneFileBrowser\Sample\CanvasSampleOpenFileText.cs" />
-    <Compile Include="Assets\StandaloneFileBrowser\Sample\CanvasSampleSaveFileImage.cs" />
-    <Compile Include="Assets\StandaloneFileBrowser\Sample\CanvasSampleSaveFileText.cs" />
-    <Compile Include="Assets\StandaloneFileBrowser\StandaloneFileBrowser.cs" />
-    <Compile Include="Assets\StandaloneFileBrowser\StandaloneFileBrowserEditor.cs" />
-    <Compile Include="Assets\StandaloneFileBrowser\StandaloneFileBrowserMac.cs" />
-    <Compile Include="Assets\StandaloneFileBrowser\StandaloneFileBrowserWindows.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\LeapMotionCoreAssets\LeapMotion\DemoResources\ScrollerText.txt" />
@@ -269,6 +265,10 @@
     <None Include="Assets\LeapMotionCoreAssets\Plugins\x86\donotdelete.txt" />
     <None Include="Assets\LeapMotionCoreAssets\Plugins\x86_64\donotdelete.txt" />
     <None Include="Assets\Packages\Accord.3.8.0\lib\net35-unity subset v3.5\Accord.xml" />
+    <None Include="Assets\Packages\Accord.MachineLearning.3.8.0\lib\net35-unity subset v3.5\Accord.MachineLearning.xml" />
+    <None Include="Assets\Packages\Accord.Math.3.8.0\lib\net35-unity subset v3.5\Accord.Math.Core.xml" />
+    <None Include="Assets\Packages\Accord.Math.3.8.0\lib\net35-unity subset v3.5\Accord.Math.xml" />
+    <None Include="Assets\Packages\Accord.Statistics.3.8.0\lib\net35-unity subset v3.5\Accord.Statistics.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

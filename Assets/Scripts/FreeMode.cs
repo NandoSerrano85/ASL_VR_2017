@@ -2,11 +2,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Leap;
+using System.Collections.Generic;
 
 public class FreeMode : MonoBehaviour
 {
     [SerializeField]
-    private Classifier gestureClassifier;
+    private GestureClassifier gestureClassifier;
 
     [SerializeField]
     private HandController handController;
@@ -18,8 +19,11 @@ public class FreeMode : MonoBehaviour
 
     public readonly static string coroutineName = "freeMode";
 
+    private FeatureVectorPreProcessor featureVectorPreProcessor;
+
     public void startFreeMode()
     {
+        featureVectorPreProcessor = new FeatureVectorPreProcessor();
         StartCoroutine(coroutineName);
     }
 
@@ -29,9 +33,10 @@ public class FreeMode : MonoBehaviour
         {
             Frame frame = handController.GetFrame();
 
-            if(frame.Hands.Count > 0)
+            if(frame.Hands.Count > 0 && gestureClassifier.ModelExists)
             {
-                GestureSign = gestureClassifier.classifyGesture(frame);
+                FeatureVector featureVector = featureVectorPreProcessor.createFeatureVector(frame);
+                GestureSign = gestureClassifier.classifyGesture(featureVector.createInputVector());
             }
 
             yield return null;

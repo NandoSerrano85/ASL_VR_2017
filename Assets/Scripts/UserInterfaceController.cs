@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class UserInterfaceController : MonoBehaviour
 {
@@ -18,6 +20,24 @@ public class UserInterfaceController : MonoBehaviour
 
     [SerializeField]
     private FreeMode freeMode;
+
+    [SerializeField]
+    private GestureClassifier gestureClassifier;
+
+    [SerializeField]
+    private InputField gestureInputField;
+
+    [SerializeField]
+    private Button submitButton;
+
+    [SerializeField]
+    private GameObject trainingClassifierBackground;
+
+    [SerializeField]
+    private GameObject loadingCircle;
+
+    [SerializeField]
+    private Text trainingStatusText;
 
     public static readonly string[] animationTriggers = { "SlideOutAndFadeInTrigger", "SlideInFadeOutTrigger" };
 
@@ -41,11 +61,6 @@ public class UserInterfaceController : MonoBehaviour
 
         if (!handController.IsConnected())
             return;
-
-        userInterfaceViewAnimator.SetTrigger(animationTriggers[0]);
-        snapshotControls.enabled = true;
-
-        freeMode.stopFreeMode();
     }
 
     public void createGestureClick()
@@ -54,6 +69,47 @@ public class UserInterfaceController : MonoBehaviour
 
         if (!handController.IsConnected())
             return;
+
+        userInterfaceViewAnimator.SetTrigger(animationTriggers[0]);
+        snapshotControls.enabled = true;
+
+        freeMode.stopFreeMode();
+        gestureInputField.interactable = false;
+        submitButton.interactable = false;
+    }
+
+    public void trainClassifierClick()
+    {
+        buttonAudioSource.PlayOneShot(buttonClickSound);
+
+        if (!handController.IsConnected())
+            return;
+
+        StartCoroutine(startTraining());
+    }
+
+    private IEnumerator startTraining()
+    {
+        trainingClassifierBackground.SetActive(true);
+        loadingCircle.SetActive(true);
+        trainingStatusText.text = "Training Classifier...";
+
+        gestureClassifier.ModelExists = false;
+        StartCoroutine(gestureClassifier.trainClassifier());
+
+        while(!gestureClassifier.ModelExists)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        loadingCircle.SetActive(false);
+        trainingStatusText.text = "Training Complete";
+
+        yield return new WaitForSeconds(0.5f);
+
+        trainingClassifierBackground.SetActive(false);
     }
 
     public void returnToPreviousMenu(string methodName)
