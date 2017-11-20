@@ -5,34 +5,29 @@ using UnityEngine.UI;
 
 public class RecordingList : MonoBehaviour
 {
-    [SerializeField]
     private Dropdown recordingFilesDropDown;
 
     [SerializeField]
     private HandController handController;
 
-    private RecordingControls recordingControls;
+    [SerializeField]
+    private GestureRecording recordingControls;
 
     private List<string> recordingFilePaths;
     private List<string> recordingFileNames;
-
-    private static string recordingDirectory;
   
     private void Start()
     {
-        recordingControls = handController.GetComponent<RecordingControls>();
-        recordingDirectory = Application.persistentDataPath + "/Recordings/";
+        recordingFilesDropDown = GetComponent<Dropdown>();
         recordingFilePaths = new List<string>();
         recordingFileNames = new List<string>();
-        recordingControls.enabled = false;
     }
+
 
     private void Update()
     {
         if (recordingControls.SavedPath != "")
         {
-            recordingControls.saveRecordingFile(recordingFilePaths);
-            recordingControls.RecordingText = "Recording saved to:\n" + recordingControls.CurrentRecordingFilePath;
             addRecordingToList(recordingControls.CurrentRecordingFilePath);
             recordingControls.SavedPath = "";
         }
@@ -64,10 +59,10 @@ public class RecordingList : MonoBehaviour
 
     public void populateRecordingDropDownList()
     {
-        if (!Directory.Exists(recordingDirectory))
-            Directory.CreateDirectory(recordingDirectory);
+        if (!Directory.Exists(recordingControls.RecordingDirectory))
+            Directory.CreateDirectory(recordingControls.RecordingDirectory);
 
-        var filePaths = Directory.GetFiles(recordingDirectory);
+        var filePaths = Directory.GetFiles(recordingControls.RecordingDirectory);
 
         recordingFileNames.Clear();
         recordingFilePaths.Clear();

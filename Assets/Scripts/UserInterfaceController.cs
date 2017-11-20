@@ -19,16 +19,16 @@ public class UserInterfaceController : MonoBehaviour
     private GestureSnapshot snapshotControls;
 
     [SerializeField]
+    private GestureRecording recordingControls;
+
+    [SerializeField]
+    private RecordingList recordingList;
+
+    [SerializeField]
     private FreeMode freeMode;
 
     [SerializeField]
     private GestureClassifier gestureClassifier;
-
-    [SerializeField]
-    private InputField gestureInputField;
-
-    [SerializeField]
-    private Button submitButton;
 
     [SerializeField]
     private GameObject trainingClassifierBackground;
@@ -39,12 +39,16 @@ public class UserInterfaceController : MonoBehaviour
     [SerializeField]
     private Text trainingStatusText;
 
-    public static readonly string[] animationTriggers = { "SlideOutAndFadeInTrigger", "SlideInFadeOutTrigger" };
+    public static readonly string[] animationTriggers = { "GestureSlideOutSnapshotFadeInTrigger",
+                                                          "GestureSlideInSnapshotFadeOutTrigger",
+                                                          "GestureSlideOutRecordingFadeInTrigger",
+                                                          "GestureSlideInRecordingFadeOutTrigger"};
 
     private void Start()
     {
         buttonAudioSource = GetComponent<AudioSource>();
         freeMode.startFreeMode();
+        recordingControls.enabled = false;
     }
 
     public void importGestureClick()
@@ -61,6 +65,14 @@ public class UserInterfaceController : MonoBehaviour
 
         if (!handController.IsConnected())
             return;
+
+        userInterfaceViewAnimator.SetTrigger(animationTriggers[2]);
+        recordingControls.enabled = true;
+        recordingControls.RecordingInputInteractable = false;
+        recordingControls.RecordingSubmitButtonInteractable = false;
+        recordingList.populateRecordingDropDownList();
+
+        freeMode.stopFreeMode();
     }
 
     public void createGestureClick()
@@ -72,10 +84,10 @@ public class UserInterfaceController : MonoBehaviour
 
         userInterfaceViewAnimator.SetTrigger(animationTriggers[0]);
         snapshotControls.enabled = true;
+        snapshotControls.GestureInputInteractable = false;
+        snapshotControls.GestureSubmitButtonInteractable = false;
 
         freeMode.stopFreeMode();
-        gestureInputField.interactable = false;
-        submitButton.interactable = false;
     }
 
     public void trainClassifierClick()
@@ -112,12 +124,7 @@ public class UserInterfaceController : MonoBehaviour
         trainingClassifierBackground.SetActive(false);
     }
 
-    public void returnToPreviousMenu(string methodName)
-    {
-        Invoke(methodName, 0.0f);
-    }
-
-    private void snapShotViewToGestureView()
+    public void snapShotViewToGestureView()
     {
         buttonAudioSource.PlayOneShot(buttonClickSound);
         userInterfaceViewAnimator.SetTrigger(animationTriggers[1]);
@@ -126,6 +133,27 @@ public class UserInterfaceController : MonoBehaviour
         snapshotControls.GestureInputInteractable = false;
         snapshotControls.GestureSubmitButtonInteractable = false;
         snapshotControls.enabled = false;
+
+        freeMode.startFreeMode();
+        freeMode.GestureSign = "No Gesture Detected";
+    }
+
+    public void recordingViewToGestureView()
+    {
+        buttonAudioSource.PlayOneShot(buttonClickSound);
+        userInterfaceViewAnimator.SetTrigger(animationTriggers[3]);
+
+        if (handController.GetLeapRecorder().state != RecorderState.Stopped)
+        {
+            handController.ResetRecording();
+            handController.StopRecording();
+        }
+
+        recordingControls.RecordingSavedPathText = "";
+        recordingControls.RecordingFileInputText = "";
+        recordingControls.RecordingInputInteractable = false;
+        recordingControls.RecordingSubmitButtonInteractable = false;
+        recordingControls.enabled = false;
 
         freeMode.startFreeMode();
         freeMode.GestureSign = "No Gesture Detected";

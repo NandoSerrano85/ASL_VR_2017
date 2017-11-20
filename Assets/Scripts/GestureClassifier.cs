@@ -12,7 +12,7 @@ public class GestureClassifier : MonoBehaviour
     [SerializeField]
     private DataService dataService;
 
-    private MulticlassSupportVectorMachine<Gaussian> multSVM;
+    private MulticlassSupportVectorMachine<Gaussian> multiSVM;
 
     [SerializeField]
     private string modelName;
@@ -23,10 +23,15 @@ public class GestureClassifier : MonoBehaviour
 
     private void Start()
     {
-        #if UNITY_EDITOR
-            modelPath = string.Format(@"Assets/StreamingAssets/Model/{0}", modelName);
-        #else
-            string filePath = string.Format("{0}/{1}", Application.persistentDataPath, modelName);
+    #if UNITY_EDITOR
+        modelPath = string.Format(@"Assets/StreamingAssets/Model/{0}", modelName);
+    #else
+            string directoryPath = string.Format("{0}/Model", Application.persistentDataPath);
+            
+            if (!Directory.Exists(directoryPath))
+                Directory.CreateDirectory(directoryPath);
+            
+            string filePath = directoryPath + "/" + modelName;
 
             if(!File.Exists(filePath))
             {
@@ -35,11 +40,11 @@ public class GestureClassifier : MonoBehaviour
             }
 
             modelPath = filePath;
-        #endif
+    #endif
 
         if (File.Exists(modelPath))
         {
-            multSVM = loadModel();
+            multiSVM = loadModel();
             ModelExists = true;
         }
     }
@@ -48,36 +53,16 @@ public class GestureClassifier : MonoBehaviour
     {
         List<FeatureVector> featureVectors = dataService.getAllFeatureVectors();
 
-        double [][] inputs = new double[featureVectors.Count][];
-        int [] outputs = new int[featureVectors.Count];
+        double[][] inputs = new double[featureVectors.Count][];
+        int[] outputs = new int[featureVectors.Count];
 
         createInputsAndOutputs(inputs, outputs, featureVectors);
 
-        // Create a one-vs-one multi-class SVM learning algorithm 
-        var teacher = new MulticlassSupportVectorLearning<Gaussian>()
-        {
-            Learner = (param) => new SequentialMinimalOptimization<Gaussian>()
-            {
-                // Estimate a suitable guess for the Gaussian kernel's parameters.
-                // This estimate can serve as a starting point for a grid search.
-                UseKernelEstimation = true
-            }
-        };
+        // Create the multi-class learning algorithm for the machine
+        var teacher = new MulticlassSupportVectorLearning<Gaussian>();
 
-        var machine = teacher.Learn(inputs, outputs);
-
-        var calibration = new MulticlassSupportVectorLearning<Gaussian>()
-        {
-            Model = machine, // We will start with an existing machine
-
-            // Configure the learning algorithm to use Platt's calibration
-            Learner = (param) => new ProbabilisticOutputCalibration<Gaussian>()
-            {
-                Model = param.Model // Start with an existing machine
-            }
-        };
-
-        multSVM = calibration.Learn(inputs, outputs);
+        // Learn a machine
+        multiSVM = teacher.Learn(inputs, outputs);
 
         saveModel();
         ModelExists = true;
@@ -85,7 +70,7 @@ public class GestureClassifier : MonoBehaviour
         yield return null;
     }
 
-    private void createInputsAndOutputs(double [][] inputs, int [] outputs, List<FeatureVector> featureVectors)
+    private void createInputsAndOutputs(double[][] inputs, int[] outputs, List<FeatureVector> featureVectors)
     {
         for (int i = 0; i < featureVectors.Count; i++)
         {
@@ -94,15 +79,15 @@ public class GestureClassifier : MonoBehaviour
         }
     }
 
-    public string classifyGesture(double [] distanceVector)
+    public string classifyGesture(double[] distanceVector)
     {
-        int gestureClassLabel = multSVM.Decide(distanceVector);
+        int gestureClassLabel = multiSVM.Decide(distanceVector);
         return dataService.classLabelToGesture(gestureClassLabel);
     }
 
     public void saveModel()
     {
-        multSVM.Save(modelPath);
+        multiSVM.Save(modelPath);
     }
 
     public MulticlassSupportVectorMachine<Gaussian> loadModel()

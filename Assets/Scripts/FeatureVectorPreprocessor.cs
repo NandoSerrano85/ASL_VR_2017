@@ -1,10 +1,11 @@
-﻿using Leap;
+﻿using Accord.Statistics;
+using Leap;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-public class FeatureVectorPreProcessor
+public class FeatureVectorPreprocessor
 {
     /*
      * This function creates the distance between the palm of the hand and tip of each finger. It
@@ -17,20 +18,21 @@ public class FeatureVectorPreProcessor
 
         calculateDistances(featureVectorList, frame);
 
-        featureVectorList = normalizeDistances(featureVectorList);
-
         calculateAdjacentFingerAngles(featureVectorList, frame);
 
         calculateHandToFingerAngles(featureVectorList, frame);
 
-        FeatureVector featureVector = constructFeatureVector(featureVectorList);
+        double [] centered = Tools.Center(featureVectorList.ToArray<double>());
+        double[] standard = Tools.Standardize(centered);
+
+        FeatureVector featureVector = constructFeatureVector(standard);
 
         featureVector.NumOfFingers = getTotalNumberOfFingers(frame);
 
         return featureVector;
     }
 
-    private FeatureVector constructFeatureVector(List<double> featureVectorList)
+    private FeatureVector constructFeatureVector(double [] featureVectorList)
     {
         FeatureVector featureVector = new FeatureVector();
 
@@ -70,32 +72,6 @@ public class FeatureVectorPreProcessor
                 featureVectorList.Add(finger.TipPosition.DistanceTo(hand.PalmPosition));
             }
         }
-    }
-
-    /*
-     * Each distance in the feature vector is normalize between [0, 1] so that it doesn't matter
-     * how big the hand is. The formula that was used to normalize the distance was
-     * 
-     * NormalizedDistance = distance - minimum distance / max distance
-     */
-    private List<double> normalizeDistances(List<double> featureVectorList)
-    {
-        List<double> normalizedFeatureVectorList = new List<double>();
-
-        double minDistance = featureVectorList.Min();
-        double maxDistance = featureVectorList.Max() - minDistance;
-
-        foreach (double distance in featureVectorList)
-        {
-            normalizedFeatureVectorList.Add(normalizeDistance(distance, minDistance, maxDistance));
-        }
-
-        return normalizedFeatureVectorList;
-    }
-
-    private double normalizeDistance(double distance, double minDistance, double maxDistance)
-    {
-        return (distance - minDistance) / maxDistance;
     }
 
     /*

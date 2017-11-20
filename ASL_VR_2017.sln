@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2017
+# Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASL_VR_2017", "ASL_VR_2017.csproj", "{FA709AFC-996C-4599-D4E7-B65A433D0E4D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASL_VR_2017.Editor", "ASL_VR_2017.Editor.csproj", "{5EFB4077-D52E-C499-2DD4-C5F5CBE65C57}"

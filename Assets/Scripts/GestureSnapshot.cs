@@ -15,6 +15,8 @@ public class GestureSnapshot : MonoBehaviour
     [SerializeField]
     private InputField gestureInputField;
 
+    private Text gestureInputFieldPlaceHolderText;
+
     [SerializeField]
     private DataService dataService;
 
@@ -32,13 +34,25 @@ public class GestureSnapshot : MonoBehaviour
     public string GestureInputText { get { return gestureInputField.text; } set { gestureInputField.text = value; } }
     public bool GestureInputInteractable { get { return gestureInputField.interactable; } set { gestureInputField.interactable = value; } }
     public bool GestureSubmitButtonInteractable { get { return submitGestureButton.interactable; } set { submitGestureButton.interactable = value; } }
+    public bool LastActiveViewState { get; set; }
 
     private ModalDialog errorModalDialog;
+
+    private ToggleableObject toggleableObject;
 
     private void Start()
     {
         errorModalDialog = GetComponent<ModalDialog>();
-        if (controlsText != null) controlsText.text = header + "\n" + takeSnapShotKey + " - Take a snapshot\n";
+        gestureInputFieldPlaceHolderText = gestureInputField.placeholder.GetComponent<Text>();
+
+        toggleableObject = GetComponent<ToggleableObject>();
+        LastActiveViewState = true;
+
+        if (controlsText != null)
+        {
+            controlsText.text = header + "\n" + takeSnapShotKey +
+                " - Take a snapshot\n" + toggleableObject.toggleKey + " - Toggle view";
+        }
     }
 
     private void Update()
@@ -52,11 +66,22 @@ public class GestureSnapshot : MonoBehaviour
                 takeSnapShot(frame);
             }
         }
+
+        if (Input.GetKeyDown(toggleableObject.toggleKey) && !GestureInputInteractable)
+        {
+            LastActiveViewState = !LastActiveViewState;
+            toggleableObject.toggleObject(LastActiveViewState);
+        }
+
+        if (gestureInputField.isFocused)
+            gestureInputFieldPlaceHolderText.text = "";
+        else
+            gestureInputFieldPlaceHolderText.text = "Enter Gesture Name...";
     }
 
     private void takeSnapShot(Frame frame)
     {
-        FeatureVectorPreProcessor featureVectorPreProcessor = new FeatureVectorPreProcessor();
+        FeatureVectorPreprocessor featureVectorPreProcessor = new FeatureVectorPreprocessor();
 
         featureVector = featureVectorPreProcessor.createFeatureVector(frame);
 
@@ -79,9 +104,7 @@ public class GestureSnapshot : MonoBehaviour
             GestureSubmitButtonInteractable = false;
         }
         else
-        {
             errorModalDialog.showErrorDialog();
-        }
 
         GestureInputText = "";
     }

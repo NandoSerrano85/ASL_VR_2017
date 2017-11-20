@@ -19,11 +19,11 @@ public class FreeMode : MonoBehaviour
 
     public readonly static string coroutineName = "freeMode";
 
-    private FeatureVectorPreProcessor featureVectorPreProcessor;
+    private FeatureVectorPreprocessor featureVectorPreprocessor;
 
     public void startFreeMode()
     {
-        featureVectorPreProcessor = new FeatureVectorPreProcessor();
+        featureVectorPreprocessor = new FeatureVectorPreprocessor();
         StartCoroutine(coroutineName);
     }
 
@@ -33,9 +33,9 @@ public class FreeMode : MonoBehaviour
         {
             Frame frame = handController.GetFrame();
 
-            if(frame.Hands.Count > 0 && gestureClassifier.ModelExists)
+            if(gestureClassifier.ModelExists && frame.Hands.Count > 0)
             {
-                FeatureVector featureVector = featureVectorPreProcessor.createFeatureVector(frame);
+                FeatureVector featureVector = featureVectorPreprocessor.createFeatureVector(frame);
                 GestureSign = gestureClassifier.classifyGesture(featureVector.createInputVector());
             }
 

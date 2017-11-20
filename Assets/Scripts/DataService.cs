@@ -22,7 +22,12 @@ public class DataService : MonoBehaviour
         #if UNITY_EDITOR
             databasePath = string.Format(@"Assets/StreamingAssets/Database/{0}", databaseName);
         #else
-            string filePath = string.Format("{0}/{1}", Application.persistentDataPath, databaseName);
+            string directoryPath = string.Format("{0}/Database", Application.persistentDataPath);
+            
+            if (!Directory.Exists(directoryPath))
+                Directory.CreateDirectory(directoryPath);
+            
+            string filePath = directoryPath + "/" + databaseName;
 
             if(!File.Exists(filePath))
             {
@@ -65,9 +70,7 @@ public class DataService : MonoBehaviour
             if (featureVector != null)
                 return featureVector.GestureClassLabel;
             else
-            {
-                return maxGestureClassLabel++;
-            }
+                return ++maxGestureClassLabel;
         }
     }
 
@@ -93,7 +96,7 @@ public class DataService : MonoBehaviour
             if (connection.Table<FeatureVector>().FirstOrDefault() != null)
                 return connection.Table<FeatureVector>().Max(vector => vector.GestureClassLabel);
             else
-                return 0;
+                return -1;
         }
     }
 }

@@ -267,7 +267,7 @@ public class LeapCameraAlignment : MonoBehaviour {
       return;
     }
 
-    if (VRDevice.isPresent && VRSettings.supportedDevices.ToList().Exists(o => VRSettings.loadedDeviceName.Contains(o))) {
+    if (UnityEngine.XR.XRDevice.isPresent && UnityEngine.XR.XRSettings.supportedDevices.ToList().Exists(o => UnityEngine.XR.XRSettings.loadedDeviceName.Contains(o))) {
       eyeAlignment = new UserEyeAlignment() {
         use = true,
         ipd = OVRPlugin.ipd,
@@ -303,7 +303,7 @@ public class LeapCameraAlignment : MonoBehaviour {
     }
     
     if (Input.GetKeyDown (recenter)) {
-      InputTracking.Recenter();
+      UnityEngine.XR.InputTracking.Recenter();
     }
   }
 

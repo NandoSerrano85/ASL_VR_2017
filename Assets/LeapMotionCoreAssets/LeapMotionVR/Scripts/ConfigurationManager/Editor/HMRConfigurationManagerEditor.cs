@@ -44,18 +44,18 @@ public class HMRConfigurationManagerEditor : Editor {
     }
   }
 
-  private Camera getCameraObjectForEye(UnityEngine.VR.VRNode cameraNode) {
+  private Camera getCameraObjectForEye(UnityEngine.XR.XRNode cameraNode) {
     Camera camera;
 
     switch (cameraNode) {
-      case UnityEngine.VR.VRNode.CenterEye:
-      case UnityEngine.VR.VRNode.Head:
+      case UnityEngine.XR.XRNode.CenterEye:
+      case UnityEngine.XR.XRNode.Head:
         camera = ((HMRConfigurationManager)target)._centerCamera;
         break;
-      case UnityEngine.VR.VRNode.LeftEye:
+      case UnityEngine.XR.XRNode.LeftEye:
         camera = ((HMRConfigurationManager)target)._leftCamera;
         break;
-      case UnityEngine.VR.VRNode.RightEye:
+      case UnityEngine.XR.XRNode.RightEye:
         camera = ((HMRConfigurationManager)target)._rightCamera;
         break;
       default:
@@ -69,7 +69,7 @@ public class HMRConfigurationManagerEditor : Editor {
     return camera;
   }
 
-  private LeapImageRetriever getImageRetreiverForEye(UnityEngine.VR.VRNode eyeNode) {
+  private LeapImageRetriever getImageRetreiverForEye(UnityEngine.XR.XRNode eyeNode) {
     Camera cameraForEye = getCameraObjectForEye(eyeNode);
     LeapImageRetriever imageRetrieverForEye = cameraForEye.gameObject.GetComponent<LeapImageRetriever>();
 
@@ -156,8 +156,8 @@ public class HMRConfigurationManagerEditor : Editor {
   }
 
   private void setLeftAndRightCamerasEnabled(bool enabled) {
-    Camera left = getCameraObjectForEye(UnityEngine.VR.VRNode.LeftEye);
-    Camera right = getCameraObjectForEye(UnityEngine.VR.VRNode.RightEye);
+    Camera left = getCameraObjectForEye(UnityEngine.XR.XRNode.LeftEye);
+    Camera right = getCameraObjectForEye(UnityEngine.XR.XRNode.RightEye);
 
     left.enabled = enabled;
     EditorUtility.SetDirty(left);
@@ -167,8 +167,8 @@ public class HMRConfigurationManagerEditor : Editor {
   }
 
   private void setLeftAndRightImageRetrieversEnabled(bool enabled) {
-    LeapImageRetriever left = getImageRetreiverForEye(UnityEngine.VR.VRNode.LeftEye);
-    LeapImageRetriever right = getImageRetreiverForEye(UnityEngine.VR.VRNode.RightEye);  
+    LeapImageRetriever left = getImageRetreiverForEye(UnityEngine.XR.XRNode.LeftEye);
+    LeapImageRetriever right = getImageRetreiverForEye(UnityEngine.XR.XRNode.RightEye);  
     
     left.enabled = enabled;
     right.enabled = enabled;
@@ -178,15 +178,15 @@ public class HMRConfigurationManagerEditor : Editor {
   }
 
   private void setCenterCameraEnabled(bool enabled) {
-    Camera center = getCameraObjectForEye(UnityEngine.VR.VRNode.CenterEye);
+    Camera center = getCameraObjectForEye(UnityEngine.XR.XRNode.CenterEye);
     center.enabled = enabled;
     EditorUtility.SetDirty(center);
   }
 
   private void setCameraClearFlags(CameraClearFlags cameraClearFlags) {
-    Camera left = getCameraObjectForEye(UnityEngine.VR.VRNode.LeftEye);
-    Camera center = getCameraObjectForEye(UnityEngine.VR.VRNode.CenterEye);
-    Camera right = getCameraObjectForEye(UnityEngine.VR.VRNode.RightEye);
+    Camera left = getCameraObjectForEye(UnityEngine.XR.XRNode.LeftEye);
+    Camera center = getCameraObjectForEye(UnityEngine.XR.XRNode.CenterEye);
+    Camera right = getCameraObjectForEye(UnityEngine.XR.XRNode.RightEye);
 
     left.clearFlags = cameraClearFlags;
     center.clearFlags = cameraClearFlags;
