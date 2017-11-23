@@ -6,6 +6,10 @@ using System.IO;
 using System.Collections;
 using Accord.MachineLearning.VectorMachines.Learning;
 using Accord.Statistics.Kernels;
+using Accord.MachineLearning.Performance;
+using Accord.Math.Optimization.Losses;
+using Accord.Statistics.Analysis;
+using Accord.MachineLearning;
 
 public class GestureClassifier : MonoBehaviour
 {
@@ -18,8 +22,11 @@ public class GestureClassifier : MonoBehaviour
     private string modelName;
 
     private string modelPath;
-
+    
     public bool ModelExists { get; set; }
+
+    [SerializeField]
+    private bool PeformValidationTests = false;
 
     private void Start()
     {
@@ -58,11 +65,15 @@ public class GestureClassifier : MonoBehaviour
 
         createInputsAndOutputs(inputs, outputs, featureVectors);
 
-        // Create the multi-class learning algorithm for the machine
         var teacher = new MulticlassSupportVectorLearning<Gaussian>();
 
-        // Learn a machine
         multiSVM = teacher.Learn(inputs, outputs);
+
+        if(PeformValidationTests)
+        {
+            splitSetValidation(inputs, outputs);
+            crossValidation(inputs, outputs, 4);
+        }
 
         saveModel();
         ModelExists = true;
@@ -85,12 +96,61 @@ public class GestureClassifier : MonoBehaviour
         return dataService.classLabelToGesture(gestureClassLabel);
     }
 
-    public void saveModel()
+    private void splitSetValidation(double [][] inputs, int [] outputs)
+    {
+        var splitset = new SplitSetValidation<MulticlassSupportVectorMachine<Gaussian>, double[]>()
+        {
+            Learner = (s) => new MulticlassSupportVectorLearning<Gaussian>()
+            {
+                Learner = (m) => new SequentialMinimalOptimization<Gaussian>()
+                {
+                    UseComplexityHeuristic = true,
+                }
+            },
+
+            Loss = (expected, actual, p) => new ZeroOneLoss(expected).Loss(actual),
+        };
+
+        var result = splitset.Learn(inputs, outputs);
+
+        Debug.Log(result.Training.Value);
+        Debug.Log(result.Validation.Value);
+    }
+
+    private void crossValidation(double[][] inputs, int[] outputs, int fold)
+    {
+        var crossValidation = new CrossValidation<MulticlassSupportVectorMachine<Gaussian>, double[]>()
+        {
+            K = fold,
+
+            Learner = (s) => new MulticlassSupportVectorLearning<Gaussian>()
+            {
+                Learner = (m) => new SequentialMinimalOptimization<Gaussian>()
+                {
+                    UseComplexityHeuristic = true,
+                }
+            },
+
+            Loss = (expected, actual, p) => new ZeroOneLoss(expected).Loss(actual),
+        };
+
+        var result = crossValidation.Learn(inputs, outputs);
+
+        Debug.Log(result.Training.Mean);
+        Debug.Log(result.Validation.Mean);
+
+        GeneralConfusionMatrix gcm = result.ToConfusionMatrix(inputs, outputs);
+
+        Debug.Log(gcm.Accuracy);
+        Debug.Log(gcm.Error);
+    }
+
+    private void saveModel()
     {
         multiSVM.Save(modelPath);
     }
 
-    public MulticlassSupportVectorMachine<Gaussian> loadModel()
+    private MulticlassSupportVectorMachine<Gaussian> loadModel()
     {
         return Serializer.Load<MulticlassSupportVectorMachine<Gaussian>>(modelPath);
     }
