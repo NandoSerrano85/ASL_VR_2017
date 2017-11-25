@@ -27,6 +27,9 @@ public class GestureSnapshot : MonoBehaviour
     private KeyCode takeSnapShotKey = KeyCode.S;
 
     [SerializeField]
+    private KeyCode resetSnapshotKey = KeyCode.R;
+
+    [SerializeField]
     private HandController handController;
 
     private FeatureVector featureVector;
@@ -51,7 +54,9 @@ public class GestureSnapshot : MonoBehaviour
         if (controlsText != null)
         {
             controlsText.text = header + "\n" + takeSnapShotKey +
-                " - Take a snapshot\n" + toggleableObject.toggleKey + " - Toggle view";
+                " - Take a snapshot\n" + toggleableObject.toggleKey + " - Toggle view\n" +
+                resetSnapshotKey + " - Reset Snapshot taken";
+
         }
     }
 
@@ -67,10 +72,17 @@ public class GestureSnapshot : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(toggleableObject.toggleKey) && !GestureInputInteractable)
+        if (!GestureInputInteractable && Input.GetKeyDown(toggleableObject.toggleKey))
         {
             LastActiveViewState = !LastActiveViewState;
             toggleableObject.toggleObject(LastActiveViewState);
+        }
+
+        if(Input.GetKeyDown(resetSnapshotKey) && GestureInputInteractable && !gestureInputField.isFocused)
+        {
+            featureVector = null;
+            GestureInputInteractable = false;
+            GestureSubmitButtonInteractable = false;
         }
 
         if (gestureInputField.isFocused)

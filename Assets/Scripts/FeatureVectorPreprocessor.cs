@@ -23,9 +23,9 @@ public class FeatureVectorPreprocessor
         calculateHandToFingerAngles(featureVectorList, frame);
 
         double [] centered = Tools.Center(featureVectorList.ToArray<double>());
-        double[] standard = Tools.Standardize(centered);
+        double[] standardizedVector = Tools.Standardize(centered);
 
-        FeatureVector featureVector = constructFeatureVector(standard);
+        FeatureVector featureVector = constructFeatureVector(standardizedVector);
 
         featureVector.NumOfFingers = getTotalNumberOfFingers(frame);
 
@@ -57,11 +57,11 @@ public class FeatureVectorPreprocessor
     }
 
     /*
-     * featureVectorList[0] = PalmToThumb Distance Vector
-     * featureVectorList[1] = PalmToIndex Distance Finger Vector
-     * featureVectorList[2] = PalmToMiddle Distance Finger Vector
-     * featureVectorList[3] = PalmToRing Distance Finger Vector
-     * featureVectorList[4] = PalmToPinky Distance Finger Vector
+     * featureVectorList[0] = PalmToThumb Distance
+     * featureVectorList[1] = PalmToIndex Distance
+     * featureVectorList[2] = PalmToMiddle Distance
+     * featureVectorList[3] = PalmToRing Distance
+     * featureVectorList[4] = PalmToPinky Distance
      */
     private void calculateDistances(List<double> featureVectorList, Frame frame)
     {
@@ -88,10 +88,9 @@ public class FeatureVectorPreprocessor
         {
             for (int i = 1; i < hand.Fingers.Count; i++)
             {
-                Vector currentFinger = (hand.Fingers[i].TipPosition - hand.PalmPosition).Normalized;
-                Vector previousFinger = (hand.Fingers[i - 1].TipPosition - hand.PalmPosition).Normalized;
-
-                featureVectorList.Add(previousFinger.Dot(currentFinger));
+                Vector currentFinger = hand.Fingers[i].Direction;
+                Vector previousFinger = hand.Fingers[i - 1].Direction;
+                featureVectorList.Add(currentFinger.AngleTo(previousFinger));
             }
         }
     }
@@ -109,12 +108,10 @@ public class FeatureVectorPreprocessor
     {
         foreach (Hand hand in frame.Hands)
         {
-            Vector handNormal = hand.PalmNormal;
-
             foreach (Finger finger in hand.Fingers)
             {
-                Vector currentFinger = (finger.TipPosition - hand.PalmPosition).Normalized;
-                featureVectorList.Add(currentFinger.Dot(handNormal));
+                Vector currentFinger = finger.Direction;
+                featureVectorList.Add(currentFinger.AngleTo(hand.PalmNormal));
             }
 
             featureVectorList.Add(hand.SphereRadius);
