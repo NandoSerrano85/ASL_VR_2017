@@ -1,8 +1,9 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ModalDialog))]
+[RequireComponent(typeof(ToggleableObject))]
 public class GestureRecording : MonoBehaviour
 {
     [Multiline]
@@ -44,9 +45,16 @@ public class GestureRecording : MonoBehaviour
     public bool RecordingSubmitButtonInteractable { get { return submitRecordingButton.interactable; } set { submitRecordingButton.interactable = value; } }
     public string RecordingFileInputText { get { return recordingFileInputField.text; } set { recordingFileInputField.text = value; } }
     public string RecordingDirectory { get; set; }
-    public bool LastActiveViewState { get; set; }
 
+    private bool lastActiveViewState;
+
+    [SerializeField]
     private ModalDialog errorModalDialog;
+
+    private AudioSource buttonAudioSource;
+
+    [SerializeField]
+    private AudioClip buttonClickSound;
 
     private void Start()
     {
@@ -57,12 +65,13 @@ public class GestureRecording : MonoBehaviour
         recordingFileInputFieldPlaceHolderText = recordingFileInputField.placeholder.GetComponent<Text>();
         toggleableObject = GetComponent<ToggleableObject>();
         backgroundMaterial = background.GetComponent<Renderer>().material;
-        LastActiveViewState = true;
+        buttonAudioSource = GetComponent<AudioSource>();
+        lastActiveViewState = true;
     }
 
     private void Update()
     {
-        if (controlsText != null) controlsText.text = header + "\n" + toggleableObject.toggleKey + " - Toggle view\n";
+        if (controlsText != null) controlsText.text = header + "\n\n" + toggleableObject.toggleKey + " - Toggle view\n";
 
         switch (handController.GetLeapRecorder().state)
         {
@@ -84,10 +93,10 @@ public class GestureRecording : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(toggleableObject.toggleKey) && !RecordingInputInteractable)
+        if (Input.GetKeyDown(toggleableObject.toggleKey) && !recordingFileInputField.isFocused)
         {
-            LastActiveViewState = !LastActiveViewState;
-            toggleableObject.toggleObject(LastActiveViewState);
+            lastActiveViewState = !lastActiveViewState;
+            toggleableObject.toggleObject(lastActiveViewState);
         }
 
         if (recordingFileInputField.isFocused)
@@ -98,8 +107,8 @@ public class GestureRecording : MonoBehaviour
         if (handController.GetLeapRecorder().state == RecorderState.Playing &&
             handController.GetRecordingProgress() == 1.0f)
         {
-            LastActiveViewState = true;
-            toggleableObject.toggleObject(LastActiveViewState);
+            lastActiveViewState = true;
+            toggleableObject.toggleObject(lastActiveViewState);
             handController.StopRecording();
             backgroundMaterial.SetFloat("_ColorSpaceGamma", 1.99f);
         }
@@ -111,8 +120,8 @@ public class GestureRecording : MonoBehaviour
 
         if (Input.GetKeyDown(beginRecordingKey) && !RecordingInputInteractable)
         {
-            LastActiveViewState = false;
-            toggleableObject.toggleObject(LastActiveViewState);
+            lastActiveViewState = false;
+            toggleableObject.toggleObject(lastActiveViewState);
 
             handController.ResetRecording();
             handController.Record();
@@ -130,8 +139,8 @@ public class GestureRecording : MonoBehaviour
             if (loadRecordingFile())
             {
                 backgroundMaterial.SetFloat("_ColorSpaceGamma", 0.0f);
-                LastActiveViewState = false;
-                toggleableObject.toggleObject(LastActiveViewState);
+                lastActiveViewState = false;
+                toggleableObject.toggleObject(lastActiveViewState);
 
                 handController.PlayRecording();
             }
@@ -144,8 +153,8 @@ public class GestureRecording : MonoBehaviour
 
         if (Input.GetKeyDown(endRecordingKey))
         {
-            LastActiveViewState = true;
-            toggleableObject.toggleObject(LastActiveViewState);
+            lastActiveViewState = true;
+            toggleableObject.toggleObject(lastActiveViewState);
             handController.StopRecording();
             RecordingInputInteractable = true;
             RecordingSubmitButtonInteractable = true;
@@ -169,8 +178,8 @@ public class GestureRecording : MonoBehaviour
         if (Input.GetKeyDown(stopPlaybackKey))
         {
             backgroundMaterial.SetFloat("_ColorSpaceGamma", 1.99f);
-            LastActiveViewState = true;
-            toggleableObject.toggleObject(LastActiveViewState);
+            lastActiveViewState = true;
+            toggleableObject.toggleObject(lastActiveViewState);
 
             handController.StopRecording();
         }
@@ -178,6 +187,8 @@ public class GestureRecording : MonoBehaviour
 
     public void saveRecordingFile()
     {
+        buttonAudioSource.PlayOneShot(buttonClickSound);
+
         string recordingFileName = RecordingFileInputText.Trim();
 
         if (!string.IsNullOrEmpty(recordingFileName))
@@ -190,9 +201,11 @@ public class GestureRecording : MonoBehaviour
 
             RecordingInputInteractable = false;
             RecordingSubmitButtonInteractable = false;
+
+            StartCoroutine(resetText());
         }
         else
-            errorModalDialog.showErrorDialog();
+            errorModalDialog.showErrorDialog(OkEvent);
 
         RecordingFileInputText = "";
     }
@@ -250,5 +263,16 @@ public class GestureRecording : MonoBehaviour
         }
 
         return true;
+    }
+
+    private IEnumerator resetText()
+    {
+        yield return new WaitForSeconds(4);
+        RecordingSavedPathText = "";
+    }
+
+    public void OkEvent()
+    {
+        buttonAudioSource.PlayOneShot(buttonClickSound);
     }
 }

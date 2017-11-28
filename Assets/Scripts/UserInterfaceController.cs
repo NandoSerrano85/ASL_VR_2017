@@ -130,6 +130,7 @@ public class UserInterfaceController : MonoBehaviour
         userInterfaceViewAnimator.SetTrigger(animationTriggers[1]);
 
         snapshotControls.GestureInputText = "";
+        snapshotControls.GestureStatusText = "";
         snapshotControls.GestureInputInteractable = false;
         snapshotControls.GestureSubmitButtonInteractable = false;
         snapshotControls.enabled = false;

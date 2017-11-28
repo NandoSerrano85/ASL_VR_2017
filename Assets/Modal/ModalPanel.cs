@@ -19,7 +19,7 @@ public class ModalPanel : MonoBehaviour
         if (!MainModalPanel)
         {
             MainModalPanel = FindObjectOfType(typeof(ModalPanel)) as ModalPanel;
-
+            
             if (!MainModalPanel)
             {
                 Debug.LogError("There needs to be one active ModalPanel script on a GameObject in your scene.");
@@ -57,6 +57,7 @@ public class ModalPanel : MonoBehaviour
             Button1.onClick.RemoveAllListeners();
             Button2.onClick.RemoveAllListeners();
             Button2.onClick.AddListener(ClosePanel);
+            Button2.onClick.AddListener(YesEvent);
             Button2.GetComponentInChildren<Text>().text = "Yes";
             Button3.onClick.RemoveAllListeners();
             Button3.onClick.AddListener(NoEvent);

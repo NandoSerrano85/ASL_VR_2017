@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class ModalDialog : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class ModalDialog : MonoBehaviour
     private string title;
 
     [SerializeField]
-    private string question;
+    private string message;
 
     [SerializeField]
     private bool iconActive;
@@ -19,24 +20,23 @@ public class ModalDialog : MonoBehaviour
     [SerializeField]
     private string messageType;
 
-    private AudioSource buttonAudioSource;
-
-    [SerializeField]
-    private AudioClip buttonClickSound;
-
     void Start ()
     {
-        buttonAudioSource = GetComponent<AudioSource>();
         modalPanel = ModalPanel.Instance();
 	}
 
-    public void showErrorDialog()
+    public void showErrorDialog(UnityAction OkEvent)
     {
-        modalPanel.MessageBox(icon, title, question, null, null, null, OkEvent, iconActive, messageType);
+        modalPanel.MessageBox(icon, title, message, null, null, null, OkEvent, iconActive, messageType);
     }
 
-    public void OkEvent()
+    public void showQuestionDialog(UnityAction YesEvent, UnityAction NoEvent)
     {
-        buttonAudioSource.PlayOneShot(buttonClickSound);
+        modalPanel.MessageBox(icon, title, message, YesEvent, NoEvent, null, null, iconActive, messageType);
+    }
+
+    public bool isDialogActive()
+    {
+        return modalPanel.ModalPanelObject.activeSelf;
     }
 }
