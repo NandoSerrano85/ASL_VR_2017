@@ -7,22 +7,23 @@ public class FeatureVector
 {
     [PrimaryKey, AutoIncrement]
     public int ID { get; set; }
-    public double PalmToThumb { get; set; }
-    public double PalmToIndex { get; set; }
-    public double PalmToMiddle { get; set; }
-    public double PalmToRing { get; set; }
-    public double PalmToPinky { get; set; }
-    public double ThumbToIndex { get; set; }
-    public double IndexToMiddle { get; set; }
-    public double MiddleToRing { get; set; }
-    public double RingToPinky { get; set; }
-    public double ThumbToHandNormal { get; set; }
-    public double IndexToHandNormal { get; set; }
-    public double MiddleToHandNormal { get; set; }
-    public double RingToHandNormal { get; set; }
-    public double PinkyToHandNormal { get; set; }
-    public double RadiusSphere { get; set; }
-    public int NumOfFingers { get; set; }
+    public double PalmToThumbDistance { get; set; }
+    public double PalmToIndexDistance { get; set; }
+    public double PalmToMiddleDistance { get; set; }
+    public double PalmToRingDistance { get; set; }
+    public double PalmToPinkyDistance { get; set; }
+    public double PinkyToRingDistance { get; set; }
+    public double RingToMiddleDistance { get; set; }
+    public double MiddleToIndexDistance { get; set; }
+    public double IndexToThumbDistance { get; set; }
+    public double ThumbToHandNormalDistance { get; set; }
+    public double IndexToHandNormalDistance { get; set; }
+    public double MiddleToHandNormalDistance { get; set; }
+    public double RingToHandNormalDistance { get; set; }
+    public double PinkyToHandNormalDistance { get; set; }
+    public int NumExtendedFingers { get; set; }
+    public float PinchStrength { get; set; }
+    public float GrabStrength { get; set; }
     public string Gesture { get; set; }
     public int GestureClassLabel { get; set; }
 
@@ -30,10 +31,10 @@ public class FeatureVector
     {
         return new double []
         {
-            PalmToThumb, PalmToIndex, PalmToMiddle, PalmToRing, PalmToPinky,
-            ThumbToIndex, IndexToMiddle, MiddleToRing, RingToPinky,
-            ThumbToHandNormal, IndexToHandNormal, MiddleToHandNormal, RingToHandNormal, PinkyToHandNormal,
-            RadiusSphere, NumOfFingers,
+            PalmToThumbDistance, PalmToIndexDistance, PalmToMiddleDistance, PalmToRingDistance, PalmToPinkyDistance,
+            IndexToThumbDistance, RingToMiddleDistance, MiddleToIndexDistance, PinkyToRingDistance,
+            ThumbToHandNormalDistance, IndexToHandNormalDistance, MiddleToHandNormalDistance, RingToHandNormalDistance, PinkyToHandNormalDistance,
+            NumExtendedFingers, PinchStrength, GrabStrength
         };
     }
 

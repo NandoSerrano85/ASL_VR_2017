@@ -65,9 +65,33 @@ public class GestureClassifier : MonoBehaviour
 
         createInputsAndOutputs(inputs, outputs, featureVectors);
 
-        var teacher = new MulticlassSupportVectorLearning<Gaussian>();
+        var teacher = new MulticlassSupportVectorLearning<Gaussian>()
+        {
+            // Configure the learning algorithm to use SMO to train the
+            //  underlying SVMs in each of the binary class subproblems.
+            Learner = (param) => new SequentialMinimalOptimization<Gaussian>()
+            {
+                // Estimate a suitable guess for the Gaussian kernel's parameters.
+                // This estimate can serve as a starting point for a grid search.
+                UseKernelEstimation = true
+            }
+        };
 
-        multiSVM = teacher.Learn(inputs, outputs);
+        var machine = teacher.Learn(inputs, outputs);
+
+        // Create the multi-class learning algorithm for the machine
+        var calibration = new MulticlassSupportVectorLearning<Gaussian>()
+        {
+            Model = machine, // We will start with an existing machine
+
+            // Configure the learning algorithm to use Platt's calibration
+            Learner = (param) => new ProbabilisticOutputCalibration<Gaussian>()
+            {
+                Model = param.Model // Start with an existing machine
+            }
+        };
+
+        multiSVM = calibration.Learn(inputs, outputs);
 
         if(PeformValidationTests)
         {
