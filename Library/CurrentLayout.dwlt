@@ -45,7 +45,7 @@ MonoBehaviour:
   m_MinSize: {x: 683, y: 342}
   m_MaxSize: {x: 12008, y: 8042}
   vertical: 0
-  controlID: 25
+  controlID: 88
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -143,7 +143,7 @@ MonoBehaviour:
     y: 0
     width: 1368
     height: 829
-  m_MinSize: {x: 950, y: 392}
+  m_MinSize: {x: 950, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &7
 MonoBehaviour:
@@ -209,7 +209,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 342}
   m_MaxSize: {x: 8006, y: 8042}
   vertical: 1
-  controlID: 26
+  controlID: 89
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -233,7 +233,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 221}
   m_MaxSize: {x: 8006, y: 4021}
   vertical: 0
-  controlID: 27
+  controlID: 67
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -325,19 +325,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/StreamingAssets/Model
+    - Assets/Scripts
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/StreamingAssets/Model
+  - Assets/Scripts
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\Averh\Documents\workspaces\Git\ASL_VR_2017
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 1106}
-    m_SelectedIDs: 7a2d0000
-    m_LastClickedID: 11642
-    m_ExpandedIDs: 00000000f2280000702900008e290000ee290000b02b0000b22b0000b82b0000e62b00003c2c0000402c0000c22c0000c82c0000d02c0000d62c0000f42c0000082d0000202d0000342d0000b62d0000b82d0000be2d0000342e000064300000a2300000b4300000bc30000010380000123800001438000016380000183800001a3800001c3800001e380000203800002238000024380000ffffff7f
+    scrollPos: {x: 0, y: 1058}
+    m_SelectedIDs: e6280000
+    m_LastClickedID: 10470
+    m_ExpandedIDs: 00000000cc2800004829000066290000c6290000882b00008a2b0000902b0000be2b0000142c0000182c00009a2c0000a02c0000a82c0000ae2c0000cc2c0000e02c0000f82c00000c2d00008e2d0000902d0000962d00000c2e00003c3000007a3000008c30000094300000f6370000f8370000fa370000fc370000fe37000000380000023800000438000006380000083800000a380000ffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -365,7 +365,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000f2280000702900008e290000ee290000b02b0000b22b0000b82b0000e62b00003c2c0000402c0000c22c0000c82c0000d02c0000d62c0000f42c0000082d0000202d0000342d0000b62d0000b82d0000be2d0000342e000064300000a2300000b4300000bc30000010380000123800001438000016380000183800001a3800001c3800001e380000203800002238000024380000
+    m_ExpandedIDs: 00000000cc2800004829000066290000c6290000882b00008a2b0000902b0000be2b0000142c0000182c00009a2c0000a02c0000a82c0000ae2c0000cc2c0000e02c0000f82c00000c2d00008e2d0000902d0000962d00000c2e00003c3000007a3000008c30000094300000f6370000f8370000fa370000fc370000fe37000000380000023800000438000006380000083800000a380000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -390,8 +390,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
+    m_SelectedInstanceIDs: dc080000
+    m_LastClickedInstanceID: 2268
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:
@@ -481,9 +481,9 @@ MonoBehaviour:
     height: 450
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
-    m_LastClickedID: 0
-    m_ExpandedIDs: 9afbffff00000000
+    m_SelectedIDs: ca310000
+    m_LastClickedID: 12746
+    m_ExpandedIDs: a6fbffff00000000c8310000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Leap;
-using System.Collections.Generic;
 
 public class FreeMode : MonoBehaviour
 {

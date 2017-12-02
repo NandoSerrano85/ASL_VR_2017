@@ -10,7 +10,8 @@ public class FeatureVectorPreprocessor
     /*
      * This function creates a vector containing the distance between the palm of the hand 
      * and tip of each finger. It also constructs the distances between adjacent fingers,
-     * how many fingers are extended, the pinch strength and the grab strength of the hand.
+     * how many fingers are extended, the pinch strength and the grab strength of the hand,
+     * the sphere radius of the hand and the angle from the wrist to the palm.
      */
     public FeatureVector createFeatureVector(Frame frame)
     {
@@ -20,19 +21,19 @@ public class FeatureVectorPreprocessor
 
         calculateAdjacentFingerDistances(featureVectorList, frame);
 
-        calculateHandToFingerAngles(featureVectorList, frame);
+        calculateHandToFingerDistances(featureVectorList, frame);
 
         double [] centered = Tools.Center(featureVectorList.ToArray<double>());
-        double[] standardizedVector = Tools.Standardize(centered);
+        List<double> standardizedVectorList = Tools.Standardize(centered).ToList();
 
-        FeatureVector featureVector = constructFeatureVector(standardizedVector);
+        getMiscellaneousFeatures(standardizedVectorList, frame);
 
-        getMiscellaneousFeatures(featureVector, frame);
+        FeatureVector featureVector = constructFeatureVector(standardizedVectorList);
 
         return featureVector;
     }
 
-    private FeatureVector constructFeatureVector(double [] featureVectorList)
+    private FeatureVector constructFeatureVector(List<double> standardizedVectorList)
     {
         FeatureVector featureVector = new FeatureVector();
 
@@ -46,10 +47,9 @@ public class FeatureVectorPreprocessor
             PropertyInfo property = properties[i];
 
             if(property.Name != "ID" && property.Name != "Gesture" && 
-               property.Name != "GestureClassLabel" && property.Name != "NumExtendedFingers" &&
-               property.Name != "PinchStrength" && property.Name != "GrabStrength")
+               property.Name != "GestureClassLabel")
             {
-                property.SetValue(featureVector, featureVectorList[propertyIndex], null);
+                property.SetValue(featureVector, standardizedVectorList[propertyIndex], null);
                 propertyIndex++;
             }
         }
@@ -103,7 +103,7 @@ public class FeatureVectorPreprocessor
      * featureVectorList[12] = RingToHandNormal Distance
      * featureVectorList[13] = PinkyToHandNormal Distance
      */
-    private void calculateHandToFingerAngles(List<double> featureVectorList, Frame frame)
+    private void calculateHandToFingerDistances(List<double> featureVectorList, Frame frame)
     {
         foreach (Hand hand in frame.Hands)
         {
@@ -127,12 +127,13 @@ public class FeatureVectorPreprocessor
     }
 
     /*
-     * featureVectorList[14] = NumFingersExtended
-     * featureVectorList[15] = PinchStrength
-     * featureVectorList[16] = GrabStrength
+     * featureVectorList[14] = RadiusSphere
+     * featureVectorList[15] = PalmToWrist Angle
+     * featureVectorList[16] = NumFingersExtended
+     * featureVectorList[17] = PinchStrength
+     * featureVectorList[18] = GrabStrength
      */
-
-    private void getMiscellaneousFeatures(FeatureVector featureVector, Frame frame)
+    private void getMiscellaneousFeatures(List<double> featureVectorList, Frame frame)
     {
         foreach (Hand hand in frame.Hands)
         {
@@ -144,9 +145,11 @@ public class FeatureVectorPreprocessor
                     numExtendedFingers++;
             }
 
-            featureVector.NumExtendedFingers = numExtendedFingers;
-            featureVector.PinchStrength = hand.PinchStrength;
-            featureVector.GrabStrength = hand.GrabStrength;
+            featureVectorList.Add(hand.SphereRadius);
+            featureVectorList.Add(hand.WristPosition.Normalized.AngleTo(hand.PalmNormal));
+            featureVectorList.Add(numExtendedFingers);
+            featureVectorList.Add(hand.PinchStrength);
+            featureVectorList.Add(hand.GrabStrength);
         }
     }
 }
