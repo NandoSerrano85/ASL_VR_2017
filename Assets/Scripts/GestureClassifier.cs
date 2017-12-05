@@ -24,6 +24,7 @@ public class GestureClassifier : MonoBehaviour
     private string modelPath;
     
     public bool ModelExists { get; set; }
+    public bool TrainingFinished { get; set; }
 
     [SerializeField]
     private bool PeformValidationTests = false;
@@ -56,7 +57,7 @@ public class GestureClassifier : MonoBehaviour
         }
     }
 
-    public IEnumerator trainClassifier()
+    public void trainClassifier()
     {
         List<FeatureVector> featureVectors = dataService.getAllFeatureVectors();
 
@@ -100,9 +101,7 @@ public class GestureClassifier : MonoBehaviour
         }
 
         saveModel();
-        ModelExists = true;
-
-        yield return null;
+        TrainingFinished = true;
     }
 
     private void createInputsAndOutputs(double[][] inputs, int[] outputs, List<FeatureVector> featureVectors)

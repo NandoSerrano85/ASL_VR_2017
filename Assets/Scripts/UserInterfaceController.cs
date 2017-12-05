@@ -1,5 +1,5 @@
-﻿using Leap;
-using System.Collections;
+﻿using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -108,9 +108,12 @@ public class UserInterfaceController : MonoBehaviour
         trainingStatusText.text = "Training Classifier...";
 
         gestureClassifier.ModelExists = false;
-        StartCoroutine(gestureClassifier.trainClassifier());
+        gestureClassifier.TrainingFinished = false;
 
-        while(!gestureClassifier.ModelExists)
+        Thread trainingThread = new Thread(gestureClassifier.trainClassifier);
+        trainingThread.Start();
+
+        while(!gestureClassifier.TrainingFinished)
         {
             yield return new WaitForEndOfFrame();
         }
@@ -123,6 +126,7 @@ public class UserInterfaceController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         trainingClassifierBackground.SetActive(false);
+        gestureClassifier.ModelExists = true;
     }
 
     public void snapShotViewToGestureView()

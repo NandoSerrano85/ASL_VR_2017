@@ -30,6 +30,8 @@ public class FeatureVectorPreprocessor
 
         FeatureVector featureVector = constructFeatureVector(standardizedVectorList);
 
+        featureVector.NumExtendedFingers = getNumExtendedFingers(frame);
+
         return featureVector;
     }
 
@@ -42,12 +44,17 @@ public class FeatureVectorPreprocessor
 
         int propertyIndex = 0;
 
-        for (int i = 0; i < properties.Length; i++)
+        /*
+         * The minus is so we skip the last the properties
+         * in the feature vector class. Those get assigned 
+         * when the user creates the gesture. 
+         */
+
+        for (int i = 0; i < properties.Length - 3; i++)
         {
             PropertyInfo property = properties[i];
 
-            if(property.Name != "ID" && property.Name != "Gesture" && 
-               property.Name != "GestureClassLabel")
+            if(property.Name != "ID")
             {
                 property.SetValue(featureVector, standardizedVectorList[propertyIndex], null);
                 propertyIndex++;
@@ -88,8 +95,8 @@ public class FeatureVectorPreprocessor
         {
             for (int i = hand.Fingers.Count - 1; i > 0; i--)
             {
-                Vector currentFinger = hand.Fingers[i].TipPosition;
-                Vector previousFinger = hand.Fingers[i - 1].TipPosition;
+                Vector currentFinger = hand.Fingers[i].TipPosition - hand.PalmPosition;
+                Vector previousFinger = hand.Fingers[i - 1].TipPosition - hand.PalmPosition;
 
                 featureVectorList.Add(currentFinger.DistanceTo(previousFinger) / hand.SphereRadius);
             }
@@ -118,7 +125,7 @@ public class FeatureVectorPreprocessor
                 float curFingerMag = curFinger.Magnitude;
                 float handNormMag = handNorm.Magnitude;
 
-                double distance = Math.Pow(curFingerMag, 2) + Math.Pow(handNormMag, 2.0) +
+                double distance = Math.Pow(curFingerMag, 2) + Math.Pow(handNormMag, 2) +
                                   - 2 * curFingerMag * handNormMag * angle;
 
                 featureVectorList.Add(distance / hand.SphereRadius);
@@ -127,11 +134,9 @@ public class FeatureVectorPreprocessor
     }
 
     /*
-     * featureVectorList[14] = RadiusSphere
-     * featureVectorList[15] = PalmToWrist Angle
-     * featureVectorList[16] = NumFingersExtended
-     * featureVectorList[17] = PinchStrength
-     * featureVectorList[18] = GrabStrength
+     * featureVectorList[13] = RadiusSphere
+     * featureVectorList[14] = PinchStrength
+     * featureVectorList[15] = GrabStrength
      */
     private void getMiscellaneousFeatures(List<double> featureVectorList, Frame frame)
     {
@@ -146,10 +151,27 @@ public class FeatureVectorPreprocessor
             }
 
             featureVectorList.Add(hand.SphereRadius);
-            featureVectorList.Add(hand.WristPosition.Normalized.AngleTo(hand.PalmNormal));
-            featureVectorList.Add(numExtendedFingers);
             featureVectorList.Add(hand.PinchStrength);
             featureVectorList.Add(hand.GrabStrength);
         }
+    }
+
+    /*
+    * featureVectorList[16] = NumExtendedFingers
+    */
+    private int getNumExtendedFingers(Frame frame)
+    {
+        int numExtendedFingers = 0;
+
+        foreach (Hand hand in frame.Hands)
+        {
+            foreach (Finger finger in hand.Fingers)
+            {
+                if (finger.IsExtended)
+                    numExtendedFingers++;
+            }
+        }
+
+        return numExtendedFingers;
     }
 }

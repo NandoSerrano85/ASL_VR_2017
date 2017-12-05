@@ -1,5 +1,7 @@
 ﻿using Leap;
 using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,14 +38,16 @@ public class GestureSnapshot : MonoBehaviour
     [SerializeField]
     private HandController handController;
 
-    private FeatureVector featureVector;
+    private List<Frame> gestureFrames;
 
     public string GestureInputText { get { return gestureInputField.text; } set { gestureInputField.text = value; } }
     public bool GestureInputInteractable { get { return gestureInputField.interactable; } set { gestureInputField.interactable = value; } }
     public bool GestureSubmitButtonInteractable { get { return submitGestureButton.interactable; } set { submitGestureButton.interactable = value; } }
-    public string GestureStatusText { get { return gestureStatusText.text; } set { gestureStatusText.text = value;} }
+    public string GestureStatusText { get { return gestureStatusText.text; } set { gestureStatusText.text = value; } }
 
     private bool lastActiveViewState;
+    private bool isGatheringFrames;
+    private float recordingTimer;
 
     [SerializeField]
     private ModalDialog errorModalDialog;
@@ -58,6 +62,15 @@ public class GestureSnapshot : MonoBehaviour
     [SerializeField]
     private AudioClip buttonClickSound;
 
+    [SerializeField]
+    private GameObject processingFramesBackground;
+
+    [SerializeField]
+    private GameObject loadingCircle;
+
+    [SerializeField]
+    private Text processingFramesText;
+
     private void Start()
     {
         gestureInputFieldPlaceHolderText = gestureInputField.placeholder.GetComponent<Text>();
@@ -65,6 +78,11 @@ public class GestureSnapshot : MonoBehaviour
 
         toggleableObject = GetComponent<ToggleableObject>();
         lastActiveViewState = true;
+
+        isGatheringFrames = false;
+        recordingTimer = 5.0f;
+
+        gestureFrames = new List<Frame>();
 
         if (controlsText != null)
         {
@@ -77,14 +95,15 @@ public class GestureSnapshot : MonoBehaviour
 
     private void Update()
     {
-        if (!GestureInputInteractable && Input.GetKeyDown(takeSnapShotKey))
-        {
-            Frame frame = handController.GetFrame();
+        if(isGatheringFrames && recordingTimer > 0)
+            gatherGestureFrames();
 
-            if (frame.Hands.Count > 0)
-            {
-                takeSnapShot(frame);
-            }
+        if (!GestureInputInteractable && !isGatheringFrames && Input.GetKeyDown(takeSnapShotKey))
+        {
+            isGatheringFrames = true;
+
+            lastActiveViewState = false;
+            toggleableObject.toggleObject(lastActiveViewState);
         }
 
         if (!gestureInputField.isFocused && Input.GetKeyDown(toggleableObject.toggleKey))
@@ -93,8 +112,8 @@ public class GestureSnapshot : MonoBehaviour
             toggleableObject.toggleObject(lastActiveViewState);
         }
 
-        if(Input.GetKeyDown(resetSnapshotKey) && !gestureInputField.isFocused && 
-           !errorModalDialog.isDialogActive() && featureVector != null)
+        if (Input.GetKeyDown(resetSnapshotKey) && !gestureInputField.isFocused &&
+           !errorModalDialog.isDialogActive() && gestureFrames.Count != 0)
         {
             resetModalDialog.showQuestionDialog(YesResetGestureEvent, NoResetGestureEvent);
         }
@@ -105,38 +124,101 @@ public class GestureSnapshot : MonoBehaviour
             gestureInputFieldPlaceHolderText.text = "Enter Gesture Name...";
     }
 
-    private void takeSnapShot(Frame frame)
+    private void gatherGestureFrames()
     {
-        FeatureVectorPreprocessor featureVectorPreProcessor = new FeatureVectorPreprocessor();
+        Frame frame = handController.GetFrame();
 
-        featureVector = featureVectorPreProcessor.createFeatureVector(frame);
+        if (frame.Hands.Count > 0)
+        {
+            gestureFrames.Add(frame);
+        }
 
-        GestureInputInteractable = true;
-        GestureSubmitButtonInteractable = true;
+        recordingTimer -= Time.deltaTime;
+
+        if (recordingTimer < 0)
+        {
+            isGatheringFrames = false;
+            recordingTimer = 5.0f;
+            GestureInputInteractable = true;
+            GestureSubmitButtonInteractable = true;
+            lastActiveViewState = true;
+            toggleableObject.toggleObject(lastActiveViewState);
+            GestureStatusText = "Process complete. Enter a name for the gesture.";
+            StartCoroutine(resetText());
+        }
+    }
+
+    private IEnumerator createGesture(string gestureName)
+    {
+        processingFramesBackground.SetActive(true);
+        loadingCircle.SetActive(true);
+        processingFramesText.text = "Creating Gesture...";
+
+        Thread gestureThread = new Thread(() => processGestureFrames(gestureName));
+        gestureThread.Start();
+
+        while(gestureFrames.Count > 0)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return new WaitForSeconds(1.0f);
+
+        loadingCircle.SetActive(false);
+        processingFramesText.text = "Gesture Created";
+
+        yield return new WaitForSeconds(1.0f);
+
+        processingFramesBackground.SetActive(false);
+
+        GestureInputInteractable = false;
+        GestureSubmitButtonInteractable = false;
     }
 
     public void sendGestureToDatabase()
     {
         buttonAudioSource.PlayOneShot(buttonClickSound);
 
-        string gestureName = GestureInputText.Trim(); 
+        string gestureName = GestureInputText.Trim();
 
-        if(!string.IsNullOrEmpty(gestureName))
+        if (!string.IsNullOrEmpty(gestureName))
         {
-            featureVector.Gesture = gestureName;
-            featureVector.GestureClassLabel = dataService.gestureToClassLabel(gestureName);
-
-            dataService.InsertGesture(featureVector);
-
-            GestureInputInteractable = false;
-            GestureSubmitButtonInteractable = false;
-            GestureStatusText = "Gesture created. Ready for a new gesture.";
-            StartCoroutine(resetText());
+            StartCoroutine(createGesture(gestureName));
         }
         else
             errorModalDialog.showErrorDialog(OkEvent);
 
         GestureInputText = "";
+    }
+
+    private void processGestureFrames(string gestureName)
+    {
+        /*
+         * I'm assuming that each frame is the same gesture and that the user didn't
+         * change gesture in any of them. This means that the class label is the same
+         * and I should call the gesture to class function once.
+         */
+        int gestureClassLabel = -1;
+
+        foreach (Frame gestureFrame in gestureFrames)
+        {
+            FeatureVectorPreprocessor featureVectorPreProcessor = new FeatureVectorPreprocessor();
+
+            FeatureVector featureVector = featureVectorPreProcessor.createFeatureVector(gestureFrame);
+
+            featureVector.Gesture = gestureName;
+
+            if (gestureClassLabel == -1)
+            {
+                gestureClassLabel = dataService.gestureToClassLabel(gestureName);
+            }
+
+            featureVector.GestureClassLabel = gestureClassLabel;
+
+            dataService.InsertGesture(featureVector);
+        }
+
+        gestureFrames.Clear();
     }
 
     private IEnumerator resetText()
@@ -153,8 +235,8 @@ public class GestureSnapshot : MonoBehaviour
     public void YesResetGestureEvent()
     {
         buttonAudioSource.PlayOneShot(buttonClickSound);
-        GestureStatusText = "Ready for a new gesture.";
-        featureVector = null;
+        GestureStatusText = "Gesture discarded. Ready for a new gesture.";
+        gestureFrames.Clear();
         GestureInputInteractable = false;
         GestureSubmitButtonInteractable = false;
         StartCoroutine(resetText());

@@ -22,10 +22,9 @@ public class FeatureVector
     public double RingToHandNormalDistance { get; set; }
     public double PinkyToHandNormalDistance { get; set; }
     public double RadiusSphere { get; set; }
-    public double PalmToWristAngle { get; set; }
-    public double NumExtendedFingers { get; set; }
     public double PinchStrength { get; set; }
     public double GrabStrength { get; set; }
+    public int NumExtendedFingers { get; set; }
     public string Gesture { get; set; }
     public int GestureClassLabel { get; set; }
 
@@ -36,7 +35,7 @@ public class FeatureVector
             PalmToThumbDistance, PalmToIndexDistance, PalmToMiddleDistance, PalmToRingDistance, PalmToPinkyDistance,
             IndexToThumbDistance, RingToMiddleDistance, MiddleToIndexDistance, PinkyToRingDistance,
             ThumbToHandNormalDistance, IndexToHandNormalDistance, MiddleToHandNormalDistance, RingToHandNormalDistance, PinkyToHandNormalDistance,
-            RadiusSphere, PalmToWristAngle, NumExtendedFingers, PinchStrength, GrabStrength
+            RadiusSphere, NumExtendedFingers, PinchStrength, GrabStrength
         };
     }
 
